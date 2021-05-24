@@ -1,14 +1,23 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
+import DashboardLayout from './Layouts/DashboardLayout/DashboardLayout';
+import MainLayout from './Layouts/MainLayout/MainLayout';
 
 const routes = (user) => [
   {
     path: '/',
-    element: user ? <h1> Main Layout </h1> : <h1>Not Login</h1>,
+    element:  <MainLayout/>,
     children: [
       { path: 'login', element: <h1>Login View</h1> },
       { path: '404', element: <h1>Not found view</h1> },
       { path: '/', element: user ? <Navigate to='/administration' /> : <Navigate to='/login' /> }
+    ]
+  },
+  {
+    path: '/dashboard',
+    element:  <DashboardLayout/>,
+    children: [
+      { path: '/', element: !user ? <h1>Welcome to dashboard</h1> : <Navigate to='/login' /> }
     ]
   },
 ];

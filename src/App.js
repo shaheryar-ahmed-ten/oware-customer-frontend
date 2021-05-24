@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useRoutes, useLocation } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from '../src/Components/GlobalStyles';
-import theme from '../src/theme';
+import theme from './Theme';
 import routes from '../src/routes';
 import { getUser, setUser, getURL, SharedContext, getUserToken } from './Utils/common';
 import { setRequestInterceptor, setResponseInterceptor, ejectRequestInterceptor, ejectResponseInterceptor } from './Utils/interceptors';
