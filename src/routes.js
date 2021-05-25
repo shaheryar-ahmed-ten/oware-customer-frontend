@@ -1,14 +1,16 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import DashboardLayout from './Layouts/DashboardLayout/DashboardLayout';
 import MainLayout from './Layouts/MainLayout/MainLayout';
+import LoginView from './Views/Auth/LoginView';
+import DashboardTransactions from './Views/DashboardTransactions/DashboardTransactions';
 
 const routes = (user) => [
   {
     path: '/',
     element:  <MainLayout/>,
     children: [
-      { path: 'login', element: <h1>Login View</h1> },
+      { path: 'login', element: <LoginView/> },
       { path: '404', element: <h1>Not found view</h1> },
       { path: '/', element: user ? <Navigate to='/administration' /> : <Navigate to='/login' /> }
     ]
@@ -17,7 +19,7 @@ const routes = (user) => [
     path: '/dashboard',
     element:  <DashboardLayout/>,
     children: [
-      { path: '/', element: !user ? <h1>Welcome to dashboard</h1> : <Navigate to='/login' /> },
+      { path: '/', element: !user ? <DashboardTransactions/> : <Navigate to='/login' /> },
     ]
   },
   {
