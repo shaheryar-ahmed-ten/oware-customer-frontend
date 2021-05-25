@@ -17,8 +17,7 @@ const routes = (user) => [
     path: '/dashboard',
     element:  <DashboardLayout/>,
     children: [
-      { path: '/inbound-transactions', element: !user ? <h1>Welcome to dashboard</h1> : <Navigate to='/login' /> },
-      { path: '/outbound-transactions', element: !user ? <h1>Welcome to dashboard</h1> : <Navigate to='/login' /> }
+      { path: '/', element: !user ? <h1>Welcome to dashboard</h1> : <Navigate to='/login' /> },
     ]
   },
   {
