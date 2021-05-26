@@ -22,10 +22,13 @@ const useStyles = makeStyles({
 function DashboardTransactions() {
     const classes = useStyles();
     const [inboundStatisticalData, setInboundStatisticalData] = useState(null)
+    const [generalStatisticsData, setGeneralStatisticsData] = useState(null)
     useEffect(() => {
         axios.get(getURL(`/product-inward/dashboard`))
             .then((response) => {
+                console.log(response.data.productAndWarehouseDetails[0])
                 setInboundStatisticalData((prevState) => response.data.inboundStats)
+                setGeneralStatisticsData((prevState) => response.data.productAndWarehouseDetails[0])
             })
     }, [])
     return (
@@ -131,8 +134,8 @@ function DashboardTransactions() {
                                 Products Stored
                     </Typography>
                             <Typography className={classes.title} gutterBottom>
-                                0
-                    </Typography>
+                                {generalStatisticsData ? generalStatisticsData.productsStored : 0}
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -143,8 +146,8 @@ function DashboardTransactions() {
                                 Warehouses Used
                     </Typography>
                             <Typography className={classes.title} gutterBottom>
-                                0
-                    </Typography>
+                                {generalStatisticsData ? generalStatisticsData.warehousesUsed : 0}
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>
