@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardContent, Grid, makeStyles, Typography } from '@material-ui/core';
 import axios from 'axios';
 import { getURL } from '../../Utils/common';
@@ -21,10 +21,11 @@ const useStyles = makeStyles({
 
 function DashboardTransactions() {
     const classes = useStyles();
+    const [statisticalData, setStatisticalData] = useState(null)
     useEffect(() => {
         axios.get(getURL(`/product-inward/dashboard`))
         .then((response)=>{
-            console.log(response.data)
+            setStatisticalData((prevState)=>response.data.data)
         })
     }, [])
     return (
@@ -38,7 +39,7 @@ function DashboardTransactions() {
                                 Total Inward - last 7 days
                     </Typography>
                             <Typography className={classes.title} gutterBottom>
-                                0
+                                {statisticalData ? statisticalData.count : 0}
                     </Typography>
                         </CardContent>
                     </Card>
