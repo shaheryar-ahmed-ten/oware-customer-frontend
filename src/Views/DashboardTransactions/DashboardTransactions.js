@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardContent, Grid, makeStyles, Typography } from '@material-ui/core';
 import axios from 'axios';
 import { getURL } from '../../Utils/common';
@@ -21,11 +21,12 @@ const useStyles = makeStyles({
 
 function DashboardTransactions() {
     const classes = useStyles();
+    const [inboundStatisticalData, setInboundStatisticalData] = useState(null)
     useEffect(() => {
         axios.get(getURL(`/product-inward/dashboard`))
-        .then((response)=>{
-            console.log(response.data)
-        })
+            .then((response) => {
+                setInboundStatisticalData((prevState) => response.data.inboundStats)
+            })
     }, [])
     return (
         <>
@@ -35,11 +36,11 @@ function DashboardTransactions() {
                     <Card className={classes.root} variant="outlined">
                         <CardContent>
                             <Typography className={classes.title} gutterBottom>
-                                Total Inward - last 7 days
+                                Total Inward Transactions - last 7 days
                     </Typography>
                             <Typography className={classes.title} gutterBottom>
-                                0
-                    </Typography>
+                                {inboundStatisticalData ? inboundStatisticalData.count[0].count : 0}
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -50,8 +51,8 @@ function DashboardTransactions() {
                                 Total Inward in Kgs - last 7 days
                     </Typography>
                             <Typography className={classes.title} gutterBottom>
-                                0
-                    </Typography>
+                                {inboundStatisticalData ? inboundStatisticalData.rows[0].Product.totalWeightInKGs : 0}
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -62,8 +63,8 @@ function DashboardTransactions() {
                                 Total Inward in cm3 - last 7 days
                     </Typography>
                             <Typography className={classes.title} gutterBottom>
-                                0
-                    </Typography>
+                                {inboundStatisticalData ? inboundStatisticalData.rows[0].Product.totalInCm3 : 0}
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -75,7 +76,7 @@ function DashboardTransactions() {
                     <Card className={classes.root} variant="outlined">
                         <CardContent>
                             <Typography className={classes.title} gutterBottom>
-                                Total Outward - last 7 days
+                                Total Outward Transactions - last 7 days
                     </Typography>
                             <Typography className={classes.title} gutterBottom>
                                 0
