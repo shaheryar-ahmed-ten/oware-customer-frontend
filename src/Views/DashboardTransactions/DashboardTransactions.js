@@ -25,6 +25,7 @@ function DashboardTransactions() {
     useEffect(() => {
         axios.get(getURL(`/product-inward/dashboard`))
         .then((response)=>{
+            console.log(response.data.data)
             setStatisticalData((prevState)=>response.data.data)
         })
     }, [])
