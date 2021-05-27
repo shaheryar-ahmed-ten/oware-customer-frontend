@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between"
   },
   hide: {
-    display: 'none',
+    visibility: 'hidden',
   },
   drawer: {
     width: drawerWidth,
