@@ -13,6 +13,7 @@ const useStyles = makeStyles({
     },
     title: {
         fontSize: 14,
+        display: "flex",
     },
     details: {
         display: "flex",
@@ -25,6 +26,7 @@ function SecondaryWidget({ icon, name, value, totalQuantity, totalVolume, type }
         <>
             <Card className={classes.root}>
                 <Typography className={classes.title} gutterBottom>
+                    {icon}
                     {name}
                 </Typography>
                 <Typography variant="h1" component="h2">
@@ -33,13 +35,15 @@ function SecondaryWidget({ icon, name, value, totalQuantity, totalVolume, type }
                 <Typography variant="h5" component="h2">
                     {type}
                 </Typography>
+                <br />
                 <Divider />
+                <br />
                 <div className={classes.details}>
                     <Typography variant="h5" component="h2" gutterBottom>
                         Total Quantity
                     </Typography>
                     <Typography variant="h5" component="h2" gutterBottom>
-                        {totalQuantity}
+                        {totalQuantity}Kgs
                     </Typography>
                 </div>
                 <div className={classes.details}>
@@ -47,7 +51,7 @@ function SecondaryWidget({ icon, name, value, totalQuantity, totalVolume, type }
                         Total Volume
                     </Typography>
                     <Typography variant="h5" component="h2" gutterBottom>
-                        {totalVolume}
+                        {totalVolume}Cm3
                     </Typography>
                 </div>
 

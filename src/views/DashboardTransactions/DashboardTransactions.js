@@ -4,6 +4,8 @@ import axios from 'axios';
 import { getURL } from '../../utils/common';
 import PrimaryWidget from '../../components/widgets/PrimaryWidget';
 import SecondaryWidget from '../../components/widgets/SecondaryWidget';
+import ArrowDownwardOutlinedIcon from '@material-ui/icons/ArrowDownwardOutlined';
+import ArrowUpwardOutlinedIcon from '@material-ui/icons/ArrowUpwardOutlined';
 const useStyles = makeStyles({
     root: {
         minWidth: 275,
@@ -19,6 +21,12 @@ const useStyles = makeStyles({
     pos: {
         marginBottom: 12,
     },
+    successIcon: {
+        color: 'green',
+    },
+    errorIcon: {
+        color: 'red',
+    }
 });
 
 function DashboardTransactions() {
@@ -55,10 +63,10 @@ function DashboardTransactions() {
                 </Grid>
                 <Grid container item={12} spacing={3}>
                     <Grid item xs={6}>
-                        <SecondaryWidget name="Inwards" value={inboundStatisticalData ? inboundStatisticalData.count[0].count : 0} type="Transactions" totalQuantity={inboundStatisticalData ? inboundStatisticalData.rows[0].Product.totalWeightInKGs : 0} totalVolume={inboundStatisticalData ? inboundStatisticalData.rows[0].Product.totalInCm3 : 0} />
+                        <SecondaryWidget icon={<ArrowDownwardOutlinedIcon className={classes.successIcon} />} name="Inwards" value={inboundStatisticalData ? inboundStatisticalData.count[0].count : 0} type="Transactions" totalQuantity={inboundStatisticalData ? inboundStatisticalData.rows[0].Product.totalWeightInKGs : 0} totalVolume={inboundStatisticalData ? inboundStatisticalData.rows[0].Product.totalInCm3 : 0} />
                     </Grid>
                     <Grid item xs={6}>
-                        <SecondaryWidget name="Outwards" value={55} type="Transactions" totalQuantity={"450Kgs"} totalVolume={"11Cm3"} />
+                        <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={55} type="Transactions" totalQuantity={"450"} totalVolume={"11"} />
                     </Grid>
                 </Grid>
                 {/* <h1>INBOUND TRANSACTION</h1>
