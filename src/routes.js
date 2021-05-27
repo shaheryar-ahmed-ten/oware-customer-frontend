@@ -26,11 +26,11 @@ const routes = (user) => [
   },
   {
     path: '/operation-transactions',
-    element: <MainLayout />,
+    element: <DashboardLayout />,
     children: [
       { path: '/inbound-transactions', element: !user ? <Inbound /> : <Navigate to='/login' /> },
       { path: '/outbound-transactions', element: !user ? <Outbound /> : <Navigate to='/login' /> },
-      { path: '/', element: !user ? <Navigate to='/operation-transactions/inbound-transactions' /> : <Navigate to='/login' /> }
+      // { path: '/', element: !user ? <Navigate to='/operation-transactions/inbound-transactions' /> : <Navigate to='/login' /> }
     ]
   },
 ];

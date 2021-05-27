@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core'
 import React, { useContext } from 'react'
 import { Outlet } from 'react-router';
 import LoaderOverlay from '../../Components/LoaderOverlay';
+import NavBar from '../../Components/NavBar/Navbar';
 import { SharedContext } from '../../Utils/common';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'hidden',
         marginTop: 64,
         [theme.breakpoints.up('lg')]: {
-            paddingLeft: 256
+            paddingLeft: 64
         }
     },
     contentContainer: {
@@ -39,6 +40,7 @@ function DashboardLayout() {
     const { isLoading } = useContext(SharedContext);
     return (
         <div className={classes.root}>
+            <NavBar />
             <div className={classes.wrapper}>
                 <div className={classes.contentContainer}>
                     <div className={classes.content}>
