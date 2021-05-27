@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Card, CardContent, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Grid, makeStyles, Typography } from '@material-ui/core';
 import axios from 'axios';
 import { getURL } from '../../utils/common';
+import PrimaryWidget from '../../components/widgets/PrimaryWidget';
+import SecondaryWidget from '../../components/widgets/SecondaryWidget';
 const useStyles = makeStyles({
     root: {
         minWidth: 275,
@@ -33,124 +35,112 @@ function DashboardTransactions() {
     }, []);
     return (
         <>
-            <h1>INBOUND TRANSACTION</h1>
-            <Grid container>
-                <Grid item xs={4}>
-                    <Card className={classes.root} variant="outlined">
-                        <CardContent>
-                            <Typography className={classes.title} gutterBottom>
-                                Total Inward Transactions - last 7 days
-                    </Typography>
-                            <Typography className={classes.title} gutterBottom>
-                                {inboundStatisticalData ? inboundStatisticalData.count[0].count : 0}
-                            </Typography>
-                        </CardContent>
-                    </Card>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Typography variant="h1">Dashboard</Typography>
                 </Grid>
-                <Grid item xs={4}>
-                    <Card className={classes.root} variant="outlined">
-                        <CardContent>
-                            <Typography className={classes.title} gutterBottom>
-                                Total Inward in Kgs - last 7 days
-                    </Typography>
-                            <Typography className={classes.title} gutterBottom>
-                                {inboundStatisticalData ? inboundStatisticalData.rows[0].Product.totalWeightInKGs : 0}
-                            </Typography>
-                        </CardContent>
-                    </Card>
+                <Grid container item={12} spacing={3}>
+                    <Grid item xs={4}>
+                        <PrimaryWidget name="Pending Orders" value={0} />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <PrimaryWidget name="Products Stored" value={generalStatisticsData ? generalStatisticsData.productsStored : 0} />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <PrimaryWidget name="Warehouse Used" value={generalStatisticsData ? generalStatisticsData.warehousesUsed : 0} />
+                    </Grid>
                 </Grid>
-                <Grid item xs={4}>
-                    <Card className={classes.root} variant="outlined">
-                        <CardContent>
-                            <Typography className={classes.title} gutterBottom>
-                                Total Inward in cm3 - last 7 days
-                    </Typography>
-                            <Typography className={classes.title} gutterBottom>
-                                {inboundStatisticalData ? inboundStatisticalData.rows[0].Product.totalInCm3 : 0}
-                            </Typography>
-                        </CardContent>
-                    </Card>
+                <Grid item xs={12}>
+                    <Typography variant="h4">Last 7 days Activity</Typography>
                 </Grid>
-            </Grid>
+                <Grid container item={12} spacing={3}>
+                    <Grid item xs={6}>
+                        <SecondaryWidget name="Inwards" value={inboundStatisticalData ? inboundStatisticalData.count[0].count : 0} type="Transactions" totalQuantity={inboundStatisticalData ? inboundStatisticalData.rows[0].Product.totalWeightInKGs : 0} totalVolume={inboundStatisticalData ? inboundStatisticalData.rows[0].Product.totalInCm3 : 0} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <SecondaryWidget name="Outwards" value={55} type="Transactions" totalQuantity={"450Kgs"} totalVolume={"11Cm3"} />
+                    </Grid>
+                </Grid>
+                {/* <h1>INBOUND TRANSACTION</h1>
+                <Grid container>
+                    <Grid item xs={4}>
+                        <Card className={classes.root} variant="outlined">
+                            <CardContent>
+                                <Typography className={classes.title} gutterBottom>
+                                    Total Inward Transactions - last 7 days
+                    </Typography>
+                                <Typography className={classes.title} gutterBottom>
+                                    {inboundStatisticalData ? inboundStatisticalData.count[0].count : 0}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Card className={classes.root} variant="outlined">
+                            <CardContent>
+                                <Typography className={classes.title} gutterBottom>
+                                    Total Inward in Kgs - last 7 days
+                    </Typography>
+                                <Typography className={classes.title} gutterBottom>
+                                    {inboundStatisticalData ? inboundStatisticalData.rows[0].Product.totalWeightInKGs : 0}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Card className={classes.root} variant="outlined">
+                            <CardContent>
+                                <Typography className={classes.title} gutterBottom>
+                                    Total Inward in cm3 - last 7 days
+                    </Typography>
+                                <Typography className={classes.title} gutterBottom>
+                                    {inboundStatisticalData ? inboundStatisticalData.rows[0].Product.totalInCm3 : 0}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
 
-            <h1>OUTBOUND TRANSACTION</h1>
-            <Grid container>
-                <Grid item xs={4}>
-                    <Card className={classes.root} variant="outlined">
-                        <CardContent>
-                            <Typography className={classes.title} gutterBottom>
-                                Total Outward Transactions - last 7 days
+                <h1>OUTBOUND TRANSACTION</h1>
+                <Grid container>
+                    <Grid item xs={4}>
+                        <Card className={classes.root} variant="outlined">
+                            <CardContent>
+                                <Typography className={classes.title} gutterBottom>
+                                    Total Outward Transactions - last 7 days
                     </Typography>
-                            <Typography className={classes.title} gutterBottom>
-                                0
+                                <Typography className={classes.title} gutterBottom>
+                                    0
                     </Typography>
-                        </CardContent>
-                    </Card>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Card className={classes.root} variant="outlined">
+                            <CardContent>
+                                <Typography className={classes.title} gutterBottom>
+                                    Total Outward in Kgs - last 7 days
+                    </Typography>
+                                <Typography className={classes.title} gutterBottom>
+                                    0
+                    </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Card className={classes.root} variant="outlined">
+                            <CardContent>
+                                <Typography className={classes.title} gutterBottom>
+                                    Total Outward in cm3 - last 7 days
+                    </Typography>
+                                <Typography className={classes.title} gutterBottom>
+                                    0
+                    </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 </Grid>
-                <Grid item xs={4}>
-                    <Card className={classes.root} variant="outlined">
-                        <CardContent>
-                            <Typography className={classes.title} gutterBottom>
-                                Total Outward in Kgs - last 7 days
-                    </Typography>
-                            <Typography className={classes.title} gutterBottom>
-                                0
-                    </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={4}>
-                    <Card className={classes.root} variant="outlined">
-                        <CardContent>
-                            <Typography className={classes.title} gutterBottom>
-                                Total Outward in cm3 - last 7 days
-                    </Typography>
-                            <Typography className={classes.title} gutterBottom>
-                                0
-                    </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
-
-            <h1>STATISTICAL DATA</h1>
-            <Grid container>
-                <Grid item xs={4}>
-                    <Card className={classes.root} variant="outlined">
-                        <CardContent>
-                            <Typography className={classes.title} gutterBottom>
-                                Pending Orders
-                    </Typography>
-                            <Typography className={classes.title} gutterBottom>
-                                0
-                    </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={4}>
-                    <Card className={classes.root} variant="outlined">
-                        <CardContent>
-                            <Typography className={classes.title} gutterBottom>
-                                Products Stored
-                    </Typography>
-                            <Typography className={classes.title} gutterBottom>
-                                {generalStatisticsData ? generalStatisticsData.productsStored : 0}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={4}>
-                    <Card className={classes.root} variant="outlined">
-                        <CardContent>
-                            <Typography className={classes.title} gutterBottom>
-                                Warehouses Used
-                    </Typography>
-                            <Typography className={classes.title} gutterBottom>
-                                {generalStatisticsData ? generalStatisticsData.warehousesUsed : 0}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
+             */}
             </Grid>
 
         </>
