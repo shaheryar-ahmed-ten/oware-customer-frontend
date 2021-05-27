@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import moment from 'moment';
 
-export const apiBaseURL = (process.env.NODE_ENV == 'development' ? 'http://localhost:3000' : '') + '/api/v1';
+export const apiBaseURL = (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '') + '/api/v1';
 export const user = null;
 
 export const getUserToken = () => {
@@ -39,7 +39,7 @@ export const getURL = uri => {
 }
 
 export const isSuperAdmin = user => {
-  return user && user.Role && user.Role.PermissionAccesses.find(pa => pa.Permission.type == 'superadmin_privileges');
+  return user && user.Role && user.Role.PermissionAccesses.find(pa => pa.Permission.type === 'superadmin_privileges');
 }
 
 export const digitize = (value, places) => {

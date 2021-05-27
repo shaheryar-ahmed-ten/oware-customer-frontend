@@ -1,11 +1,11 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import DashboardLayout from './Layouts/DashboardLayout/DashboardLayout';
-import MainLayout from './Layouts/MainLayout/MainLayout';
-import LoginView from './Views/Auth/LoginView';
-import DashboardTransactions from './Views/DashboardTransactions/DashboardTransactions';
-import Inbound from './Views/Operations/Inbound/Inbound';
-import Outbound from './Views/Operations/Outbound/Outbound';
+import DashboardLayout from './layouts/DashboardLayout/DashboardLayout';
+import MainLayout from './layouts/MainLayout/MainLayout';
+import LoginView from './views/Auth/LoginView';
+import DashboardTransactions from './views/DashboardTransactions/DashboardTransactions';
+import Inbound from './views/Operations/Inbound/Inbound';
+import Outbound from './views/Operations/Outbound/Outbound';
 
 const routes = (user) => [
   {

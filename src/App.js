@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useRoutes, useLocation } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core';
-import GlobalStyles from '../src/Components/GlobalStyles';
-import theme from './Theme';
+import GlobalStyles from '../src/components/GlobalStyles';
+import theme from './theme';
 import routes from '../src/routes';
-import { getUser, setUser, getURL, SharedContext, getUserToken } from './Utils/common';
-import { setRequestInterceptor, setResponseInterceptor, ejectRequestInterceptor, ejectResponseInterceptor } from './Utils/interceptors';
+import { SharedContext, getUserToken } from './utils/common';
+import { setRequestInterceptor, setResponseInterceptor, ejectRequestInterceptor, ejectResponseInterceptor } from './utils/interceptors';
 
 function App() {
   const navigate = useNavigate();
@@ -24,8 +24,8 @@ function App() {
       return data;
     }, error => {
       setIsLoading(false);
-      if (error.response && error.response.status == 401) {
-        if (location.pathname.split('/').pop() != 'login') {
+      if (error.response && error.response.status === 401) {
+        if (location.pathname.split('/').pop() !== 'login') {
           navigate('/login');
         }
       }

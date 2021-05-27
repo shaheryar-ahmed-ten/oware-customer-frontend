@@ -1,13 +1,12 @@
 import { makeStyles } from '@material-ui/core'
 import React, { useContext } from 'react'
-import { Outlet } from 'react-router';
-import LoaderOverlay from '../../Components/LoaderOverlay';
-import { SharedContext } from '../../Utils/common';
+import { Outlet } from 'react-router'
+import LoaderOverlay from '../../components/LoaderOverlay'
+import { SharedContext } from '../../utils/common'
+
 
 const useStyles = makeStyles((theme) => ({
-    /* flex-grow | flex-shrink | flex-basis */
     root: {
-        backgroundColor: theme.palette.background.dark,
         display: 'flex',
         height: '100%',
         overflow: 'hidden',
@@ -15,28 +14,25 @@ const useStyles = makeStyles((theme) => ({
     },
     wrapper: {
         display: 'flex',
-        flex: '1 1 auto',
+        flex: '1 1 auto', /* flex-grow | flex-shrink | flex-basis */
         overflow: 'hidden',
-        marginTop: 64,
-        [theme.breakpoints.up('lg')]: {
-            paddingLeft: 256
-        }
     },
     contentContainer: {
         display: 'flex',
-        flex: '1 1 auto',
-        overflow: 'hidden'
+        flex: '1 1 auto', /* flex-grow | flex-shrink | flex-basis */
+        overflow: 'hidden',
     },
     content: {
-        flex: '1 1 auto',
+        flex: '1 1 auto', /* flex-grow | flex-shrink | flex-basis */
         height: '100%',
-        overflow: 'auto'
+        overflow: 'auto',
     }
-}));
+}))
 
-function DashboardLayout() {
+function MainLayout() {
     const classes = useStyles()
     const { isLoading } = useContext(SharedContext);
+
     return (
         <div className={classes.root}>
             <div className={classes.wrapper}>
@@ -51,4 +47,4 @@ function DashboardLayout() {
     )
 }
 
-export default DashboardLayout
+export default MainLayout

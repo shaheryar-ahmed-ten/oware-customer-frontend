@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, Grid, makeStyles, Typography } from '@material-ui/core';
 import axios from 'axios';
-import { getURL } from '../../Utils/common';
+import { getURL } from '../../utils/common';
 const useStyles = makeStyles({
     root: {
         minWidth: 275,
@@ -27,7 +27,7 @@ function DashboardTransactions() {
             .then((response) => {
                 setInboundStatisticalData((prevState) => response.data.inboundStats)
             })
-    }, [])
+    }, []);
     return (
         <>
             <h1>INBOUND TRANSACTION</h1>
