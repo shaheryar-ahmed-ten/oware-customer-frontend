@@ -21,16 +21,16 @@ const routes = (user) => [
     path: '/dashboard',
     element: <DashboardLayout />,
     children: [
-      { path: '/', element: !user ? <DashboardTransactions /> : <Navigate to='/login' /> },
+      { path: '/', element: (true || !user) ? <DashboardTransactions /> : <Navigate to='/login' /> },
     ]
   },
   {
     path: '/operation-transactions',
-    element: <MainLayout />,
+    element: <DashboardLayout />,
     children: [
-      { path: '/inbound-transactions', element: !user ? <Inbound /> : <Navigate to='/login' /> },
-      { path: '/outbound-transactions', element: !user ? <Outbound /> : <Navigate to='/login' /> },
-      { path: '/', element: !user ? <Navigate to='/operation-transactions/inbound-transactions' /> : <Navigate to='/login' /> }
+      { path: '/inbound-transactions', element: (true || !user) ? <Inbound /> : <Navigate to='/login' /> },
+      { path: '/outbound-transactions', element: (true || !user) ? <Outbound /> : <Navigate to='/login' /> },
+      // { path: '/', element: (true || !user) ? <Navigate to='/operation-transactions/inbound-transactions' /> : <Navigate to='/login' /> }
     ]
   },
 ];
