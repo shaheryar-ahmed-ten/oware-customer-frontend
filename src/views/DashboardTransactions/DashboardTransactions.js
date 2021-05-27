@@ -30,6 +30,9 @@ function DashboardTransactions() {
                 setInboundStatisticalData((prevState) => response.data.inboundStats)
                 setGeneralStatisticsData((prevState) => response.data.productAndWarehouseDetails[0])
             })
+            .catch((err)=>{
+                console.log(err)
+            })
     }, []);
     return (
         <>
