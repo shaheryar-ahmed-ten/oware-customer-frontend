@@ -21,8 +21,9 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 64,
         boxSizing: "border-box",
         [theme.breakpoints.up('lg')]: {
-            paddingLeft: 64,
-            paddingRight: 64
+            paddingLeft: 30,
+            paddingRight: 30,
+            paddingTop: 30
         },
     },
     contentContainer: {
