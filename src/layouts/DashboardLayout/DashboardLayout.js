@@ -8,7 +8,7 @@ import { SharedContext } from '../../utils/common';
 const useStyles = makeStyles((theme) => ({
     /* flex-grow | flex-shrink | flex-basis */
     root: {
-        backgroundColor: theme.palette.background.dark,
+        backgroundColor: "#E5E5E5",
         display: 'flex',
         height: '100%',
         overflow: 'hidden',

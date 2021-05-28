@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Grid, makeStyles, Typography } from '@material-ui/core';
+import { Box, Grid, makeStyles, Typography } from '@material-ui/core';
 import axios from 'axios';
 import { getURL } from '../../utils/common';
 import PrimaryWidget from '../../components/widgets/PrimaryWidget';
@@ -7,17 +7,7 @@ import SecondaryWidget from '../../components/widgets/SecondaryWidget';
 import ArrowDownwardOutlinedIcon from '@material-ui/icons/ArrowDownwardOutlined';
 import ArrowUpwardOutlinedIcon from '@material-ui/icons/ArrowUpwardOutlined';
 const useStyles = makeStyles({
-    root: {
-        minWidth: 275,
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
-    title: {
-        fontSize: 14,
-    },
+
     pos: {
         marginBottom: 12,
     },
@@ -26,6 +16,9 @@ const useStyles = makeStyles({
     },
     errorIcon: {
         color: 'red',
+    },
+    activityGrid: {
+        marginTop: '47px'
     }
 });
 
@@ -45,7 +38,11 @@ function DashboardTransactions() {
         <>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Typography variant="h1">Dashboard</Typography>
+                    <Typography variant="h3">
+                        <Box fontWeight="fontWeightBold">
+                            Overview
+                        </Box>
+                    </Typography>
                 </Grid>
                 <Grid container item={12} spacing={3}>
                     <Grid item xs={4}>
@@ -58,7 +55,7 @@ function DashboardTransactions() {
                         <PrimaryWidget name="Warehouse Used" value={generalStatisticsData ? generalStatisticsData.warehousesUsed : 0} />
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={classes.activityGrid}>
                     <Typography variant="h4">Last 7 days Activity</Typography>
                 </Grid>
                 <Grid container item={12} spacing={3}>
