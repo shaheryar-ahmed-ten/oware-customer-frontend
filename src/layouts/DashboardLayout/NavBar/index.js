@@ -15,8 +15,7 @@ import {
   useTheme
 } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useState } from 'react'
-import MenuIcon from '@material-ui/icons/Menu';
+import React, { useContext, useState } from 'react'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
@@ -26,6 +25,8 @@ import HomeWorkOutlinedIcon from '@material-ui/icons/HomeWorkOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { useNavigate } from 'react-router-dom';
 import owareLogo from '../../../assets/logo/owareLogo.png'
+import { SharedContext } from '../../../utils/common';
+import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
 const drawerWidth = 250;
 
 const navList = [{
@@ -54,7 +55,6 @@ const navList = [{
   route: '/dashboard'
 },
 ]
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -140,14 +140,24 @@ const useStyles = makeStyles((theme) => ({
   listItemText: {
     fontSize: '16px',
     fontWeight: '500',
+  },
+  userName: {
+    fontWeight: 600,
+    fontSize: 16,
+    lineHeight: "17px",
+  },
+  userType: {
+    fontSize: 16,
+    lineHeight: "17px",
+    color: "#CAC9C9"
   }
 }));
 function Navbar() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const { currentUser } = useContext(SharedContext);
   let navigate = useNavigate();
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -168,11 +178,14 @@ function Navbar() {
           <img src={owareLogo} alt='' />
           <Box display="flex" alignItems="center">
             <Box>
-              <Typography variant="h5">UserName</Typography>
-              <Typography variant="h5">type</Typography>
+              <Typography className={classes.userName}>{currentUser.username || ''}</Typography>
+              <Typography className={classes.userType}>{currentUser.Role.type.toLowerCase() || ''}</Typography>
             </Box>
             <Box p={1}>
               <Avatar>U</Avatar>
+            </Box>
+            <Box p={1}>
+              <KeyboardArrowDownOutlinedIcon />
             </Box>
           </Box>
         </Toolbar>
