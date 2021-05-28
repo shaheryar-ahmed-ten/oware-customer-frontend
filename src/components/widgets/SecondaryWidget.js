@@ -8,7 +8,7 @@ const useStyles = makeStyles({
         flexFlow: "column",
         justifyContent: "center",
         boxSizing: "border-box",
-        padding: "19px 10px",
+        padding: "19px 19px",
         backgroundColor: "#FFFFFF",
         borderRadius: "4px",
         border: "1px solid #F0F0F0"
