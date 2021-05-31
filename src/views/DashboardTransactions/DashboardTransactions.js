@@ -44,7 +44,7 @@ function DashboardTransactions() {
           </Grid>
           <Grid container item={12} spacing={3}>
             <Grid item xs={4}>
-              <PrimaryWidget name="Pending Orders" value={0} />
+              <PrimaryWidget name="Pending Orders" value={generalStats ? generalStats.pendingOrders : 0} />
             </Grid>
             <Grid item xs={4}>
               <PrimaryWidget name="Products Stored" value={generalStats ? generalStats.products : 0} />
@@ -65,7 +65,6 @@ function DashboardTransactions() {
             </Grid>
           </Grid>
         </Grid>
-
       </>
   )
 }
