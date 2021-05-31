@@ -29,6 +29,15 @@ function SelectDropdown({ name, list }) {
                     <MenuItem value='' disabled>
                         {name}
                     </MenuItem>
+                    {
+                        list.map((item)=>{
+                            return (
+                                <MenuItem value={item.distinct}>
+                                {item.distinct}
+                            </MenuItem> 
+                            )
+                        })
+                    }
                 </Select>
             </FormControl>
         </>
