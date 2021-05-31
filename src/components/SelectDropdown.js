@@ -29,14 +29,17 @@ function SelectDropdown({ name, list, selectedType, setSelectedType }) {
                         {name}
                     </MenuItem>
                     {
-                        list.map((item)=>{
+                        list.map((item) => {
                             return (
                                 <MenuItem value={item.distinct}>
-                                {item.distinct}
-                            </MenuItem> 
+                                    {item.distinct}
+                                </MenuItem>
                             )
                         })
                     }
+                    <MenuItem value={"none"}>
+                        none
+                            </MenuItem>
                 </Select>
             </FormControl>
         </>

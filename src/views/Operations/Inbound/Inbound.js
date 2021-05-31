@@ -70,9 +70,9 @@ function Inbound() {
     useEffect(() => {
         getInwardProducts(page, searchKeyword)
         getRelations()
-    }, [page, searchKeyword])
+    }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
     const getInwardProducts = (page, searchKeyword) => {
-        axios.get(getURL('/inward'), { params: { page, search: searchKeyword } })
+        axios.get(getURL('/inward'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct || selectedDay } })
             .then(res => {
                 setPageCount(res.data.pages)
                 setProductInwards(res.data.data)
