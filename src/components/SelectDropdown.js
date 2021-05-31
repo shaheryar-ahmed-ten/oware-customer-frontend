@@ -9,9 +9,8 @@ const useStyles = makeStyles((theme) => ({
         color: "#CAC9C9"
     }
 }));
-function SelectDropdown({ name, list }) {
+function SelectDropdown({ name, list, selectedType, setSelectedType }) {
     const classes = useStyles();
-    const [selectedType, setSelectedType] = useState('');
 
     const handleChange = (event) => {
         setSelectedType(event.target.value);

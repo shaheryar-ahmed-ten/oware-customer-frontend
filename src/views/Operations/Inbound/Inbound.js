@@ -64,6 +64,9 @@ function Inbound() {
     const [customerProducts, setCustomerProducts] = useState([])
     const [customerWarehouses, setCustomerWarehouses] = useState([])
     const [days, setDays] = useState([{ distinct: 7 }, { distinct: 14 }, { distinct: 30 }, { distinct: 60 }])
+    const [selectedWarehouse, setSelectedWarehouse] = useState('')
+    const [selectedProduct, setSelectedProduct] = useState('')
+    const [selectedDay, setSelectedDay] = useState('')
     useEffect(() => {
         getInwardProducts(page, searchKeyword)
         getRelations()
@@ -98,9 +101,9 @@ function Inbound() {
         onChange={e => setSearchKeyword(e.target.value)}
     />;
 
-    const warehouseSelect = <SelectDropdown name="Select Warehouse" list={customerWarehouses} />
-    const productSelect = <SelectDropdown name="Select Product" list={customerProducts} />
-    const daysSelect = <SelectDropdown name="Select Days" list={days} />
+    const warehouseSelect = <SelectDropdown name="Select Warehouse" list={customerWarehouses} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
+    const productSelect = <SelectDropdown name="Select Product" list={customerProducts} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
+    const daysSelect = <SelectDropdown name="Select Days" list={days} selectedType={selectedDay} setSelectedType={setSelectedDay} />
     const headerButtons = [warehouseSelect, productSelect, daysSelect]
     return (
         <>
