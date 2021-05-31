@@ -1,6 +1,7 @@
 import {
   AppBar,
   Avatar,
+  Box,
   Divider,
   Drawer,
   IconButton,
@@ -10,11 +11,11 @@ import {
   ListItemText,
   makeStyles,
   Toolbar,
+  Typography,
   useTheme
 } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useState } from 'react'
-import MenuIcon from '@material-ui/icons/Menu';
+import React, { useContext, useState } from 'react'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
@@ -23,8 +24,10 @@ import BorderClearOutlinedIcon from '@material-ui/icons/BorderClearOutlined';
 import HomeWorkOutlinedIcon from '@material-ui/icons/HomeWorkOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { useNavigate } from 'react-router-dom';
-
-const drawerWidth = 240;
+import owareLogo from '../../../assets/logo/owareLogo.png'
+import { SharedContext } from '../../../utils/common';
+import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
+const drawerWidth = 250;
 
 const navList = [{
   title: "Dashboard",
@@ -53,7 +56,6 @@ const navList = [{
 },
 ]
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -64,6 +66,9 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    backgroundColor: '#FFFFFF',
+    border: "0",
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05);'
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -75,18 +80,26 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: 36,
+    visibility: 'hidden'
   },
   toolBar: {
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    color: "black"
+  },
+  userAvatar: {
+    display: "inline-flex",
+    alignItems: "center",
   },
   hide: {
-    display: 'none',
+    visibility: 'hidden',
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
+    border: "0",
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05);'
   },
   drawerOpen: {
     width: drawerWidth,
@@ -94,6 +107,9 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    backgroundColor: '#FFFFFF',
+    border: "0",
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05);'
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
@@ -105,6 +121,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9) + 1,
     },
+    backgroundColor: '#FFFFFF',
+    border: "0",
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05);'
   },
   toolbar: {
     display: 'flex',
@@ -118,13 +137,27 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  listItemText: {
+    fontSize: '16px',
+    fontWeight: '500',
+  },
+  userName: {
+    fontWeight: 600,
+    fontSize: 16,
+    lineHeight: "17px",
+  },
+  userType: {
+    fontSize: 16,
+    lineHeight: "17px",
+    color: "#CAC9C9"
+  }
 }));
 function Navbar() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const { currentUser } = useContext(SharedContext);
   let navigate = useNavigate();
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -142,18 +175,19 @@ function Navbar() {
         [classes.appBarShift]: open,
       })}>
         <Toolbar className={classes.toolBar}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Avatar>U</Avatar>
+          <img src={owareLogo} alt='' />
+          <Box display="flex" alignItems="center">
+            <Box>
+              <Typography className={classes.userName}>{currentUser.username || ''}</Typography>
+              <Typography className={classes.userType}>{currentUser.Role.type.toLowerCase() || ''}</Typography>
+            </Box>
+            <Box p={1}>
+              <Avatar>U</Avatar>
+            </Box>
+            <Box p={1}>
+              <KeyboardArrowDownOutlinedIcon />
+            </Box>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -179,10 +213,22 @@ function Navbar() {
           {navList.map((item, index) => (
             <ListItem button key={index} onClick={() => { handleNavigation(item.route) }}>
               <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.title} />
+              <ListItemText classes={{ primary: classes.listItemText }} primary={item.title} />
             </ListItem>
           ))}
         </List>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerOpen}
+          edge="start"
+          className={clsx({
+            [classes.hide]: open,
+          })}
+          style={{ position: "absolute", bottom: '0', left: "25%" }}
+        >
+          <ChevronRightIcon />
+        </IconButton>
       </Drawer>
     </div>
   )
