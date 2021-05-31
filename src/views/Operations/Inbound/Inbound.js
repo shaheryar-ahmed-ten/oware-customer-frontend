@@ -72,7 +72,7 @@ function Inbound() {
         getRelations()
     }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
     const getInwardProducts = (page, searchKeyword) => {
-        axios.get(getURL('/inward'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct || selectedDay } })
+        axios.get(getURL('/inward'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay} })
             .then(res => {
                 setPageCount(res.data.pages)
                 setProductInwards(res.data.data)
@@ -101,9 +101,9 @@ function Inbound() {
         onChange={e => setSearchKeyword(e.target.value)}
     />;
 
-    const warehouseSelect = <SelectDropdown name="Select Warehouse" list={customerWarehouses} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
-    const productSelect = <SelectDropdown name="Select Product" list={customerProducts} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
-    const daysSelect = <SelectDropdown name="Select Days" list={days} selectedType={selectedDay} setSelectedType={setSelectedDay} />
+    const warehouseSelect = <SelectDropdown type="Warehouses" name="Select Warehouse" list={[...customerWarehouses, { distinct: 'All' }]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
+    const productSelect = <SelectDropdown type="Products" name="Select Product" list={[...customerProducts, { distinct: 'All' }]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
+    const daysSelect = <SelectDropdown type="Days" name="Select Days" list={[...days, { distinct: 'All' }]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
     const headerButtons = [warehouseSelect, productSelect, daysSelect]
     return (
         <>

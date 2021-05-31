@@ -1,5 +1,5 @@
 import { FormControl, makeStyles, MenuItem, Select } from '@material-ui/core'
-import React, { useState } from 'react'
+import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
         color: "#CAC9C9"
     }
 }));
-function SelectDropdown({ name, list, selectedType, setSelectedType }) {
+function SelectDropdown({ name, list, selectedType, setSelectedType, type }) {
     const classes = useStyles();
 
     const handleChange = (event) => {
@@ -31,15 +31,12 @@ function SelectDropdown({ name, list, selectedType, setSelectedType }) {
                     {
                         list.map((item) => {
                             return (
-                                <MenuItem value={item.distinct}>
-                                    {item.distinct}
+                                <MenuItem value={item.distinct === "All" ? '' : item.distinct}>
+                                    {item.distinct === "All" ? `${item.distinct} ${type}` : item.distinct}
                                 </MenuItem>
                             )
                         })
                     }
-                    <MenuItem value={"none"}>
-                        none
-                            </MenuItem>
                 </Select>
             </FormControl>
         </>
