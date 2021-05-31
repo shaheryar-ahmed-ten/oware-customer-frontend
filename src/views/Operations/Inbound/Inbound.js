@@ -65,14 +65,17 @@ function Inbound() {
     const [customerWarehouses, setCustomerWarehouses] = useState([])
     const [days, setDays] = useState([{ distinct: 7 }, { distinct: 14 }, { distinct: 30 }, { distinct: 60 }])
     useEffect(() => {
-        axios.get(getURL(`/inward`))
-            .then((response) => {
-                setPageCount(response.data.pages)
-                setProductInwards(response.data.data)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+        getInwardProducts()
+        getRelations()
+    }, [])
+    const getInwardProducts = () => {
+        axios.get(getURL('/inward'), { params: { page, search: searchKeyword } })
+            .then(res => {
+                setPageCount(res.data.pages)
+                setProductInwards(res.data.data)
+            });
+    }
+    const getRelations = () => {
         axios.get(getURL(`/inward/relations`))
             .then((response) => {
                 setCustomerProducts(response.data.relations.products)
@@ -81,7 +84,7 @@ function Inbound() {
             .catch((err) => {
                 console.log(err)
             })
-    }, [])
+    };
     const searchInput = <InputBase
         placeholder="Search"
         className={classes.searchInput}
@@ -110,7 +113,7 @@ function Inbound() {
                 <Grid item xs={12}>
                     <TableContainer style={{ backgroundColor: "white" }}>
                         <TableHeader searchInput={searchInput} buttons={headerButtons} />
-                        <Divider/>
+                        <Divider />
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
                                 {columns.map((column, index) => (
