@@ -19,22 +19,7 @@ function Inbound() {
 
     return (
         <>
-            <h1>Inbound Transactions</h1>
-            <div>
-                <h4>Filters</h4>
-                <select>
-                    <option selected>All Warehouses</option>
-                </select>
-                <select>
-                    <option selected>All Products</option>
-                </select>
-            </div>
-            <br/>
-            <br/>
-            <br/>
-            <div style={{ height: 350, width: '100%' }}>
-                <DataGrid rows={rows} columns={columns} pageSize={5} />
-            </div>
+            
         </>
     )
 }

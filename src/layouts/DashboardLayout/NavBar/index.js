@@ -34,7 +34,7 @@ const navList = [{
 {
   title: "Inwards",
   icon: <GetAppOutlinedIcon />,
-  route: '/operation-transactions/inbound-transactions'
+  route: '/operation-transactions/inwards'
 },
 {
   title: "Orders",

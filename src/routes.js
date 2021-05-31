@@ -28,9 +28,8 @@ const routes = (user) => [
     path: '/operation-transactions',
     element: <DashboardLayout />,
     children: [
-      { path: '/inbound-transactions', element: (true || !user) ? <Inbound /> : <Navigate to='/login' /> },
-      { path: '/outbound-transactions', element: (true || !user) ? <Outbound /> : <Navigate to='/login' /> },
-      // { path: '/', element: (true || !user) ? <Navigate to='/operation-transactions/inbound-transactions' /> : <Navigate to='/login' /> }
+      { path: '/inwards', element: (true || !user) ? <Inbound /> : <Navigate to='/login' /> },
+      { path: '/orders', element: (true || !user) ? <Outbound /> : <Navigate to='/login' /> },
     ]
   },
 ];
