@@ -138,7 +138,7 @@ function Inbound() {
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
                                                         className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                        {column.format ? column.format(value, productInward) : (value || 'none')}
+                                                        {column.format ? column.format(value, productInward) : (value || 'Empty')}
                                                     </TableCell>
                                                 );
                                             })}
