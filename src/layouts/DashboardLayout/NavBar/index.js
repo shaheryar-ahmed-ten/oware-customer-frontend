@@ -23,38 +23,12 @@ import GetAppOutlinedIcon from '@material-ui/icons/GetAppOutlined';
 import BorderClearOutlinedIcon from '@material-ui/icons/BorderClearOutlined';
 import HomeWorkOutlinedIcon from '@material-ui/icons/HomeWorkOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import owareLogo from '../../../assets/logo/owareLogo.png'
 import { SharedContext } from '../../../utils/common';
 import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
-const drawerWidth = 250;
 
-const navList = [{
-  title: "Dashboard",
-  icon: <HomeOutlinedIcon />,
-  route: '/dashboard'
-},
-{
-  title: "Inwards",
-  icon: <GetAppOutlinedIcon />,
-  route: '/operation-transactions/inwards'
-},
-{
-  title: "Orders",
-  icon: <BorderClearOutlinedIcon />,
-  route: '/dashboard'
-},
-{
-  title: "Warehouse",
-  icon: <HomeWorkOutlinedIcon />,
-  route: '/dashboard'
-},
-{
-  title: "Products",
-  icon: <ClassOutlinedIcon />,
-  route: '/dashboard'
-},
-]
+const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -152,12 +126,46 @@ const useStyles = makeStyles((theme) => ({
     color: "#CAC9C9"
   }
 }));
-function Navbar() {
+function Navbar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const { currentUser } = useContext(SharedContext);
   let navigate = useNavigate();
+  let currentLocation = useLocation().pathname
+
+  const navList = [{
+    title: "Dashboard",
+    icon: <HomeOutlinedIcon />,
+    route: '/dashboard',
+    color: currentLocation.includes('dashboard') ? "#01D5FF" : '#383838'
+  },
+  {
+    title: "Inwards",
+    icon: <GetAppOutlinedIcon />,
+    route: '/operation-transactions/inwards',
+    color: currentLocation.includes('inwards') ? "#01D5FF" : '#383838'
+  },
+  {
+    title: "Orders",
+    icon: <BorderClearOutlinedIcon />,
+    route: '/dashboard',
+    color: currentLocation.includes('orders') ? "#01D5FF" : '#383838'
+  },
+  {
+    title: "Warehouse",
+    icon: <HomeWorkOutlinedIcon />,
+    route: '/dashboard',
+    color: currentLocation.includes('warehouse') ? "#01D5FF" : '#383838'
+  },
+  {
+    title: "Products",
+    icon: <ClassOutlinedIcon />,
+    route: '/dashboard',
+    color: currentLocation.includes('products') ? "#01D5FF" : '#383838'
+  },
+  ]
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -212,8 +220,8 @@ function Navbar() {
         <List>
           {navList.map((item, index) => (
             <ListItem button key={index} onClick={() => { handleNavigation(item.route) }}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText classes={{ primary: classes.listItemText }} primary={item.title} />
+              <ListItemIcon style={{ color: item.color }}>{item.icon}</ListItemIcon>
+              <ListItemText classes={{ primary: classes.listItemText }} style={{ color: item.color }} primary={item.title} />
             </ListItem>
           ))}
         </List>
