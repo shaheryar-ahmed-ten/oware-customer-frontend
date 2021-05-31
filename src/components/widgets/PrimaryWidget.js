@@ -7,6 +7,7 @@ const useStyles = makeStyles({
         boxSizing: "border-box",
         padding: "19px 19px",
         height: 116,
+        width: "90%",
         backgroundColor: "#FFFFFF",
         borderRadius: "4px",
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.05)"
