@@ -65,10 +65,10 @@ function Inbound() {
     const [customerWarehouses, setCustomerWarehouses] = useState([])
     const [days, setDays] = useState([{ distinct: 7 }, { distinct: 14 }, { distinct: 30 }, { distinct: 60 }])
     useEffect(() => {
-        getInwardProducts()
+        getInwardProducts(page, searchKeyword)
         getRelations()
-    }, [])
-    const getInwardProducts = () => {
+    }, [page, searchKeyword])
+    const getInwardProducts = (page, searchKeyword) => {
         axios.get(getURL('/inward'), { params: { page, search: searchKeyword } })
             .then(res => {
                 setPageCount(res.data.pages)
