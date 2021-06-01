@@ -16,18 +16,16 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
     const classes = useStyles()
     const columnsTop = [
         {
-            id: 'Product.name',
+            id: 'product',
             label: 'PRODUCT',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.Product.name,
         },
         {
-            id: 'Warehouse.name',
+            id: 'warehouse',
             label: 'WAREHOUSE',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.Warehouse.name,
         },
     ]
     const columns = [

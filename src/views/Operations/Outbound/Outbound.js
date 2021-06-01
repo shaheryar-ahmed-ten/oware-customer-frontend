@@ -26,11 +26,10 @@ function Outbound() {
     const classes = useStyles()
     const columns = [
         {
-            id: 'dispatchOrderId',
+            id: 'internalIdForBusiness',
             label: 'ORDER ID',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.dispatchOrderId,
         },
         {
             id: 'createdAt',
@@ -40,21 +39,19 @@ function Outbound() {
             format: dateFormat
         },
         {
-            id: 'Warehouse.name',
+            id: 'warehouse',
             label: 'WAREHOUSE',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.Warehouse.name,
         },
         {
-            id: 'Product.name',
+            id: 'product',
             label: 'PRODUCT',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.Product.name,
         },
         {
-            id: 'quantity',
+            id: 'dispatchOrderQuantity',
             label: 'QUANTITY ORDERD',
             minWidth: 'auto',
             className: '',
@@ -66,7 +63,7 @@ function Outbound() {
             className: '',
         },
         {
-            id: 'quantity',
+            id: 'outwardQuantity',
             label: 'QUANTITY SHIPPED',
             minWidth: 'auto',
             className: '',
