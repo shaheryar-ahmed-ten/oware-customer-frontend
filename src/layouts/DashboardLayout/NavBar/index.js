@@ -149,7 +149,7 @@ function Navbar(props) {
   {
     title: "Orders",
     icon: <BorderClearOutlinedIcon />,
-    route: '/dashboard',
+    route: '/operation-transactions/orders',
     color: currentLocation.includes('orders') ? "#01D5FF" : '#383838'
   },
   {
