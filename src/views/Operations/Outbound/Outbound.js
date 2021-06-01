@@ -82,6 +82,7 @@ function Outbound() {
     const getOutwardOrders = () => {
         axios.get(getURL('/order'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
             .then((res) => {
+                console.log(res.data.data)
                 setPageCount(res.data.pages)
                 setOutwardOrders(res.data.data)
             })
@@ -147,7 +148,7 @@ function Outbound() {
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
                                                         className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                        {column.format ? column.format(value, outwardOrder) : (value || 'Empty')}
+                                                        {column.format ? column.format(value, outwardOrder) : (value || '')}
                                                     </TableCell>
                                                 );
                                             })}
