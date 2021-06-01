@@ -1,7 +1,8 @@
 import { Dialog, DialogContent, DialogTitle, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core'
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 import TableHeader from '../../../components/TableHeader';
-import { dateFormat } from '../../../utils/common';
+import { dateFormat, getURL } from '../../../utils/common';
 
 
 const useStyles = makeStyles({
@@ -55,13 +56,41 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             label: 'QUANTITY COMMITTED',
             minWidth: 'auto',
             className: '',
+        },
+        {
+            id: 'receiverName',
+            label: 'RECEIVER NAME',
+            minWidth: 'auto',
+            className: '',
+            format: (value, entity, outwardOrder) => outwardOrder.receiverName
+        },
+        {
+            id: 'receiverPhone',
+            label: 'RECEIVER PHONE',
+            minWidth: 'auto',
+            className: '',
+            format: (value, entity, outwardOrder) => outwardOrder.receiverPhone
         }
     ]
+
+    const [selectedProductOutwardDetails, setSelectedProductOutwardDetails] = useState([])
+    useEffect(() => {
+        if (selectedOutboundOrder)
+            axios.get(getURL(`/order/${selectedOutboundOrder.id}`))
+                .then((response) => {
+                    setSelectedProductOutwardDetails(response.data.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+
+    }, [selectedOutboundOrder])
+
     return (
         selectedOutboundOrder ?
             <div style={{ display: "inline" }}>
                 <form>
-                    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                    <Dialog open={open} onClose={handleClose} maxWidth="lg"  aria-labelledby="form-dialog-title">
                         <DialogContent>
                             <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
@@ -88,7 +117,6 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                                 );
                                             })}
                                         </TableRow>
-
                                     </TableBody>
                                 </Table>
                             </TableContainer>
@@ -105,6 +133,42 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                             </TableCell>
                                         ))}
                                     </TableHead>
+                                    <TableBody>
+                                        {
+                                            selectedProductOutwardDetails.map((outwardOrder) => {
+                                                return outwardOrder.ProductOutwards.map((productOutward) => {
+                                                    return (
+                                                        <TableRow hover role="checkbox" tabIndex={-1} key={productOutward.id}>
+                                                            {columns.map((column) => {
+                                                                const value = productOutward[column.id];
+                                                                return (
+                                                                    <TableCell key={column.id} align={column.align}
+                                                                        className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+                                                                        {column.format ? column.format(value, productOutward, outwardOrder) : (value || '')}
+                                                                    </TableCell>
+                                                                );
+                                                            })}
+                                                        </TableRow>
+                                                    )
+                                                })
+                                            })
+                                        }
+                                        {/* {selectedProductOutwardDetails.map((productOutward) => {
+                                            return (
+                                                <TableRow hover role="checkbox" tabIndex={-1} key={outwardOrder.id}>
+                                                    {columns.map((column) => {
+                                                        const value = outwardOrder[column.id];
+                                                        return (
+                                                            <TableCell key={column.id} align={column.align}
+                                                                className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+                                                                {column.format ? column.format(value, outwardOrder) : (value || '')}
+                                                            </TableCell>
+                                                        );
+                                                    })}
+                                                </TableRow>
+                                            );
+                                        })} */}
+                                    </TableBody>
                                 </Table>
                             </TableContainer>
                         </DialogContent>

@@ -1,4 +1,5 @@
-import { Box, Grid, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Button, Grid, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import SelectDropdown from '../../../components/SelectDropdown';
@@ -20,6 +21,9 @@ const useStyles = makeStyles({
     },
     tableContainer: {
         backgroundColor: 'white'
+    },
+    statusButtons: {
+        width: 100
     }
 });
 function Outbound() {
@@ -68,6 +72,19 @@ function Outbound() {
             minWidth: 'auto',
             className: '',
         },
+        {
+            id: 'Status',
+            label: 'STATUS',
+            minWidth: 'auto',
+            className: '',
+            format: (value, entity) => entity.outwardQuantity == 0 ? <Button color="secondary" className={classes.statusButtons}>
+                Pending
+      </Button> : entity.outwardQuantity > 0 && entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={classes.statusButtons}>
+                Partially Fulfilled
+          </Button> : entity.dispatchOrderQuantity == entity.outwardQuantity ? <Button color="primary" className={classes.statusButtons}>
+                Fulfilled
+          </Button> : ''
+        },
     ]
     const [searchKeyword, setSearchKeyword] = useState('');
     const [outwardOrders, setOutwardOrders] = useState([]);
@@ -89,7 +106,6 @@ function Outbound() {
     const getOutwardOrders = () => {
         axios.get(getURL('/order'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
             .then((res) => {
-                console.log(res.data.data)
                 setPageCount(res.data.pages)
                 setOutwardOrders(res.data.data)
             })
@@ -177,6 +193,20 @@ function Outbound() {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <Grid container item justify="space-between">
+                        <Grid item></Grid>
+                        <Grid item>
+                            <Pagination
+                                component="div"
+                                shape="rounded"
+                                count={pageCount}
+                                color="primary"
+                                page={page}
+                                className={classes.pagination}
+                                onChange={(e, page) => setPage(page)}
+                            />
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         </>
