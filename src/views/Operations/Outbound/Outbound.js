@@ -76,13 +76,12 @@ function Outbound() {
     const [selectedProduct, setSelectedProduct] = useState('')
     const [selectedDay, setSelectedDay] = useState('')
     useEffect(() => {
-        getOutwardOrders()
+        getOutwardOrders(page, searchKeyword)
         getRelations()
-    }, [])
+    }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
     const getOutwardOrders = () => {
-        axios.get(getURL('/order'))
+        axios.get(getURL('/order'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
             .then((res) => {
-                console.log(res.data.data)
                 setPageCount(res.data.pages)
                 setOutwardOrders(res.data.data)
             })
@@ -127,37 +126,37 @@ function Outbound() {
                 <Grid item xs={12}>
                     <TableContainer className={classes.tableContainer}>
                         <TableHeader searchInput={searchInput} buttons={headerButtons} />
+                        <Table stickyHeader aria-label="sticky table">
+                            <TableHead>
+                                {columns.map((column, index) => (
+                                    <TableCell
+                                        key={index}
+                                        align={column.align}
+                                        style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: 'bolder', fontSize: '14px', color: '#939393' }}
+                                    >
+                                        {column.label}
+                                    </TableCell>
+                                ))}
+                            </TableHead>
+                            <TableBody>
+                                {outwardOrders.map((outwardOrder) => {
+                                    return (
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={outwardOrder.id}>
+                                            {columns.map((column) => {
+                                                const value = outwardOrder[column.id];
+                                                return (
+                                                    <TableCell key={column.id} align={column.align}
+                                                        className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+                                                        {column.format ? column.format(value, outwardOrder) : (value || 'Empty')}
+                                                    </TableCell>
+                                                );
+                                            })}
+                                        </TableRow>
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
                     </TableContainer>
-                    <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            {columns.map((column, index) => (
-                                <TableCell
-                                    key={index}
-                                    align={column.align}
-                                    style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: 'bolder', fontSize: '14px', color: '#939393' }}
-                                >
-                                    {column.label}
-                                </TableCell>
-                            ))}
-                        </TableHead>
-                        <TableBody>
-                            {outwardOrders.map((outwardOrder) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={outwardOrder.id}>
-                                        {columns.map((column) => {
-                                            const value = outwardOrder[column.id];
-                                            return (
-                                                <TableCell key={column.id} align={column.align}
-                                                    className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                    {column.format ? column.format(value, outwardOrder) : (value || 'Empty')}
-                                                </TableCell>
-                                            );
-                                        })}
-                                    </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
                 </Grid>
             </Grid>
         </>
