@@ -5,13 +5,15 @@ import { dateFormat } from '../../../utils/common';
 
 
 const useStyles = makeStyles({
+    tableContainerTop: {
+        backgroundColor: '#E5E5E5'
+    },
     tableContainer: {
         backgroundColor: 'white'
     }
 });
 function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
     const classes = useStyles()
-    console.log(selectedOutboundOrder)
     const columnsTop = [
         {
             id: 'Product.name',
@@ -63,7 +65,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                 <form>
                     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                         <DialogContent>
-                            <TableContainer className={classes.tableContainer}>
+                            <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
                                         {columnsTop.map((column, index) => (

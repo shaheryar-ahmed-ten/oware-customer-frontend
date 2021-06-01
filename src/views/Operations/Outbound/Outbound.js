@@ -55,13 +55,19 @@ function Outbound() {
         },
         {
             id: 'quantity',
-            label: 'QUANTITY',
+            label: 'QUANTITY ORDERD',
             minWidth: 'auto',
             className: '',
         },
         {
             id: 'referenceId',
             label: 'REFERENCE ID',
+            minWidth: 'auto',
+            className: '',
+        },
+        {
+            id: 'quantity',
+            label: 'QUANTITY SHIPPED',
             minWidth: 'auto',
             className: '',
         },
