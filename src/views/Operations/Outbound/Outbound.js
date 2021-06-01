@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import SelectDropdown from '../../../components/SelectDropdown';
 import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
+import OutboundDetails from './OutboundDetails';
 
 const useStyles = makeStyles({
     searchInput: {
@@ -75,6 +76,9 @@ function Outbound() {
     const [selectedWarehouse, setSelectedWarehouse] = useState('')
     const [selectedProduct, setSelectedProduct] = useState('')
     const [selectedDay, setSelectedDay] = useState('')
+    const [outboundDetailViewOpen, setOutboundDetailViewOpen] = useState(false);
+    const [selectedOutboundOrder, setSelectedOutboundOrder] = useState(null);
+
     useEffect(() => {
         getOutwardOrders(page, searchKeyword)
         getRelations()
@@ -100,6 +104,11 @@ function Outbound() {
                 console.log(err)
             })
     };
+    const closeInwardOutboundDetailsView = () => {
+        setOutboundDetailViewOpen(false)
+        setSelectedOutboundOrder(null)
+    }
+
     const searchInput = <InputBase
         placeholder="Search"
         className={classes.searchInput}
@@ -115,7 +124,14 @@ function Outbound() {
     const warehouseSelect = <SelectDropdown type="Warehouses" name="Select Warehouse" list={[...customerWarehouses, { distinct: 'All' }]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
     const productSelect = <SelectDropdown type="Products" name="Select Product" list={[...customerProducts, { distinct: 'All' }]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
     const daysSelect = <SelectDropdown type="Days" name="Select Days" list={[...days, { distinct: 'All' }]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
-    const headerButtons = [warehouseSelect, productSelect, daysSelect]
+
+    const outboundDetailsView = <OutboundDetails open={outboundDetailViewOpen} handleClose={closeInwardOutboundDetailsView} selectedOutboundOrder={selectedOutboundOrder} />
+
+    const headerButtons = [warehouseSelect, productSelect, daysSelect, outboundDetailsView]
+    const openViewDetails = productInward => {
+        setSelectedOutboundOrder(productInward);
+        setOutboundDetailViewOpen(true)
+    }
     return (
         <>
             <Grid container spacing={2}>
@@ -142,7 +158,7 @@ function Outbound() {
                             <TableBody>
                                 {outwardOrders.map((outwardOrder) => {
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={outwardOrder.id}>
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={outwardOrder.id} onClick={() => openViewDetails(outwardOrder)}>
                                             {columns.map((column) => {
                                                 const value = outwardOrder[column.id];
                                                 return (
