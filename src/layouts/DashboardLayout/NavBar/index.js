@@ -2,6 +2,7 @@ import {
   AppBar,
   Avatar,
   Box,
+  Button,
   Divider,
   Drawer,
   IconButton,
@@ -10,6 +11,8 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
+  Menu,
+  MenuItem,
   Toolbar,
   Typography,
   useTheme
@@ -25,8 +28,9 @@ import HomeWorkOutlinedIcon from '@material-ui/icons/HomeWorkOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { useLocation, useNavigate } from 'react-router-dom';
 import owareLogo from '../../../assets/logo/owareLogo.png'
-import { SharedContext } from '../../../utils/common';
+import { removeUserToken, SharedContext } from '../../../utils/common';
 import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
+import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 
 const drawerWidth = 250;
 
@@ -133,6 +137,7 @@ function Navbar(props) {
   const { currentUser } = useContext(SharedContext);
   let navigate = useNavigate();
   let currentLocation = useLocation().pathname
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const navList = [{
     title: "Dashboard",
@@ -165,6 +170,18 @@ function Navbar(props) {
     color: currentLocation.includes('products') ? "#01D5FF" : '#383838'
   },
   ]
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    removeUserToken()
+    navigate(`/login`)
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -186,14 +203,25 @@ function Navbar(props) {
           <img src={owareLogo} alt='' />
           <Box display="flex" alignItems="center">
             <Box>
-              <Typography className={classes.userName}>{currentUser.username || ''}</Typography>
-              <Typography className={classes.userType}>{currentUser.Role.type.toLowerCase() || ''}</Typography>
+              <Typography className={classes.userName}>{currentUser ? currentUser.username : ''}</Typography>
+              <Typography className={classes.userType}>{currentUser ? currentUser.Role.type.toLowerCase() : ''}</Typography>
             </Box>
             <Box p={1}>
-              <Avatar>U</Avatar>
+              <Avatar>
+                <PersonOutlineOutlinedIcon />
+              </Avatar>
             </Box>
-            <Box p={1}>
-              <KeyboardArrowDownOutlinedIcon />
+            <Box p={1} style={{ position: 'relative' }}>
+              <KeyboardArrowDownOutlinedIcon  onClick={handleClick} />
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
             </Box>
           </Box>
         </Toolbar>
