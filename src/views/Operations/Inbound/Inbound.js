@@ -18,6 +18,9 @@ const useStyles = makeStyles({
         boxSizing: "border-box",
         padding: "10px 10px"
     },
+    tableContainer: {
+        backgroundColor: 'white'
+    },
 });
 
 function Inbound() {
@@ -74,6 +77,7 @@ function Inbound() {
     const getInwardProducts = (page, searchKeyword) => {
         axios.get(getURL('/inward'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
             .then(res => {
+                setPage(res.data.pages === 1 ? 1 : page)
                 setPageCount(res.data.pages)
                 setProductInwards(res.data.data)
             });
@@ -107,14 +111,14 @@ function Inbound() {
     const headerButtons = [warehouseSelect, productSelect, daysSelect]
     return (
         <>
-            <Grid container >
+            <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
                         <Box fontWeight="fontWeightBold">Inwards</Box>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <TableContainer style={{ backgroundColor: "white" }}>
+                    <TableContainer className={classes.tableContainer}>
                         <TableHeader searchInput={searchInput} buttons={headerButtons} />
                         <Divider />
                         <Table stickyHeader aria-label="sticky table">
