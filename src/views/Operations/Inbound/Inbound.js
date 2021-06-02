@@ -107,7 +107,7 @@ function Inbound() {
     const headerButtons = [warehouseSelect, productSelect, daysSelect]
     return (
         <>
-            <Grid container spacing={2}>
+            <Grid container >
                 <Grid item xs={12}>
                     <Typography variant="h3">
                         <Box fontWeight="fontWeightBold">Inwards</Box>
@@ -138,7 +138,7 @@ function Inbound() {
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
                                                         className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                        {column.format ? column.format(value, productInward) : (value || 'Empty')}
+                                                        {column.format ? column.format(value, productInward) : (value || '')}
                                                     </TableCell>
                                                 );
                                             })}
