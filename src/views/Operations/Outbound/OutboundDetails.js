@@ -52,7 +52,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         },
         {
             id: 'quantity',
-            label: 'QUANTITY COMMITTED',
+            label: 'QUANTITY SHIPPED',
             minWidth: 'auto',
             className: '',
         },

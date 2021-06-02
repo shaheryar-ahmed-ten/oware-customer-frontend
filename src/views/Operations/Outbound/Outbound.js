@@ -1,4 +1,4 @@
-import { Box, Button, Grid, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Button, Divider, Grid, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -7,12 +7,11 @@ import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
 import OutboundDetails from './OutboundDetails';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     searchInput: {
         border: '1px solid grey',
         borderRadius: 4,
         opacity: 0.6,
-        padding: '0px 8px',
         marginRight: 7,
         height: 30,
         width: 300,
@@ -24,8 +23,16 @@ const useStyles = makeStyles({
     },
     statusButtons: {
         width: 100
+    },
+    gridContainer: {
+        boxSizing: 'border-box',
+        [theme.breakpoints.up('lg')]: {
+            paddingRight: 30,
+            paddingTop: 30,
+            paddingBottom: 30
+        },
     }
-});
+}));
 function Outbound() {
     const classes = useStyles()
     const columns = [
@@ -129,7 +136,6 @@ function Outbound() {
     }
 
     const searchInput = <InputBase
-        placeholder="Search"
         className={classes.searchInput}
         id="search"
         label="Search"
@@ -153,7 +159,7 @@ function Outbound() {
     }
     return (
         <>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
                         <Box fontWeight="fontWeightBold">Outwards</Box>
@@ -162,6 +168,7 @@ function Outbound() {
                 <Grid item xs={12}>
                     <TableContainer className={classes.tableContainer}>
                         <TableHeader searchInput={searchInput} buttons={headerButtons} />
+                        <Divider />
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
                                 {columns.map((column, index) => (
@@ -175,9 +182,9 @@ function Outbound() {
                                 ))}
                             </TableHead>
                             <TableBody>
-                                {outwardOrders.map((outwardOrder) => {
+                                {outwardOrders.map((outwardOrder, index) => {
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={outwardOrder.id} onClick={() => openViewDetails(outwardOrder)}>
+                                        <TableRow key={index} hover role="checkbox" tabIndex={-1} onClick={() => openViewDetails(outwardOrder)}>
                                             {columns.map((column) => {
                                                 const value = outwardOrder[column.id];
                                                 return (

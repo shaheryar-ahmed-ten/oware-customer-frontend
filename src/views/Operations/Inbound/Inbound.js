@@ -6,7 +6,7 @@ import SelectDropdown from '../../../components/SelectDropdown';
 import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     searchInput: {
         border: '1px solid grey',
         borderRadius: 4,
@@ -17,7 +17,18 @@ const useStyles = makeStyles({
         boxSizing: "border-box",
         padding: "10px 10px"
     },
-});
+    tableContainer: {
+        backgroundColor: 'white'
+    },
+    gridContainer: {
+        boxSizing: 'border-box',
+        [theme.breakpoints.up('lg')]: {
+            paddingRight: 30,
+            paddingTop: 30,
+            paddingBottom: 30
+        },
+    }
+}));
 
 function Inbound() {
     const classes = useStyles()
@@ -69,6 +80,7 @@ function Inbound() {
     const getInwardProducts = (page, searchKeyword) => {
         axios.get(getURL('/inward'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
             .then(res => {
+                setPage(res.data.pages === 1 ? 1 : page)
                 setPageCount(res.data.pages)
                 setProductInwards(res.data.data)
             });
@@ -106,14 +118,14 @@ function Inbound() {
     const headerButtons = [warehouseSelect, productSelect, daysSelect]
     return (
         <>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
                         <Box fontWeight="fontWeightBold">Inwards</Box>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <TableContainer style={{ backgroundColor: "white" }}>
+                    <TableContainer className={classes.tableContainer}>
                         <TableHeader searchInput={searchInput} buttons={headerButtons} />
                         <Divider />
                         <Table stickyHeader aria-label="sticky table">
@@ -129,15 +141,15 @@ function Inbound() {
                                 ))}
                             </TableHead>
                             <TableBody>
-                                {productInwards.map((productInward) => {
+                                {productInwards.map((productInward, index) => {
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={productInward.id}>
+                                        <TableRow key={index} hover role="checkbox" tabIndex={-1}>
                                             {columns.map((column) => {
                                                 const value = productInward[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
                                                         className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                        {column.format ? column.format(value, productInward) : (value || 'Empty')}
+                                                        {column.format ? column.format(value, productInward) : (value || '')}
                                                     </TableCell>
                                                 );
                                             })}

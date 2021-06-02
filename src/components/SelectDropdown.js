@@ -29,9 +29,9 @@ function SelectDropdown({ name, list, selectedType, setSelectedType, type }) {
                         {name}
                     </MenuItem>
                     {
-                        list.map((item) => {
+                        list.map((item,index) => {
                             return (
-                                <MenuItem value={item.distinct === "All" ? '' : item.distinct}>
+                                <MenuItem key={index} value={item.distinct === "All" ? '' : item.distinct}>
                                     {item.distinct === "All" ? `${item.distinct} ${type}` : item.distinct}
                                 </MenuItem>
                             )

@@ -31,9 +31,9 @@ const TableHeader = ({ searchInput, buttons }) => {
               {searchInput}
             </Grid>
             {
-              buttons.map((button) => {
+              buttons.map((button,index) => {
                 return (
-                  <Grid item>
+                  <Grid item key={index}>
                     {button}
                   </Grid>
                 )

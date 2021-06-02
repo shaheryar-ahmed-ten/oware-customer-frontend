@@ -1,6 +1,5 @@
 import { createContext } from "react";
 import moment from 'moment';
-import { Navigate } from "react-router";
 
 export const apiBaseURL = (process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : '') + '/api/v1';
 export const user = null;
