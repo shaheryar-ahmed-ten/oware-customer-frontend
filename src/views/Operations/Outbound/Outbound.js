@@ -77,12 +77,12 @@ function Outbound() {
             label: 'STATUS',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.outwardQuantity == 0 ? <Button color="secondary" className={classes.statusButtons}>
+            format: (value, entity) => entity.outwardQuantity === 0 ? <Button color="secondary" className={classes.statusButtons}>
                 Pending
       </Button> : entity.outwardQuantity > 0 && entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={classes.statusButtons}>
-                Partially Fulfilled
-          </Button> : entity.dispatchOrderQuantity == entity.outwardQuantity ? <Button color="primary" className={classes.statusButtons}>
-                Fulfilled
+                    Partially Fulfilled
+          </Button> : entity.dispatchOrderQuantity === entity.outwardQuantity ? <Button color="primary" className={classes.statusButtons}>
+                        Fulfilled
           </Button> : ''
         },
     ]
@@ -92,17 +92,12 @@ function Outbound() {
     const [page, setPage] = useState(1);
     const [customerProducts, setCustomerProducts] = useState([])
     const [customerWarehouses, setCustomerWarehouses] = useState([])
-    const [days, setDays] = useState([{ distinct: 7 }, { distinct: 14 }, { distinct: 30 }, { distinct: 60 }])
+    const [days] = useState([{ distinct: 7 }, { distinct: 14 }, { distinct: 30 }, { distinct: 60 }])
     const [selectedWarehouse, setSelectedWarehouse] = useState('')
     const [selectedProduct, setSelectedProduct] = useState('')
     const [selectedDay, setSelectedDay] = useState('')
     const [outboundDetailViewOpen, setOutboundDetailViewOpen] = useState(false);
     const [selectedOutboundOrder, setSelectedOutboundOrder] = useState(null);
-
-    useEffect(() => {
-        getOutwardOrders(page, searchKeyword)
-        getRelations()
-    }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
     const getOutwardOrders = () => {
         axios.get(getURL('/order'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
             .then((res) => {
@@ -113,6 +108,11 @@ function Outbound() {
                 console.log(err)
             })
     }
+
+    useEffect(() => {
+        getOutwardOrders(page, searchKeyword)
+        getRelations()
+    }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
     const getRelations = () => {
         axios.get(getURL(`/order/relations`))
             .then((res) => {

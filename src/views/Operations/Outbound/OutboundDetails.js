@@ -1,7 +1,6 @@
-import { Dialog, DialogContent, DialogTitle, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core'
+import { Dialog, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
 
 
@@ -90,7 +89,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         selectedOutboundOrder ?
             <div style={{ display: "inline" }}>
                 <form>
-                    <Dialog open={open} onClose={handleClose} maxWidth="lg"  aria-labelledby="form-dialog-title">
+                    <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
                         <DialogContent>
                             <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">

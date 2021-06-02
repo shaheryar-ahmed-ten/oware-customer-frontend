@@ -8,7 +8,6 @@ import { SharedContext, getUserToken } from './utils/common';
 import { setRequestInterceptor, setResponseInterceptor, ejectRequestInterceptor, ejectResponseInterceptor } from './utils/interceptors';
 
 function App() {
-  const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [authToken, setAuthToken] = useState(getUserToken());
