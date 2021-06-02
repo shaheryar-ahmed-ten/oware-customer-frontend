@@ -18,12 +18,10 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flex: '1 1 auto',
         overflow: 'hidden',
-        marginTop: 84,
+        marginTop: 64,
         boxSizing: "border-box",
         [theme.breakpoints.up('lg')]: {
             paddingLeft: 30,
-            paddingRight: 30,
-            // paddingTop: 30
         },
     },
     contentContainer: {

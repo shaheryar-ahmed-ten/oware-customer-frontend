@@ -7,7 +7,7 @@ import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
 import OutboundDetails from './OutboundDetails';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme)=> ({
     searchInput: {
         border: '1px solid grey',
         borderRadius: 4,
@@ -23,8 +23,16 @@ const useStyles = makeStyles({
     },
     statusButtons: {
         width: 100
+    },
+    gridContainer: {
+        boxSizing: 'border-box',
+        [theme.breakpoints.up('lg')]: {
+            paddingRight: 30,
+            paddingTop: 30,
+            paddingBottom: 30
+        },
     }
-});
+}));
 function Outbound() {
     const classes = useStyles()
     const columns = [
@@ -151,7 +159,7 @@ function Outbound() {
     }
     return (
         <>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
                         <Box fontWeight="fontWeightBold">Outwards</Box>
