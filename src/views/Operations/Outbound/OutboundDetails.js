@@ -75,7 +75,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
     const [selectedProductOutwardDetails, setSelectedProductOutwardDetails] = useState([])
     useEffect(() => {
         if (selectedOutboundOrder)
-            axios.get(getURL(`/order/${selectedOutboundOrder.id}`))
+            axios.get(getURL(`/order/${selectedOutboundOrder.dispatchOrderId}`))
                 .then((response) => {
                     setSelectedProductOutwardDetails(response.data.data)
                 })
