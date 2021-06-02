@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid grey',
         borderRadius: 4,
         opacity: 0.6,
-        padding: '0px 8px',
         marginRight: 7,
         height: 30,
         width: 300,
@@ -142,9 +141,9 @@ function Inbound() {
                                 ))}
                             </TableHead>
                             <TableBody>
-                                {productInwards.map((productInward) => {
+                                {productInwards.map((productInward, index) => {
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={productInward.id}>
+                                        <TableRow key={index} hover role="checkbox" tabIndex={-1}>
                                             {columns.map((column) => {
                                                 const value = productInward[column.id];
                                                 return (

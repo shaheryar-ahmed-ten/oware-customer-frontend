@@ -7,7 +7,7 @@ import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
 import OutboundDetails from './OutboundDetails';
 
-const useStyles = makeStyles((theme)=> ({
+const useStyles = makeStyles((theme) => ({
     searchInput: {
         border: '1px solid grey',
         borderRadius: 4,
