@@ -84,11 +84,11 @@ function Outbound() {
             label: 'STATUS',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.outwardQuantity === 0 ? <Button color="secondary" className={classes.statusButtons}>
+            format: (value, entity) => entity.outwardQuantity == 0 ? <Button color="secondary" className={classes.statusButtons}>
                 Pending
       </Button> : entity.outwardQuantity > 0 && entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={classes.statusButtons}>
                 Partially Fulfilled
-          </Button> : entity.dispatchOrderQuantity === entity.outwardQuantity ? <Button color="primary" className={classes.statusButtons}>
+          </Button> : entity.dispatchOrderQuantity == entity.outwardQuantity ? <Button color="primary" className={classes.statusButtons}>
                 Fulfilled
           </Button> : ''
         },
