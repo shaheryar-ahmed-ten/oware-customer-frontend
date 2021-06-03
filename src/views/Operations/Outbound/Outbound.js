@@ -31,6 +31,24 @@ const useStyles = makeStyles((theme) => ({
             paddingTop: 30,
             paddingBottom: 30
         },
+    },
+    paginationGrid: {
+        backgroundColor: 'white',
+        padding: '19px 19px 19px 0',
+        fontSize: 14,
+        color: '#AEAEAE'
+    },
+    paginationRoot: {
+        "& .MuiPaginationItem-root": {
+            color: "#AEAEAE",
+            backgroundColor: 'transparent',
+            fontSize: 14
+        },
+        '& .Mui-selected': {
+            backgroundColor: 'transparent',
+            color: '#01D5FF',
+            fontSize: 14
+        }
     }
 }));
 function Outbound() {
@@ -87,9 +105,9 @@ function Outbound() {
             format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={classes.statusButtons}>
                 Pending
       </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={classes.statusButtons}>
-                    Partially fulfilled
+                Partially fulfilled
           </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={classes.statusButtons}>
-                        Fulfilled
+                Fulfilled
           </Button> : ''
         },
     ]
@@ -119,6 +137,8 @@ function Outbound() {
     const [selectedStatus, setSelectedStatus] = useState('')
     const [outboundDetailViewOpen, setOutboundDetailViewOpen] = useState(false);
     const [selectedOutboundOrder, setSelectedOutboundOrder] = useState(null);
+    const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
+
     const getOutwardOrders = () => {
         axios.get(getURL('/order'), {
             params: {
@@ -129,8 +149,10 @@ function Outbound() {
             }
         })
             .then((res) => {
+                setPage(res.data.pages === 1 ? 1 : page)
                 setPageCount(res.data.pages)
                 setOutwardOrders(res.data.data)
+                setNumberOfTotalRecords(res.data.count)
             })
             .catch((err) => {
                 console.log(err)
@@ -208,7 +230,7 @@ function Outbound() {
                                     <TableCell
                                         key={index}
                                         align={column.align}
-                                        style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: 'bolder', fontSize: '14px', color: '#939393' }}
+                                        style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: '600', fontSize: '12px', color: '#A9AEAF' }}
                                     >
                                         {column.label}
                                     </TableCell>
@@ -233,18 +255,18 @@ function Outbound() {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <Grid container item justify="space-between">
-                        <Grid item></Grid>
+                    <Grid container item justify="space-between" className={classes.paginationGrid}>
                         <Grid item>
                             <Pagination
                                 component="div"
-                                shape="rounded"
                                 count={pageCount}
-                                color="primary"
                                 page={page}
-                                className={classes.pagination}
+                                classes={{ root: classes.paginationRoot }}
                                 onChange={(e, page) => setPage(page)}
                             />
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="body">Showing {outwardOrders.length} out of {numberOfTotalRecords} records.</Typography>
                         </Grid>
                     </Grid>
                 </Grid>

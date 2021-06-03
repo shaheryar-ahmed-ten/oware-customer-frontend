@@ -31,6 +31,7 @@ const typography = {
   },
   overline: {
     fontWeight: 500
-  }
+  },
+  "fontFamily": `'Inter', sans-serif`
 };
 export default typography;

@@ -27,6 +27,24 @@ const useStyles = makeStyles((theme) => ({
             paddingTop: 30,
             paddingBottom: 30
         },
+    },
+    paginationGrid: {
+        backgroundColor: 'white',
+        padding: '19px 19px 19px 0',
+        fontSize: 14,
+        color: '#AEAEAE'
+    },
+    paginationRoot: {
+        "& .MuiPaginationItem-root": {
+            color: "#AEAEAE",
+            backgroundColor: 'transparent',
+            fontSize: 14
+        },
+        '& .Mui-selected': {
+            backgroundColor: 'transparent',
+            color: '#01D5FF',
+            fontSize: 14
+        }
     }
 }));
 
@@ -77,12 +95,15 @@ function Inbound() {
     const [selectedWarehouse, setSelectedWarehouse] = useState('')
     const [selectedProduct, setSelectedProduct] = useState('')
     const [selectedDay, setSelectedDay] = useState('')
+    const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
+
     const getInwardProducts = (page, searchKeyword) => {
         axios.get(getURL('/inward'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
             .then(res => {
                 setPage(res.data.pages === 1 ? 1 : page)
                 setPageCount(res.data.pages)
                 setProductInwards(res.data.data)
+                setNumberOfTotalRecords(res.data.count)
             });
     }
     useEffect(() => {
@@ -141,7 +162,7 @@ function Inbound() {
                                     <TableCell
                                         key={index}
                                         align={column.align}
-                                        style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: 'bolder', fontSize: '14px', color: '#939393' }}
+                                        style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: '600', fontSize: '12px', color: '#A9AEAF' }}
                                     >
                                         {column.label}
                                     </TableCell>
@@ -166,18 +187,18 @@ function Inbound() {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <Grid container item justify="space-between">
-                        <Grid item></Grid>
+                    <Grid container item justify="space-between" className={classes.paginationGrid}>
                         <Grid item>
                             <Pagination
                                 component="div"
-                                shape="rounded"
                                 count={pageCount}
-                                color="primary"
                                 page={page}
-                                className={classes.pagination}
+                                classes={{ root: classes.paginationRoot }}
                                 onChange={(e, page) => setPage(page)}
                             />
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="body">Showing {productInwards.length} out of {numberOfTotalRecords} records.</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
