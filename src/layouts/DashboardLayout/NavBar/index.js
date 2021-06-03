@@ -125,7 +125,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "17px",
   },
   userType: {
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: "17px",
     color: "#CAC9C9"
   },
