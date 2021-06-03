@@ -33,7 +33,7 @@ function SelectDropdown({ name, list, selectedType, setSelectedType, type, reset
                         list.map((item,index) => {
                             return (
                                 <MenuItem key={index} value={item.distinct === "All" ? '' : item.distinct}>
-                                    {item.distinct === "All" ? `${item.distinct} ${type}` : item.distinct}
+                                    {item.label || item.distinct}
                                 </MenuItem>
                             )
                         })

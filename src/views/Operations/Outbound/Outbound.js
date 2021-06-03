@@ -87,7 +87,7 @@ function Outbound() {
             format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={classes.statusButtons}>
                 Pending
       </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={classes.statusButtons}>
-                    Partially Fulfilled
+                    Partially fulfilled
           </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={classes.statusButtons}>
                         Fulfilled
           </Button> : ''
@@ -99,14 +99,35 @@ function Outbound() {
     const [page, setPage] = useState(1);
     const [customerProducts, setCustomerProducts] = useState([])
     const [customerWarehouses, setCustomerWarehouses] = useState([])
-    const [days] = useState([{ distinct: 7 }, { distinct: 14 }, { distinct: 30 }, { distinct: 60 }])
+    const [days] = useState([{
+        distinct: 7,
+        label: '7 days'
+    }, {
+        distinct: 14,
+        label: '14 days'
+    }, {
+        distinct: 30,
+        label: '30 days'
+    }, {
+        distinct: 60,
+        label: '60 days'
+    }])
+    const [statuses] = useState([{ distinct: 0, label: 'Pending' }, { distinct: 1, label: 'Partially fulfilled' }, { distinct: 2, label: 'Fulfilled' }])
     const [selectedWarehouse, setSelectedWarehouse] = useState('')
     const [selectedProduct, setSelectedProduct] = useState('')
     const [selectedDay, setSelectedDay] = useState('')
+    const [selectedStatus, setSelectedStatus] = useState('')
     const [outboundDetailViewOpen, setOutboundDetailViewOpen] = useState(false);
     const [selectedOutboundOrder, setSelectedOutboundOrder] = useState(null);
     const getOutwardOrders = () => {
-        axios.get(getURL('/order'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
+        axios.get(getURL('/order'), {
+            params: {
+                page,
+                search: searchKeyword || selectedWarehouse || selectedProduct,
+                days: selectedDay,
+                status: selectedStatus
+            }
+        })
             .then((res) => {
                 setPageCount(res.data.pages)
                 setOutwardOrders(res.data.data)
@@ -117,9 +138,11 @@ function Outbound() {
     }
 
     useEffect(() => {
-        getOutwardOrders(page, searchKeyword)
-        getRelations()
-    }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
+        getRelations();
+    }, []);
+    useEffect(() => {
+        getOutwardOrders(page, searchKeyword);
+    }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus]);
     const getRelations = () => {
         axios.get(getURL(`/order/relations`))
             .then((res) => {
@@ -150,17 +173,19 @@ function Outbound() {
         }}
     />;
     const resetFilters = () => {
-        setSelectedWarehouse('')
-        setSelectedProduct('')
-        setSelectedDay('')
+        setSelectedWarehouse('');
+        setSelectedProduct('');
+        setSelectedDay('');
+        setSelectedStatus('');
     }
-    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[...customerWarehouses, { distinct: 'All' }]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
-    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[...customerProducts, { distinct: 'All' }]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
-    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[...days, { distinct: 'All' }]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
+    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ distinct: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
+    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ distinct: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
+    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[{ distinct: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
+    const statusSelect = <SelectDropdown resetFilters={resetFilters} type="Status" name="Select Status" list={[{ distinct: 'All' }, ...statuses]} selectedType={selectedStatus} setSelectedType={setSelectedStatus} />
 
     const outboundDetailsView = <OutboundDetails open={outboundDetailViewOpen} handleClose={closeInwardOutboundDetailsView} selectedOutboundOrder={selectedOutboundOrder} />
 
-    const headerButtons = [warehouseSelect, productSelect, daysSelect, outboundDetailsView]
+    const headerButtons = [warehouseSelect, productSelect, daysSelect, statusSelect, outboundDetailsView]
     const openViewDetails = productInward => {
         setSelectedOutboundOrder(productInward);
         setOutboundDetailViewOpen(true)
