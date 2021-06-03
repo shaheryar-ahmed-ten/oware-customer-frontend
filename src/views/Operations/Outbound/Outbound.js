@@ -105,9 +105,9 @@ function Outbound() {
             format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={classes.statusButtons}>
                 Pending
       </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={classes.statusButtons}>
-                    Partially fulfilled
+                Partially fulfilled
           </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={classes.statusButtons}>
-                        Fulfilled
+                Fulfilled
           </Button> : ''
         },
     ]
@@ -149,6 +149,7 @@ function Outbound() {
             }
         })
             .then((res) => {
+                setPage(res.data.pages === 1 ? 1 : page)
                 setPageCount(res.data.pages)
                 setOutwardOrders(res.data.data)
                 setNumberOfTotalRecords(res.data.count)

@@ -95,12 +95,15 @@ function Inbound() {
     const [selectedWarehouse, setSelectedWarehouse] = useState('')
     const [selectedProduct, setSelectedProduct] = useState('')
     const [selectedDay, setSelectedDay] = useState('')
+    const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
+
     const getInwardProducts = (page, searchKeyword) => {
         axios.get(getURL('/inward'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
             .then(res => {
                 setPage(res.data.pages === 1 ? 1 : page)
                 setPageCount(res.data.pages)
                 setProductInwards(res.data.data)
+                setNumberOfTotalRecords(res.data.count)
             });
     }
     useEffect(() => {
@@ -195,7 +198,7 @@ function Inbound() {
                             />
                         </Grid>
                         <Grid item>
-                            <Typography variant="body">Showing {productInwards.length} out of --- records.</Typography>
+                            <Typography variant="body">Showing {productInwards.length} out of {numberOfTotalRecords} records.</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
