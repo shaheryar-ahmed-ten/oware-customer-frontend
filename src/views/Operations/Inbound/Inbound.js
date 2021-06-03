@@ -7,6 +7,9 @@ import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
 
 const useStyles = makeStyles((theme) => ({
+    heading: {
+        fontWeight: "600"
+    },
     searchInput: {
         border: '1px solid grey',
         borderRadius: 4,
@@ -149,7 +152,7 @@ function Inbound() {
             <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
-                        <Box fontWeight="fontWeightBold">Inwards</Box>
+                        <Box className={classes.heading}>Inwards</Box>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>

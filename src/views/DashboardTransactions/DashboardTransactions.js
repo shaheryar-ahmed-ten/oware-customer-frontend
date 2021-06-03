@@ -7,6 +7,9 @@ import SecondaryWidget from '../../components/widgets/SecondaryWidget';
 import ArrowDownwardOutlinedIcon from '@material-ui/icons/ArrowDownwardOutlined';
 import ArrowUpwardOutlinedIcon from '@material-ui/icons/ArrowUpwardOutlined';
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    fontWeight: "600"
+  },
   pos: {
     marginBottom: 12,
   },
@@ -47,7 +50,7 @@ function DashboardTransactions() {
       <Grid container spacing={2} className={classes.gridContainer}>
         <Grid item xs={12}>
           <Typography variant="h3">
-            <Box fontWeight="fontWeightBold">Overview</Box>
+            <Box className={classes.heading}>Overview</Box>
           </Typography>
         </Grid>
         <Grid container item={12} spacing={3}>
