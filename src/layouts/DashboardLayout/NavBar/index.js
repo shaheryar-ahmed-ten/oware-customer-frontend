@@ -208,7 +208,7 @@ function Navbar(props) {
           <img src={owareLogo} alt='' className={clsx({
             [classes.hide]: open,
           })} />
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" textAlign="right">
             <Box>
               <Typography className={classes.userName}>{currentUser ? currentUser.username : ''}</Typography>
               <Typography className={classes.userType}>{currentUser ? currentUser.Role.type.toLowerCase() : ''}</Typography>
