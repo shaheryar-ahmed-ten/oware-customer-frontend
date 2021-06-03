@@ -27,6 +27,24 @@ const useStyles = makeStyles((theme) => ({
             paddingTop: 30,
             paddingBottom: 30
         },
+    },
+    paginationGrid: {
+        backgroundColor: 'white',
+        padding: '19px 19px 19px 0',
+        fontSize: 14,
+        color: '#AEAEAE'
+    },
+    paginationRoot: {
+        "& .MuiPaginationItem-root": {
+            color: "#AEAEAE",
+            backgroundColor: 'transparent',
+            fontSize: 14
+        },
+        '& .Mui-selected': {
+            backgroundColor: 'transparent',
+            color: '#01D5FF',
+            fontSize: 14
+        }
     }
 }));
 
@@ -166,18 +184,18 @@ function Inbound() {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <Grid container item justify="space-between">
-                        <Grid item></Grid>
+                    <Grid container item justify="space-between" className={classes.paginationGrid}>
                         <Grid item>
                             <Pagination
                                 component="div"
-                                shape="rounded"
                                 count={pageCount}
-                                color="primary"
                                 page={page}
-                                className={classes.pagination}
+                                classes={{ root: classes.paginationRoot }}
                                 onChange={(e, page) => setPage(page)}
                             />
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="body">Showing {productInwards.length} out of --- records.</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
