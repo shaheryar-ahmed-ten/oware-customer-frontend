@@ -74,7 +74,7 @@ function SecondaryWidget({ icon, name, value, totalQuantity, totalVolume, type }
                         Total Quantity
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
-                        {totalQuantity}Kgs
+                        {totalQuantity} kgs
                     </Typography>
                 </div>
                 <div className={classes.details}>
@@ -82,7 +82,7 @@ function SecondaryWidget({ icon, name, value, totalQuantity, totalVolume, type }
                         Total Volume
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
-                        {totalVolume}Cm3
+                        {totalVolume} cm3
                     </Typography>
                 </div>
 

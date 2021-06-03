@@ -43,7 +43,7 @@ function Outbound() {
             className: '',
         },
         {
-            id: 'createdAt',
+            id: 'shipmentDate',
             label: 'ORDER DATE',
             minWidth: 'auto',
             className: '',

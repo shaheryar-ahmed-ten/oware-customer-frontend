@@ -12,6 +12,7 @@ import {
   makeStyles,
   Menu,
   MenuItem,
+  MenuList,
   Toolbar,
   Typography,
   useTheme
@@ -132,11 +133,11 @@ const useStyles = makeStyles((theme) => ({
 function Navbar(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const { currentUser } = useContext(SharedContext);
   let navigate = useNavigate();
   let currentLocation = useLocation().pathname
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const navList = [{
     title: "Dashboard",
@@ -211,13 +212,14 @@ function Navbar(props) {
               </Avatar>
             </Box>
             <Box p={1} style={{ position: 'relative' }}>
-              <KeyboardArrowDownOutlinedIcon  onClick={handleClick} />
+              <KeyboardArrowDownOutlinedIcon onClick={handleClick} />
               <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
                 keepMounted
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
+                style={{ transform: 'translateY(3%)' }}
               >
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
