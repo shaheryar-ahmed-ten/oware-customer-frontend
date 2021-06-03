@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { dateFormat, getURL } from '../../../utils/common';
@@ -6,15 +6,28 @@ import { dateFormat, getURL } from '../../../utils/common';
 
 const useStyles = makeStyles({
     tableContainerTop: {
-        backgroundColor: '#E5E5E5'
+        backgroundColor: '#F8F8F8'
     },
     tableContainer: {
         backgroundColor: 'white'
+    },
+    closeButton: {
+        backgroundColor: '#0DBDE0;'
+    },
+    dialogContent: {
+        padding: '0'
     }
 });
 function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
     const classes = useStyles()
     const columnsTop = [
+        {
+            id: 'internalIdForBusiness',
+            label: 'ORDER ID',
+            minWidth: 'auto',
+            className: '',
+        },
+
         {
             id: 'product',
             label: 'PRODUCT',
@@ -22,8 +35,39 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             className: '',
         },
         {
+            id: 'shipmentDate',
+            label: 'ORDER DATE',
+            minWidth: 'auto',
+            className: '',
+            format: dateFormat
+        },
+        {
             id: 'warehouse',
             label: 'WAREHOUSE',
+            minWidth: 'auto',
+            className: '',
+        },
+        {
+            id: 'product',
+            label: 'PRODUCT',
+            minWidth: 'auto',
+            className: '',
+        },
+        {
+            id: 'dispatchOrderQuantity',
+            label: 'QUANTITY ORDERD',
+            minWidth: 'auto',
+            className: '',
+        },
+        {
+            id: 'referenceId',
+            label: 'REFERENCE ID',
+            minWidth: 'auto',
+            className: '',
+        },
+        {
+            id: 'outwardQuantity',
+            label: 'QUANTITY SHIPPED',
             minWidth: 'auto',
             className: '',
         },
@@ -89,8 +133,8 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         selectedOutboundOrder ?
             <div style={{ display: "inline" }}>
                 <form>
-                    <Dialog open={open} onClose={handleClose} maxWidth="lg"  aria-labelledby="form-dialog-title">
-                        <DialogContent>
+                    <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
+                        <DialogContent className={classes.dialogContent}>
                             <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
@@ -152,25 +196,15 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                                 })
                                             })
                                         }
-                                        {/* {selectedProductOutwardDetails.map((productOutward) => {
-                                            return (
-                                                <TableRow hover role="checkbox" tabIndex={-1} key={outwardOrder.id}>
-                                                    {columns.map((column) => {
-                                                        const value = outwardOrder[column.id];
-                                                        return (
-                                                            <TableCell key={column.id} align={column.align}
-                                                                className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                                {column.format ? column.format(value, outwardOrder) : (value || '')}
-                                                            </TableCell>
-                                                        );
-                                                    })}
-                                                </TableRow>
-                                            );
-                                        })} */}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
                         </DialogContent>
+                        <DialogActions>
+                            <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
+                                Close
+                            </Button>
+                        </DialogActions>
                     </Dialog>
                 </form>
             </div >
