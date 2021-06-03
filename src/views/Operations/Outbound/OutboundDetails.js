@@ -119,7 +119,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
     const [selectedProductOutwardDetails, setSelectedProductOutwardDetails] = useState([])
     useEffect(() => {
         if (selectedOutboundOrder)
-            axios.get(getURL(`/order/${selectedOutboundOrder.id}`))
+            axios.get(getURL(`/order/${selectedOutboundOrder.dispatchOrderId}`))
                 .then((response) => {
                     setSelectedProductOutwardDetails(response.data.data)
                 })
@@ -134,7 +134,11 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             <div style={{ display: "inline" }}>
                 <form>
                     <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
+<<<<<<< HEAD
                         <DialogContent className={classes.dialogContent}>
+=======
+                        <DialogContent>
+>>>>>>> 0933ef67f37f9e6aed1648ea2909911e90d758db
                             <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>

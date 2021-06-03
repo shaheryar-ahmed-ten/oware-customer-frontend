@@ -91,14 +91,10 @@ function Inbound() {
     const [page, setPage] = useState(1);
     const [customerProducts, setCustomerProducts] = useState([])
     const [customerWarehouses, setCustomerWarehouses] = useState([])
-    const [days, setDays] = useState([{ distinct: 7 }, { distinct: 14 }, { distinct: 30 }, { distinct: 60 }])
+    const [days] = useState([{ distinct: 7 }, { distinct: 14 }, { distinct: 30 }, { distinct: 60 }])
     const [selectedWarehouse, setSelectedWarehouse] = useState('')
     const [selectedProduct, setSelectedProduct] = useState('')
     const [selectedDay, setSelectedDay] = useState('')
-    useEffect(() => {
-        getInwardProducts(page, searchKeyword)
-        getRelations()
-    }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
     const getInwardProducts = (page, searchKeyword) => {
         axios.get(getURL('/inward'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
             .then(res => {
@@ -107,6 +103,10 @@ function Inbound() {
                 setProductInwards(res.data.data)
             });
     }
+    useEffect(() => {
+        getInwardProducts(page, searchKeyword)
+        getRelations()
+    }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
     const getRelations = () => {
         axios.get(getURL(`/inward/relations`))
             .then((response) => {
