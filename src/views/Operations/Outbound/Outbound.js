@@ -43,7 +43,7 @@ function Outbound() {
             className: '',
         },
         {
-            id: 'createdAt',
+            id: 'shipmentDate',
             label: 'ORDER DATE',
             minWidth: 'auto',
             className: '',
@@ -144,11 +144,19 @@ function Outbound() {
         value={searchKeyword}
         key={1}
         placeholder="Warehouse / Product / Reference No."
-        onChange={e => setSearchKeyword(e.target.value)}
+        onChange={e => {
+            resetFilters();
+            setSearchKeyword(e.target.value)
+        }}
     />;
-    const warehouseSelect = <SelectDropdown type="Warehouses" name="Select Warehouse" list={[...customerWarehouses, { distinct: 'All' }]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
-    const productSelect = <SelectDropdown type="Products" name="Select Product" list={[...customerProducts, { distinct: 'All' }]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
-    const daysSelect = <SelectDropdown type="Days" name="Select Days" list={[...days, { distinct: 'All' }]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
+    const resetFilters = () => {
+        setSelectedWarehouse('')
+        setSelectedProduct('')
+        setSelectedDay('')
+    }
+    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[...customerWarehouses, { distinct: 'All' }]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
+    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[...customerProducts, { distinct: 'All' }]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
+    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[...days, { distinct: 'All' }]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
 
     const outboundDetailsView = <OutboundDetails open={outboundDetailViewOpen} handleClose={closeInwardOutboundDetailsView} selectedOutboundOrder={selectedOutboundOrder} />
 

@@ -9,10 +9,11 @@ const useStyles = makeStyles((theme) => ({
         color: "#CAC9C9"
     }
 }));
-function SelectDropdown({ name, list, selectedType, setSelectedType, type }) {
+function SelectDropdown({ name, list, selectedType, setSelectedType, type, resetFilters }) {
     const classes = useStyles();
 
     const handleChange = (event) => {
+        resetFilters()
         setSelectedType(event.target.value);
     };
     return (
