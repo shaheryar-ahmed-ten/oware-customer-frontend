@@ -106,8 +106,8 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
+    justifyContent: 'flex-start',
+    padding: theme.spacing(0, 3),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
@@ -128,6 +128,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     lineHeight: "17px",
     color: "#CAC9C9"
+  },
+  drawerHandleIcon: {
+    backgroundColor: 'transparent',
+    postion: 'absolute',
+    bottom: '0',
   }
 }));
 function Navbar(props) {
@@ -200,7 +205,9 @@ function Navbar(props) {
         [classes.appBarShift]: open,
       })}>
         <Toolbar className={classes.toolBar}>
-          <img src={owareLogo} alt='' />
+          <img src={owareLogo} alt='' className={clsx({
+            [classes.hide]: open,
+          })} />
           <Box display="flex" alignItems="center">
             <Box>
               <Typography className={classes.userName}>{currentUser ? currentUser.username : ''}</Typography>
@@ -241,9 +248,7 @@ function Navbar(props) {
         }}
       >
         <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
+          <img src={owareLogo} alt='' />
         </div>
         <Divider />
         <List>
@@ -254,17 +259,8 @@ function Navbar(props) {
             </ListItem>
           ))}
         </List>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={handleDrawerOpen}
-          edge="start"
-          className={clsx({
-            [classes.hide]: open,
-          })}
-          style={{ position: "absolute", bottom: '0', left: "25%" }}
-        >
-          <ChevronRightIcon />
+        <IconButton style={{ backgroundColor: 'transparent', position: 'absolute', bottom: '0', right: '0' }} disableRipple disableFocusRipple onClick={!open ? handleDrawerOpen : handleDrawerClose}>
+          {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
         </IconButton>
       </Drawer>
     </div>
