@@ -18,9 +18,9 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.6,
         marginRight: 7,
         height: 30,
-        width: 300,
+        width: 400,
         boxSizing: "border-box",
-        padding: "10px 10px"
+        padding: "15px 19px"
     },
     tableContainer: {
         backgroundColor: 'white'

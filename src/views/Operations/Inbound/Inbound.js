@@ -17,9 +17,9 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.6,
         marginRight: 7,
         height: 30,
-        width: 300,
+        width: 400,
         boxSizing: "border-box",
-        padding: "10px 10px"
+        padding: "15px 19px"
     },
     tableContainer: {
         backgroundColor: 'white'
@@ -160,9 +160,9 @@ function Inbound() {
         setSelectedProduct('')
         setSelectedDay('')
     }
-    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[...customerWarehouses, { distinct: 'All' }]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
-    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[...customerProducts, { distinct: 'All' }]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
-    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[...days, { distinct: 'All' }]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
+    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ distinct: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
+    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ distinct: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
+    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[{ distinct: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
     const headerButtons = [warehouseSelect, productSelect, daysSelect]
     return (
         <>

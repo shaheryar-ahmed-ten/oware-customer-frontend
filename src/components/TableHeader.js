@@ -27,18 +27,20 @@ const TableHeader = ({ searchInput, buttons }) => {
       <Paper elevation={0} square className={classes.root}>
         <div className={classes.pageHeader}>
           <Grid container justify="space-between" alignItems="center">
-            <Grid item>
+            <Grid item xs={6}>
               {searchInput}
             </Grid>
-            {
-              buttons.map((button,index) => {
-                return (
-                  <Grid item key={index}>
-                    {button}
-                  </Grid>
-                )
-              })
-            }
+            <Grid container item xs={6} justify="space-between">
+              {
+                buttons.map((button, index) => {
+                  return (
+                    <Grid item key={index}>
+                      {button}
+                    </Grid>
+                  )
+                })
+              }
+            </Grid>
           </Grid>
         </div>
       </Paper>
