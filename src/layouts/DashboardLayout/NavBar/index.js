@@ -165,13 +165,6 @@ function Navbar(props) {
     bgColor: currentLocation.includes('orders') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
   },
   {
-    title: "Warehouse",
-    icon: <HomeWorkOutlinedIcon />,
-    route: '/dashboard',
-    color: currentLocation.includes('warehouse') ? "#01D5FF" : '#383838',
-    bgColor: currentLocation.includes('warehouse') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
-  },
-  {
     title: "Products",
     icon: <ClassOutlinedIcon />,
     route: '/dashboard',
