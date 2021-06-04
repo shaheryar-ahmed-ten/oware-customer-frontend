@@ -7,6 +7,7 @@ import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
 import OutboundDetails from './OutboundDetails';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -25,8 +26,13 @@ const useStyles = makeStyles((theme) => ({
     tableContainer: {
         backgroundColor: 'white'
     },
+    orderIdStyle: {
+        color: '#1C7DFE',
+        textDecoration: 'underline'
+    },
     statusButtons: {
-        width: 100
+        width: 100,
+        fontSize: 12
     },
     gridContainer: {
         boxSizing: 'border-box',
@@ -53,6 +59,18 @@ const useStyles = makeStyles((theme) => ({
             color: '#01D5FF',
             fontSize: 14
         }
+    },
+    pendingStatusButtonStyling: {
+        backgroundColor: '#FFEEDB',
+        color: '#F69148'
+    },
+    partialStatusButtonStyling: {
+        backgroundColor: '#F0F0F0',
+        color: '#7D7D7D'
+    },
+    fullfilledStatusButtonStyling: {
+        backgroundColor: '#EAF7D5',
+        color: '#69A022'
     }
 }));
 function Outbound() {
@@ -62,7 +80,7 @@ function Outbound() {
             id: 'internalIdForBusiness',
             label: 'ORDER ID',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
         },
         {
             id: 'shipmentDate',
@@ -106,11 +124,11 @@ function Outbound() {
             label: 'STATUS',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={classes.statusButtons}>
+            format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={clsx(classes.statusButtons,classes.pendingStatusButtonStyling)}>
                 Pending
-      </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={classes.statusButtons}>
+      </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
                 Partially fulfilled
-          </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={classes.statusButtons}>
+          </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={clsx(classes.statusButtons,classes.fullfilledStatusButtonStyling)}>
                 Fulfilled
           </Button> : ''
         },
