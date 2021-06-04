@@ -94,7 +94,19 @@ function Inbound() {
     const [page, setPage] = useState(1);
     const [customerProducts, setCustomerProducts] = useState([])
     const [customerWarehouses, setCustomerWarehouses] = useState([])
-    const [days] = useState([{ distinct: 7 }, { distinct: 14 }, { distinct: 30 }, { distinct: 60 }])
+    const [days] = useState([{
+        distinct: 7,
+        label: '7 days'
+    }, {
+        distinct: 14,
+        label: '14 days'
+    }, {
+        distinct: 30,
+        label: '30 days'
+    }, {
+        distinct: 60,
+        label: '60 days'
+    }])
     const [selectedWarehouse, setSelectedWarehouse] = useState('')
     const [selectedProduct, setSelectedProduct] = useState('')
     const [selectedDay, setSelectedDay] = useState('')

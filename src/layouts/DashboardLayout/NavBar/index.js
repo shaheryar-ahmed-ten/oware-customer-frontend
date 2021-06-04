@@ -12,7 +12,6 @@ import {
   makeStyles,
   Menu,
   MenuItem,
-  MenuList,
   Toolbar,
   Typography,
   useTheme
