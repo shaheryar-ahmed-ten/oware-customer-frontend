@@ -147,31 +147,36 @@ function Navbar(props) {
     title: "Dashboard",
     icon: <HomeOutlinedIcon />,
     route: '/dashboard',
-    color: currentLocation.includes('dashboard') ? "#01D5FF" : '#383838'
+    color: currentLocation.includes('dashboard') ? "#01D5FF" : '#383838',
+    bgColor: currentLocation.includes('dashboard') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
   },
   {
     title: "Inwards",
     icon: <GetAppOutlinedIcon />,
     route: '/operation-transactions/inwards',
-    color: currentLocation.includes('inwards') ? "#01D5FF" : '#383838'
+    color: currentLocation.includes('inwards') ? "#01D5FF" : '#383838',
+    bgColor: currentLocation.includes('inwards') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
   },
   {
     title: "Orders",
     icon: <BorderClearOutlinedIcon />,
     route: '/operation-transactions/orders',
-    color: currentLocation.includes('orders') ? "#01D5FF" : '#383838'
+    color: currentLocation.includes('orders') ? "#01D5FF" : '#383838',
+    bgColor: currentLocation.includes('orders') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
   },
   {
     title: "Warehouse",
     icon: <HomeWorkOutlinedIcon />,
     route: '/dashboard',
-    color: currentLocation.includes('warehouse') ? "#01D5FF" : '#383838'
+    color: currentLocation.includes('warehouse') ? "#01D5FF" : '#383838',
+    bgColor: currentLocation.includes('warehouse') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
   },
   {
     title: "Products",
     icon: <ClassOutlinedIcon />,
     route: '/dashboard',
-    color: currentLocation.includes('products') ? "#01D5FF" : '#383838'
+    color: currentLocation.includes('products') ? "#01D5FF" : '#383838',
+    bgColor: currentLocation.includes('products') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
   },
   ]
   const handleClick = (event) => {
@@ -252,7 +257,7 @@ function Navbar(props) {
         <Divider />
         <List>
           {navList.map((item, index) => (
-            <ListItem button key={index} onClick={() => { handleNavigation(item.route) }}>
+            <ListItem button key={index} onClick={() => { handleNavigation(item.route) }} style={{ backgroundColor: item.bgColor}}>
               <ListItemIcon style={{ color: item.color }}>{item.icon}</ListItemIcon>
               <ListItemText classes={{ primary: classes.listItemText }} style={{ color: item.color }} primary={item.title} />
             </ListItem>
