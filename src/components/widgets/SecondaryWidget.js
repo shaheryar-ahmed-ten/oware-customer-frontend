@@ -4,7 +4,7 @@ import React from 'react'
 const useStyles = makeStyles({
     root: {
         height: 227,
-        width: "95%",
+        width: "100%",
         display: "flex",
         flexFlow: "column",
         justifyContent: "center",

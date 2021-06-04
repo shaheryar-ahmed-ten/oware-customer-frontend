@@ -67,7 +67,7 @@ function DashboardTransactions() {
         <Grid item xs={12} className={classes.activityGrid}>
           <Typography variant="h4">Last 7 days Activity</Typography>
         </Grid>
-        <Grid container item={12} justify="space-between">
+        <Grid container spacing={2} item={12} justify="space-between">
           <Grid item xs={6}>
             <SecondaryWidget icon={<ArrowDownwardOutlinedIcon className={classes.successIcon} />} name="Inwards" value={inboundStats ? inboundStats.total : 0} type="Transactions" totalQuantity={inboundStats ? inboundStats.weight : 0} totalVolume={inboundStats ? inboundStats.dimensionsCBM : 0} />
           </Grid>

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         height: 30,
         width: 400,
         boxSizing: "border-box",
-        padding: "15px 19px"
+        padding: "15px 15px"
     },
     tableContainer: {
         backgroundColor: 'white'
@@ -57,7 +57,7 @@ function Inbound() {
     const columns = [
         {
             id: 'createdAt',
-            label: 'INWARD DATE',
+            label: 'DATE OF INWARD',
             minWidth: 'auto',
             className: '',
             format: dateFormat
@@ -84,7 +84,7 @@ function Inbound() {
         },
         {
             id: 'referenceId',
-            label: 'REFERENCE ID',
+            label: 'REFERENCE NUMBER',
             minWidth: 'auto',
             className: '',
         },

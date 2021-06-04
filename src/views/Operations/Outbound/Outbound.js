@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
         height: 30,
         width: 400,
         boxSizing: "border-box",
-        padding: "15px 19px"
+        padding: "15px 15px"
     },
     tableContainer: {
         backgroundColor: 'white'
@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'underline'
     },
     statusButtons: {
-        width: 100,
-        fontSize: 12
+        fontSize: 12,
+        borderRadius: '20px'
     },
     gridContainer: {
         boxSizing: 'border-box',
@@ -66,7 +66,8 @@ const useStyles = makeStyles((theme) => ({
     },
     partialStatusButtonStyling: {
         backgroundColor: '#F0F0F0',
-        color: '#7D7D7D'
+        color: '#7D7D7D',
+        width: 150,
     },
     fullfilledStatusButtonStyling: {
         backgroundColor: '#EAF7D5',
@@ -84,7 +85,7 @@ function Outbound() {
         },
         {
             id: 'shipmentDate',
-            label: 'ORDER DATE',
+            label: 'DATE OF ORDER',
             minWidth: 'auto',
             className: '',
             format: dateFormat
@@ -109,7 +110,7 @@ function Outbound() {
         },
         {
             id: 'referenceId',
-            label: 'REFERENCE ID',
+            label: 'REFERENCE NUMBER',
             minWidth: 'auto',
             className: '',
         },
