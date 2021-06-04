@@ -37,12 +37,12 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             minWidth: 'auto',
             className: classes.topTableItem,
         },
-
         {
-            id: 'product',
-            label: 'PRODUCT',
+            id: 'shipmentDate',
+            label: 'ORDER DATE',
             minWidth: 'auto',
-            className: classes.topTableItem,
+            className: '',
+            format: dateFormat
         },
         {
             id: 'warehouse',
@@ -84,8 +84,14 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             format: dateFormat
         },
         {
+            id: 'quantity',
+            label: 'QUANTITY SHIPPED',
+            minWidth: 'auto',
+            className: '',
+        },
+        {
             id: 'Vehicle.number',
-            label: 'VEHICLE',
+            label: 'VEHICLE #',
             minWidth: 'auto',
             className: '',
             format: (value, entity) => entity.Vehicle.number,
@@ -96,12 +102,6 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             minWidth: 'auto',
             className: '',
             format: (value, entity) => entity.Vehicle.type,
-        },
-        {
-            id: 'quantity',
-            label: 'QUANTITY SHIPPED',
-            minWidth: 'auto',
-            className: '',
         },
         {
             id: 'receiverName',
