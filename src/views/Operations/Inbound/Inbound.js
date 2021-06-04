@@ -1,10 +1,11 @@
-import { Box, Divider, Grid, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import SelectDropdown from '../../../components/SelectDropdown';
 import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
+import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -136,7 +137,6 @@ function Inbound() {
             })
     };
     const searchInput = <InputBase
-        placeholder="Search"
         className={classes.searchInput}
         id="search"
         label="Search"
@@ -149,6 +149,11 @@ function Inbound() {
             resetFilters();
             setSearchKeyword(e.target.value)
         }}
+        startAdornment={
+            <InputAdornment position="start">
+                <SearchOutlinedIcon />
+            </InputAdornment>
+        }
     />;
     const resetFilters = () => {
         setSelectedWarehouse('')

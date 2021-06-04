@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Grid, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Button, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -6,6 +6,7 @@ import SelectDropdown from '../../../components/SelectDropdown';
 import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
 import OutboundDetails from './OutboundDetails';
+import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -196,6 +197,11 @@ function Outbound() {
             resetFilters();
             setSearchKeyword(e.target.value)
         }}
+        startAdornment={
+            <InputAdornment position="start">
+                <SearchOutlinedIcon />
+            </InputAdornment>
+        }
     />;
     const resetFilters = () => {
         setSelectedWarehouse('');
