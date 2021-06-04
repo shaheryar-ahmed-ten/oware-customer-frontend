@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
+import { LineWeight } from '@material-ui/icons';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { dateFormat, getURL } from '../../../utils/common';
@@ -16,6 +17,15 @@ const useStyles = makeStyles({
     },
     dialogContent: {
         padding: '0'
+    },
+    tableHeaderItem: {
+        fontSize: 12,
+        color: '#A9AEAF',
+        fontWeight: '600',
+        LineWeight: '15px'
+    },
+    topTableItem: {
+        fontWeight: '600'
     }
 });
 function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
@@ -25,14 +35,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             id: 'internalIdForBusiness',
             label: 'ORDER ID',
             minWidth: 'auto',
-            className: '',
-        },
-
-        {
-            id: 'product',
-            label: 'PRODUCT',
-            minWidth: 'auto',
-            className: '',
+            className: classes.topTableItem,
         },
         {
             id: 'shipmentDate',
@@ -45,31 +48,31 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             id: 'warehouse',
             label: 'WAREHOUSE',
             minWidth: 'auto',
-            className: '',
+            className: classes.topTableItem,
         },
         {
             id: 'product',
             label: 'PRODUCT',
             minWidth: 'auto',
-            className: '',
+            className: classes.topTableItem,
         },
         {
             id: 'dispatchOrderQuantity',
             label: 'QUANTITY ORDERD',
             minWidth: 'auto',
-            className: '',
+            className: classes.topTableItem,
         },
         {
             id: 'referenceId',
             label: 'REFERENCE ID',
             minWidth: 'auto',
-            className: '',
+            className: classes.topTableItem,
         },
         {
             id: 'outwardQuantity',
-            label: 'QUANTITY SHIPPED',
+            label: 'QTY SHIPPED',
             minWidth: 'auto',
-            className: '',
+            className: classes.topTableItem,
         },
     ]
     const columns = [
@@ -81,8 +84,14 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             format: dateFormat
         },
         {
+            id: 'quantity',
+            label: 'QUANTITY SHIPPED',
+            minWidth: 'auto',
+            className: '',
+        },
+        {
             id: 'Vehicle.number',
-            label: 'VEHICLE',
+            label: 'VEHICLE #',
             minWidth: 'auto',
             className: '',
             format: (value, entity) => entity.Vehicle.number,
@@ -93,12 +102,6 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             minWidth: 'auto',
             className: '',
             format: (value, entity) => entity.Vehicle.type,
-        },
-        {
-            id: 'quantity',
-            label: 'QUANTITY SHIPPED',
-            minWidth: 'auto',
-            className: '',
         },
         {
             id: 'receiverName',
@@ -142,7 +145,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                             <TableCell
                                                 key={index}
                                                 align={column.align}
-                                                style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: 'bolder', fontSize: '14px', color: '#939393' }}
+                                                className={classes.tableHeaderItem}
                                             >
                                                 {column.label}
                                             </TableCell>
@@ -170,7 +173,8 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                             <TableCell
                                                 key={index}
                                                 align={column.align}
-                                                style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: 'bolder', fontSize: '14px', color: '#939393' }}
+                                                className={classes.tableHeaderItem}
+                                                style={{ backgroundColor: 'white' }}
                                             >
                                                 {column.label}
                                             </TableCell>

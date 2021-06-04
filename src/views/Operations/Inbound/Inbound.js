@@ -1,21 +1,25 @@
-import { Box, Divider, Grid, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import SelectDropdown from '../../../components/SelectDropdown';
 import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
+import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 
 const useStyles = makeStyles((theme) => ({
+    heading: {
+        fontWeight: "600"
+    },
     searchInput: {
         border: '1px solid grey',
         borderRadius: 4,
         opacity: 0.6,
         marginRight: 7,
         height: 30,
-        width: 300,
+        width: 400,
         boxSizing: "border-box",
-        padding: "10px 10px"
+        padding: "15px 15px"
     },
     tableContainer: {
         backgroundColor: 'white'
@@ -53,7 +57,7 @@ function Inbound() {
     const columns = [
         {
             id: 'createdAt',
-            label: 'INWARD DATE',
+            label: 'DATE OF INWARD',
             minWidth: 'auto',
             className: '',
             format: dateFormat
@@ -80,7 +84,7 @@ function Inbound() {
         },
         {
             id: 'referenceId',
-            label: 'REFERENCE ID',
+            label: 'REFERENCE NUMBER',
             minWidth: 'auto',
             className: '',
         },
@@ -91,7 +95,19 @@ function Inbound() {
     const [page, setPage] = useState(1);
     const [customerProducts, setCustomerProducts] = useState([])
     const [customerWarehouses, setCustomerWarehouses] = useState([])
-    const [days] = useState([{ distinct: 7 }, { distinct: 14 }, { distinct: 30 }, { distinct: 60 }])
+    const [days] = useState([{
+        distinct: 7,
+        label: '7 days'
+    }, {
+        distinct: 14,
+        label: '14 days'
+    }, {
+        distinct: 30,
+        label: '30 days'
+    }, {
+        distinct: 60,
+        label: '60 days'
+    }])
     const [selectedWarehouse, setSelectedWarehouse] = useState('')
     const [selectedProduct, setSelectedProduct] = useState('')
     const [selectedDay, setSelectedDay] = useState('')
@@ -121,7 +137,6 @@ function Inbound() {
             })
     };
     const searchInput = <InputBase
-        placeholder="Search"
         className={classes.searchInput}
         id="search"
         label="Search"
@@ -134,22 +149,27 @@ function Inbound() {
             resetFilters();
             setSearchKeyword(e.target.value)
         }}
+        startAdornment={
+            <InputAdornment position="start">
+                <SearchOutlinedIcon />
+            </InputAdornment>
+        }
     />;
     const resetFilters = () => {
         setSelectedWarehouse('')
         setSelectedProduct('')
         setSelectedDay('')
     }
-    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[...customerWarehouses, { distinct: 'All' }]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
-    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[...customerProducts, { distinct: 'All' }]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
-    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[...days, { distinct: 'All' }]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
+    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ label: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
+    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ label: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
+    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[{ label: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
     const headerButtons = [warehouseSelect, productSelect, daysSelect]
     return (
         <>
             <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
-                        <Box fontWeight="fontWeightBold">Inwards</Box>
+                        <Box className={classes.heading}>Inwards</Box>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>

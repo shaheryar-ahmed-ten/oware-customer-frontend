@@ -4,7 +4,7 @@ import React from 'react'
 const useStyles = makeStyles({
     root: {
         height: 227,
-        width: "95%",
+        width: "100%",
         display: "flex",
         flexFlow: "column",
         justifyContent: "center",
@@ -77,6 +77,7 @@ function SecondaryWidget({ icon, name, value, totalQuantity, totalVolume, type }
                         {totalQuantity} kgs
                     </Typography>
                 </div>
+                <br/>
                 <div className={classes.details}>
                     <Typography className={classes.detailsHead} gutterBottom>
                         Total Volume

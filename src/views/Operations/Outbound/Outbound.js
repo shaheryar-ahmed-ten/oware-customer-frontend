@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Grid, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Button, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -6,23 +6,33 @@ import SelectDropdown from '../../../components/SelectDropdown';
 import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
 import OutboundDetails from './OutboundDetails';
+import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
+    heading: {
+        fontWeight: "600"
+    },
     searchInput: {
         border: '1px solid grey',
         borderRadius: 4,
         opacity: 0.6,
         marginRight: 7,
         height: 30,
-        width: 300,
+        width: 400,
         boxSizing: "border-box",
-        padding: "10px 10px"
+        padding: "15px 15px"
     },
     tableContainer: {
         backgroundColor: 'white'
     },
+    orderIdStyle: {
+        color: '#1C7DFE',
+        textDecoration: 'underline'
+    },
     statusButtons: {
-        width: 100
+        fontSize: 12,
+        borderRadius: '20px'
     },
     gridContainer: {
         boxSizing: 'border-box',
@@ -49,6 +59,19 @@ const useStyles = makeStyles((theme) => ({
             color: '#01D5FF',
             fontSize: 14
         }
+    },
+    pendingStatusButtonStyling: {
+        backgroundColor: '#FFEEDB',
+        color: '#F69148'
+    },
+    partialStatusButtonStyling: {
+        backgroundColor: '#F0F0F0',
+        color: '#7D7D7D',
+        width: 150,
+    },
+    fullfilledStatusButtonStyling: {
+        backgroundColor: '#EAF7D5',
+        color: '#69A022'
     }
 }));
 function Outbound() {
@@ -58,11 +81,11 @@ function Outbound() {
             id: 'internalIdForBusiness',
             label: 'ORDER ID',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
         },
         {
             id: 'shipmentDate',
-            label: 'ORDER DATE',
+            label: 'DATE OF ORDER',
             minWidth: 'auto',
             className: '',
             format: dateFormat
@@ -87,7 +110,7 @@ function Outbound() {
         },
         {
             id: 'referenceId',
-            label: 'REFERENCE ID',
+            label: 'REFERENCE NUMBER',
             minWidth: 'auto',
             className: '',
         },
@@ -102,11 +125,11 @@ function Outbound() {
             label: 'STATUS',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={classes.statusButtons}>
+            format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={clsx(classes.statusButtons,classes.pendingStatusButtonStyling)}>
                 Pending
-      </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={classes.statusButtons}>
+      </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
                 Partially fulfilled
-          </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={classes.statusButtons}>
+          </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={clsx(classes.statusButtons,classes.fullfilledStatusButtonStyling)}>
                 Fulfilled
           </Button> : ''
         },
@@ -193,6 +216,11 @@ function Outbound() {
             resetFilters();
             setSearchKeyword(e.target.value)
         }}
+        startAdornment={
+            <InputAdornment position="start">
+                <SearchOutlinedIcon />
+            </InputAdornment>
+        }
     />;
     const resetFilters = () => {
         setSelectedWarehouse('');
@@ -200,10 +228,10 @@ function Outbound() {
         setSelectedDay('');
         setSelectedStatus('');
     }
-    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ distinct: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
-    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ distinct: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
-    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[{ distinct: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
-    const statusSelect = <SelectDropdown resetFilters={resetFilters} type="Status" name="Select Status" list={[{ distinct: 'All' }, ...statuses]} selectedType={selectedStatus} setSelectedType={setSelectedStatus} />
+    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ label: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
+    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ label: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
+    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[{ label: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
+    const statusSelect = <SelectDropdown resetFilters={resetFilters} type="Status" name="Select Status" list={[{ label: 'All' }, ...statuses]} selectedType={selectedStatus} setSelectedType={setSelectedStatus} />
 
     const outboundDetailsView = <OutboundDetails open={outboundDetailViewOpen} handleClose={closeInwardOutboundDetailsView} selectedOutboundOrder={selectedOutboundOrder} />
 
@@ -217,7 +245,7 @@ function Outbound() {
             <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
-                        <Box fontWeight="fontWeightBold">Outwards</Box>
+                        <Box className={classes.heading}>Outwards</Box>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>

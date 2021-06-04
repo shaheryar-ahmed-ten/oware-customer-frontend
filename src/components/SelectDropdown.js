@@ -1,4 +1,4 @@
-import { FormControl, makeStyles, MenuItem, Select } from '@material-ui/core'
+import { FormControl, ListItemIcon, ListItemText, makeStyles, MenuItem, Select } from '@material-ui/core'
 import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
@@ -26,14 +26,14 @@ function SelectDropdown({ name, list, selectedType, setSelectedType, type, reset
                     inputProps={{ 'aria-label': 'Without label' }}
                     className={classes.placeholderText}
                 >
-                    <MenuItem value='' disabled>
-                        {name}
+                    <MenuItem value="" disabled>
+                        <ListItemText primary={name} />
                     </MenuItem>
                     {
-                        list.map((item,index) => {
+                        list.map((item, index) => {
                             return (
-                                <MenuItem key={index} value={item.distinct === "All" ? '' : item.distinct}>
-                                    {item.label || item.distinct}
+                                <MenuItem key={index} value={item.distinct}>
+                                    <ListItemText primary={item.label || item.distinct} />
                                 </MenuItem>
                             )
                         })

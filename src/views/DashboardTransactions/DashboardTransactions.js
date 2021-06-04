@@ -7,6 +7,9 @@ import SecondaryWidget from '../../components/widgets/SecondaryWidget';
 import ArrowDownwardOutlinedIcon from '@material-ui/icons/ArrowDownwardOutlined';
 import ArrowUpwardOutlinedIcon from '@material-ui/icons/ArrowUpwardOutlined';
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    fontWeight: "600"
+  },
   pos: {
     marginBottom: 12,
   },
@@ -47,7 +50,7 @@ function DashboardTransactions() {
       <Grid container spacing={2} className={classes.gridContainer}>
         <Grid item xs={12}>
           <Typography variant="h3">
-            <Box fontWeight="fontWeightBold">Overview</Box>
+            <Box className={classes.heading}>Overview</Box>
           </Typography>
         </Grid>
         <Grid container item={12} spacing={3}>
@@ -64,7 +67,7 @@ function DashboardTransactions() {
         <Grid item xs={12} className={classes.activityGrid}>
           <Typography variant="h4">Last 7 days Activity</Typography>
         </Grid>
-        <Grid container item={12} justify="space-between">
+        <Grid container spacing={2} item={12} justify="space-between">
           <Grid item xs={6}>
             <SecondaryWidget icon={<ArrowDownwardOutlinedIcon className={classes.successIcon} />} name="Inwards" value={inboundStats ? inboundStats.total : 0} type="Transactions" totalQuantity={inboundStats ? inboundStats.weight : 0} totalVolume={inboundStats ? inboundStats.dimensionsCBM : 0} />
           </Grid>
