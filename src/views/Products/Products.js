@@ -6,6 +6,7 @@ import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import SelectDropdown from '../../components/SelectDropdown';
 import TableHeader from '../../components/TableHeader';
 import { Pagination } from '@material-ui/lab';
+import ProductDetails from './ProductDetails';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -122,6 +123,8 @@ function Products() {
     const [page, setPage] = useState(1);
     const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
     const [searchKeyword, setSearchKeyword] = useState('');
+    const [productDetailsViewOpen, setProductDetailsViewOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     useEffect(() => {
         getProducts()
@@ -145,6 +148,15 @@ function Products() {
             })
     }
 
+    const openViewDetails = product => {
+        setSelectedProduct(product);
+        setProductDetailsViewOpen(true)
+    }
+    const closeOutboundDetailsView = () => {
+        setProductDetailsViewOpen(false)
+        setSelectedProduct(null)
+    }
+
     const searchInput = <InputBase
         className={classes.searchInput}
         id="search"
@@ -163,6 +175,8 @@ function Products() {
             </InputAdornment>
         }
     />
+    const productDetailsView = <ProductDetails open={productDetailsViewOpen} handleClose={closeOutboundDetailsView} selectedProduct={selectedProduct} />
+
     const headerButtons = []
 
     return (
@@ -192,7 +206,7 @@ function Products() {
                             <TableBody>
                                 {products.map((product, index) => {
                                     return (
-                                        <TableRow key={index} hover role="checkbox" tabIndex={-1}>
+                                        <TableRow key={index} hover role="checkbox" tabIndex={-1} onClick={() => openViewDetails(product)}>
                                             {columns.map((column) => {
                                                 const value = product[column.id];
                                                 return (

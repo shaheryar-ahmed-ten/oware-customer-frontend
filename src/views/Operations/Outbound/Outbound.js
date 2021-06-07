@@ -198,7 +198,7 @@ function Outbound() {
                 console.log(err)
             })
     };
-    const closeInwardOutboundDetailsView = () => {
+    const closeOutboundDetailsView = () => {
         setOutboundDetailViewOpen(false)
         setSelectedOutboundOrder(null)
     }
@@ -233,7 +233,7 @@ function Outbound() {
     const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[{ label: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
     const statusSelect = <SelectDropdown resetFilters={resetFilters} type="Status" name="Select Status" list={[{ label: 'All' }, ...statuses]} selectedType={selectedStatus} setSelectedType={setSelectedStatus} />
 
-    const outboundDetailsView = <OutboundDetails open={outboundDetailViewOpen} handleClose={closeInwardOutboundDetailsView} selectedOutboundOrder={selectedOutboundOrder} />
+    const outboundDetailsView = <OutboundDetails open={outboundDetailViewOpen} handleClose={closeOutboundDetailsView} selectedOutboundOrder={selectedOutboundOrder} />
 
     const headerButtons = [warehouseSelect, productSelect, daysSelect, statusSelect, outboundDetailsView]
     const openViewDetails = productInward => {
