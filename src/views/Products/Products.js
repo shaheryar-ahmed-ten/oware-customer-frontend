@@ -79,7 +79,7 @@ function Products() {
     const columns = [
         {
             id: 'Product.name',
-            label: 'PRODUCT',
+            label: 'PRODUCT NAME',
             minWidth: 'auto',
             className: classes.productNameStyle,
             format: (value, entity) => entity.Product.name,
@@ -137,7 +137,6 @@ function Products() {
             }
         })
             .then((res) => {
-                console.log(res.data)
                 setPage(res.data.pages === 1 ? 1 : page)
                 setPageCount(res.data.pages)
                 setProducts(res.data.data)
@@ -177,7 +176,7 @@ function Products() {
     />
     const productDetailsView = <ProductDetails open={productDetailsViewOpen} handleClose={closeOutboundDetailsView} selectedProduct={selectedProduct} />
 
-    const headerButtons = []
+    const headerButtons = [productDetailsView]
 
     return (
         <>

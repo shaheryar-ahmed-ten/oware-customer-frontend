@@ -41,7 +41,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             id: 'shipmentDate',
             label: 'ORDER DATE',
             minWidth: 'auto',
-            className: '',
+            className: classes.topTableItem,
             format: dateFormat
         },
         {
