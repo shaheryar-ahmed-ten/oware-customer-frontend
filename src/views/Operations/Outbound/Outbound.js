@@ -1,13 +1,14 @@
 import { Box, Button, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import SelectDropdown from '../../../components/SelectDropdown';
 import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
 import OutboundDetails from './OutboundDetails';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import clsx from 'clsx';
+import { debounce } from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -125,11 +126,11 @@ function Outbound() {
             label: 'STATUS',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={clsx(classes.statusButtons,classes.pendingStatusButtonStyling)}>
+            format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
                 Pending
       </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
                 Partially fulfilled
-          </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={clsx(classes.statusButtons,classes.fullfilledStatusButtonStyling)}>
+          </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
                 Fulfilled
           </Button> : ''
         },
@@ -162,7 +163,7 @@ function Outbound() {
     const [selectedOutboundOrder, setSelectedOutboundOrder] = useState(null);
     const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
 
-    const getOutwardOrders = () => {
+    const getOutwardOrders = useCallback(debounce(() => {
         axios.get(getURL('/order'), {
             params: {
                 page,
@@ -180,7 +181,7 @@ function Outbound() {
             .catch((err) => {
                 console.log(err)
             })
-    }
+    }, 300), [])
 
     useEffect(() => {
         getRelations();
