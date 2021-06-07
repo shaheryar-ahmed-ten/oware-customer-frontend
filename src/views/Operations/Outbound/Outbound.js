@@ -164,7 +164,6 @@ function Outbound() {
     const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
 
     const _getOutwardOrders = (page, searchKeyword) => {
-        console.log("Called")
         axios.get(getURL('/order'), {
             params: {
                 page,
