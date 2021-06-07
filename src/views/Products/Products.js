@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     tableContainer: {
         backgroundColor: 'white'
     },
-    orderIdStyle: {
+    productNameStyle: {
         color: '#1C7DFE',
         textDecoration: 'underline'
     },
@@ -80,7 +80,7 @@ function Products() {
             id: 'Product.name',
             label: 'PRODUCT',
             minWidth: 'auto',
-            className: '',
+            className: classes.productNameStyle,
             format: (value, entity) => entity.Product.name,
         },
         {
