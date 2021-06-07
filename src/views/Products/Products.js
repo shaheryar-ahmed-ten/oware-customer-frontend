@@ -127,7 +127,12 @@ function Products() {
         getProducts()
     }, [page, searchKeyword])
     const getProducts = () => {
-        axios.get(getURL(`/product`))
+        axios.get(getURL(`/product`), {
+            params: {
+                page,
+                search: searchKeyword
+            }
+        })
             .then((res) => {
                 console.log(res.data)
                 setPage(res.data.pages === 1 ? 1 : page)
