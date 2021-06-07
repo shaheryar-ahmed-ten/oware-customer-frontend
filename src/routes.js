@@ -15,29 +15,29 @@ const routes = (user) => [
     children: [
       { path: 'login', element: <LoginView /> },
       { path: '404', element: <h1>Not found view</h1> },
-      { path: '/', element: user ? <Navigate to='/dashboard' /> : <Navigate to='/login' /> }
+      { path: '/', element: true || user ? <Navigate to='/dashboard' /> : <Navigate to='/login' /> }
     ]
   },
   {
     path: '/dashboard',
     element: <DashboardLayout />,
     children: [
-      { path: '/', element: (user) ? <DashboardTransactions /> : <Navigate to='/login' /> },
+      { path: '/', element: (true || user) ? <DashboardTransactions /> : <Navigate to='/login' /> },
     ]
   },
   {
     path: '/operation-transactions',
     element: <DashboardLayout />,
     children: [
-      { path: '/inwards', element: (user) ? <Inbound /> : <Navigate to='/login' /> },
-      { path: '/orders', element: (user) ? <Outbound /> : <Navigate to='/login' /> },
+      { path: '/inwards', element: (true || user) ? <Inbound /> : <Navigate to='/login' /> },
+      { path: '/orders', element: (true || user) ? <Outbound /> : <Navigate to='/login' /> },
     ]
   },
   {
     path: '/products',
     element: <DashboardLayout />,
     children: [
-      {path:'/',element:(user) ? <Products/>: <Navigate to='/login' /> }
+      {path:'/',element:(true || user) ? <Products/>: <Navigate to='/login' /> }
     ]
   }
 ];
