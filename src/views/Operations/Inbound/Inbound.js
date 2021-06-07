@@ -1,7 +1,7 @@
-import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, debounce, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import SelectDropdown from '../../../components/SelectDropdown';
 import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
@@ -113,7 +113,7 @@ function Inbound() {
     const [selectedDay, setSelectedDay] = useState('')
     const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
 
-    const getInwardProducts = (page, searchKeyword) => {
+    const _getInwardProducts = (page, searchKeyword) => {
         axios.get(getURL('/inward'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
             .then(res => {
                 setPage(res.data.pages === 1 ? 1 : page)
@@ -122,6 +122,9 @@ function Inbound() {
                 setNumberOfTotalRecords(res.data.count)
             });
     }
+    const getInwardProducts = useCallback(debounce((page, searchKeyword) => {
+        _getInwardProducts(page, searchKeyword)
+    }, 300), [])
     useEffect(() => {
         getRelations()
     }, [])
