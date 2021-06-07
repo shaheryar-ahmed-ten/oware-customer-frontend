@@ -6,6 +6,7 @@ import LoginView from './views/Auth/LoginView';
 import DashboardTransactions from './views/DashboardTransactions/DashboardTransactions';
 import Inbound from './views/Operations/Inbound/Inbound';
 import Outbound from './views/Operations/Outbound/Outbound';
+import Products from './views/Products/Products';
 
 const routes = (user) => [
   {
@@ -14,24 +15,31 @@ const routes = (user) => [
     children: [
       { path: 'login', element: <LoginView /> },
       { path: '404', element: <h1>Not found view</h1> },
-      { path: '/', element: user ? <Navigate to='/administration' /> : <Navigate to='/login' /> }
+      { path: '/', element: user ? <Navigate to='/dashboard' /> : <Navigate to='/login' /> }
     ]
   },
   {
     path: '/dashboard',
     element: <DashboardLayout />,
     children: [
-      { path: '/', element: (true || !user) ? <DashboardTransactions /> : <Navigate to='/login' /> },
+      { path: '/', element: (user) ? <DashboardTransactions /> : <Navigate to='/login' /> },
     ]
   },
   {
     path: '/operation-transactions',
     element: <DashboardLayout />,
     children: [
-      { path: '/inwards', element: (true || !user) ? <Inbound /> : <Navigate to='/login' /> },
-      { path: '/orders', element: (true || !user) ? <Outbound /> : <Navigate to='/login' /> },
+      { path: '/inwards', element: (user) ? <Inbound /> : <Navigate to='/login' /> },
+      { path: '/orders', element: (user) ? <Outbound /> : <Navigate to='/login' /> },
     ]
   },
+  {
+    path: '/products',
+    element: <DashboardLayout />,
+    children: [
+      {path:'/',element:(user) ? <Products/>: <Navigate to='/login' /> }
+    ]
+  }
 ];
 
 export default routes;
