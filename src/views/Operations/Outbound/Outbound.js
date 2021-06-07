@@ -163,7 +163,8 @@ function Outbound() {
     const [selectedOutboundOrder, setSelectedOutboundOrder] = useState(null);
     const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
 
-    const getOutwardOrders = useCallback(debounce(() => {
+    const _getOutwardOrders = (page, searchKeyword) => {
+        console.log("Called")
         axios.get(getURL('/order'), {
             params: {
                 page,
@@ -181,6 +182,9 @@ function Outbound() {
             .catch((err) => {
                 console.log(err)
             })
+    }
+    const getOutwardOrders = useCallback(debounce((page, searchKeyword) => {
+        _getOutwardOrders(page, searchKeyword)
     }, 300), [])
 
     useEffect(() => {

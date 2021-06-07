@@ -123,8 +123,10 @@ function Inbound() {
             });
     }
     useEffect(() => {
-        getInwardProducts(page, searchKeyword)
         getRelations()
+    }, [])
+    useEffect(() => {
+        getInwardProducts(page, searchKeyword)
     }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
     const getRelations = () => {
         axios.get(getURL(`/inward/relations`))
