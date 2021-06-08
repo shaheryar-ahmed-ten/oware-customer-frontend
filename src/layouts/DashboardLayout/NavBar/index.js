@@ -30,7 +30,8 @@ import owareLogo from '../../../assets/logo/owareLogo.png'
 import { removeUserToken, SharedContext } from '../../../utils/common';
 import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
-
+import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
+import HttpsOutlinedIcon from '@material-ui/icons/HttpsOutlined';
 const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
@@ -225,7 +226,25 @@ function Navbar(props) {
                 onClose={handleClose}
                 style={{ transform: 'translateY(3%)' }}
               >
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <MenuItem onClick={()=>{navigate(`/profile`)}}>
+                  <IconButton>
+                    <PersonOutlineOutlinedIcon />
+                  </IconButton>
+                  Profile
+                </MenuItem>
+                <MenuItem onClick={()=>{navigate(`/profile/security`)}}>
+                  <IconButton>
+                    <HttpsOutlinedIcon />
+                  </IconButton>
+                  Security
+                </MenuItem>
+
+                <MenuItem onClick={handleLogout}>
+                  <IconButton>
+                    <ExitToAppOutlinedIcon />
+                  </IconButton>
+                  Logout
+                </MenuItem>
               </Menu>
             </Box>
           </Box>
@@ -250,7 +269,7 @@ function Navbar(props) {
         <Divider />
         <List>
           {navList.map((item, index) => (
-            <ListItem button key={index} onClick={() => { handleNavigation(item.route) }} style={{ backgroundColor: item.bgColor}}>
+            <ListItem button key={index} onClick={() => { handleNavigation(item.route) }} style={{ backgroundColor: item.bgColor }}>
               <ListItemIcon style={{ color: item.color }}>{item.icon}</ListItemIcon>
               <ListItemText classes={{ primary: classes.listItemText }} style={{ color: item.color }} primary={item.title} />
             </ListItem>
