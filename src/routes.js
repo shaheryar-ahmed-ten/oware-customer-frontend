@@ -6,6 +6,8 @@ import LoginView from './views/Auth/LoginView';
 import DashboardTransactions from './views/DashboardTransactions/DashboardTransactions';
 import Inbound from './views/Operations/Inbound/Inbound';
 import Outbound from './views/Operations/Outbound/Outbound';
+import Profile from './views/User/Profile/Profile';
+import Security from './views/User/Security/Security';
 
 const routes = (user) => [
   {
@@ -30,6 +32,14 @@ const routes = (user) => [
     children: [
       { path: '/inwards', element: (true || !user) ? <Inbound /> : <Navigate to='/login' /> },
       { path: '/orders', element: (true || !user) ? <Outbound /> : <Navigate to='/login' /> },
+    ]
+  },
+  {
+    path: '/profile',
+    element: <DashboardLayout />,
+    children: [
+      { path: '/', element: (true || !user) ? <Profile /> : <Navigate to='/login' /> },
+      { path: '/security', element: (true || !user) ? <Security /> : <Navigate to='/login' /> },
     ]
   },
 ];
