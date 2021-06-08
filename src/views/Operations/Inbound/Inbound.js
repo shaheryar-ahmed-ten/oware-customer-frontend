@@ -1,0 +1,235 @@
+import { Box, debounce, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Pagination } from '@material-ui/lab';
+import axios from 'axios';
+import React, { useCallback, useEffect, useState } from 'react'
+import SelectDropdown from '../../../components/SelectDropdown';
+import TableHeader from '../../../components/TableHeader';
+import { dateFormat, getURL } from '../../../utils/common';
+import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
+
+const useStyles = makeStyles((theme) => ({
+    heading: {
+        fontWeight: "600"
+    },
+    searchInput: {
+        border: '1px solid grey',
+        borderRadius: 4,
+        opacity: 0.6,
+        marginRight: 7,
+        height: 30,
+        width: 400,
+        boxSizing: "border-box",
+        padding: "15px 15px"
+    },
+    tableContainer: {
+        backgroundColor: 'white'
+    },
+    gridContainer: {
+        boxSizing: 'border-box',
+        [theme.breakpoints.up('lg')]: {
+            paddingRight: 30,
+            paddingTop: 30,
+            paddingBottom: 30
+        },
+    },
+    paginationGrid: {
+        backgroundColor: 'white',
+        padding: '19px 19px 19px 0',
+        fontSize: 14,
+        color: '#AEAEAE'
+    },
+    paginationRoot: {
+        "& .MuiPaginationItem-root": {
+            color: "#AEAEAE",
+            backgroundColor: 'transparent',
+            fontSize: 14
+        },
+        '& .Mui-selected': {
+            backgroundColor: 'transparent',
+            color: '#01D5FF',
+            fontSize: 14
+        }
+    }
+}));
+
+function Inbound() {
+    const classes = useStyles()
+    const columns = [
+        {
+            id: 'createdAt',
+            label: 'DATE OF INWARD',
+            minWidth: 'auto',
+            className: '',
+            format: dateFormat
+        },
+        {
+            id: 'Warehouse.name',
+            label: 'WAREHOUSE',
+            minWidth: 'auto',
+            className: '',
+            format: (value, entity) => entity.Warehouse.name,
+        },
+        {
+            id: 'Product.name',
+            label: 'PRODUCT',
+            minWidth: 'auto',
+            className: '',
+            format: (value, entity) => entity.Product.name,
+        },
+        {
+            id: 'quantity',
+            label: 'QUANTITY',
+            minWidth: 'auto',
+            className: '',
+        },
+        {
+            id: 'referenceId',
+            label: 'REFERENCE NUMBER',
+            minWidth: 'auto',
+            className: '',
+        },
+    ]
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const [productInwards, setProductInwards] = useState([]);
+    const [pageCount, setPageCount] = useState(1);
+    const [page, setPage] = useState(1);
+    const [customerProducts, setCustomerProducts] = useState([])
+    const [customerWarehouses, setCustomerWarehouses] = useState([])
+    const [days] = useState([{
+        distinct: 7,
+        label: '7 days'
+    }, {
+        distinct: 14,
+        label: '14 days'
+    }, {
+        distinct: 30,
+        label: '30 days'
+    }, {
+        distinct: 60,
+        label: '60 days'
+    }])
+    const [selectedWarehouse, setSelectedWarehouse] = useState('')
+    const [selectedProduct, setSelectedProduct] = useState('')
+    const [selectedDay, setSelectedDay] = useState('')
+    const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
+
+    const _getInwardProducts = (page, searchKeyword) => {
+        axios.get(getURL('/inward'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
+            .then(res => {
+                setPage(res.data.pages === 1 ? 1 : page)
+                setPageCount(res.data.pages)
+                setProductInwards(res.data.data)
+                setNumberOfTotalRecords(res.data.count)
+            });
+    }
+    const getInwardProducts = useCallback(debounce((page, searchKeyword) => {
+        _getInwardProducts(page, searchKeyword)
+    }, 300), [])
+    useEffect(() => {
+        getRelations()
+    }, [])
+    useEffect(() => {
+        getInwardProducts(page, searchKeyword)
+    }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
+    const getRelations = () => {
+        axios.get(getURL(`/inward/relations`))
+            .then((response) => {
+                setCustomerProducts(response.data.relations.products)
+                setCustomerWarehouses(response.data.relations.warehouses)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    };
+    const searchInput = <InputBase
+        className={classes.searchInput}
+        id="search"
+        label="Search"
+        type="text"
+        variant="outlined"
+        value={searchKeyword}
+        key={1}
+        placeholder="Warehouse / Product / Reference No."
+        onChange={e => {
+            resetFilters();
+            setSearchKeyword(e.target.value)
+        }}
+        startAdornment={
+            <InputAdornment position="start">
+                <SearchOutlinedIcon />
+            </InputAdornment>
+        }
+    />;
+    const resetFilters = () => {
+        setSelectedWarehouse('')
+        setSelectedProduct('')
+        setSelectedDay('')
+    }
+    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ label: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
+    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ label: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
+    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[{ label: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
+    const headerButtons = [warehouseSelect, productSelect, daysSelect]
+    return (
+        <>
+            <Grid container spacing={2} className={classes.gridContainer}>
+                <Grid item xs={12}>
+                    <Typography variant="h3">
+                        <Box className={classes.heading}>Inwards</Box>
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <TableContainer className={classes.tableContainer}>
+                        <TableHeader searchInput={searchInput} buttons={headerButtons} />
+                        <Divider />
+                        <Table stickyHeader aria-label="sticky table">
+                            <TableHead>
+                                {columns.map((column, index) => (
+                                    <TableCell
+                                        key={index}
+                                        align={column.align}
+                                        style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: '600', fontSize: '12px', color: '#A9AEAF' }}
+                                    >
+                                        {column.label}
+                                    </TableCell>
+                                ))}
+                            </TableHead>
+                            <TableBody>
+                                {productInwards.map((productInward, index) => {
+                                    return (
+                                        <TableRow key={index} hover role="checkbox" tabIndex={-1}>
+                                            {columns.map((column) => {
+                                                const value = productInward[column.id];
+                                                return (
+                                                    <TableCell key={column.id} align={column.align}
+                                                        className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+                                                        {column.format ? column.format(value, productInward) : (value || '')}
+                                                    </TableCell>
+                                                );
+                                            })}
+                                        </TableRow>
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <Grid container item justify="space-between" className={classes.paginationGrid}>
+                        <Grid item>
+                            <Pagination
+                                component="div"
+                                count={pageCount}
+                                page={page}
+                                classes={{ root: classes.paginationRoot }}
+                                onChange={(e, page) => setPage(page)}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="body">Showing {productInwards.length} out of {numberOfTotalRecords} records.</Typography>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </>
+    )
+}
+
+export default Inbound
