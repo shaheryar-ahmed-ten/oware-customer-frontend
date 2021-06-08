@@ -1,5 +1,8 @@
 import { Box, Button, Grid, makeStyles, TextField, Typography } from '@material-ui/core'
-import React from 'react'
+import { Alert } from '@material-ui/lab';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react'
+import { getURL, SharedContext, setUser } from '../../../utils/common';
 
 const useStyles = makeStyles((theme) => ({
     gridContainer: {
@@ -41,16 +44,67 @@ const useStyles = makeStyles((theme) => ({
 }))
 function Profile() {
     const classes = useStyles()
+    const { currentUser, setCurrentUser } = useContext(SharedContext);
+    const [userFields, setUserFields] = useState({
+        firstName: currentUser ? currentUser.firstName : '',
+        lastName: currentUser ? currentUser.lastName : ''
+    })
+    const [formErrors, setFormErrors] = useState(null);
+    const [formSuccess, setFormSuccess] = useState(null);
+    const updateUser = data => {
+        if (userFields.firstName === '' || userFields.lastName === '') {
+            setFormErrors("Fields must not be empty.");
+        }
+        else {
+            const updatedUser = {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                username: currentUser.username,
+                phone: currentUser.phone,
+                email: currentUser.email
+            }
+            axios.put(getURL(`/user/me`), updatedUser)
+                .then(res => {
+                    if (!res.data.success) {
+                        setFormErrors(res.data.message);
+                        return
+                    }
+                    let _user = res.data.data;
+                    currentUser.firstName = _user.firstName;
+                    currentUser.lastName = _user.lastName;
+                    currentUser.phone = _user.phone;
+                    setUser(currentUser);
+                    setCurrentUser(currentUser);
+                    setFormSuccess(res.data.message)
+                })
+                .catch((err) => {
+                    console.log(err.message)
+                    setFormErrors(err.message);
+                })
+        }
+
+    };
     return (
         <>
             <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
-                        <Box className={classes.heading}>Inwards</Box>
+                        <Box className={classes.heading}>Profile</Box>
                     </Typography>
                 </Grid>
                 <Grid container item xs={12} className={classes.contentContainer}>
                     <Grid item xs={4} className={classes.fieldGrid}>
+                        {
+                            formErrors ?
+                                <Alert severity="error">{formErrors}</Alert>
+                                : null
+                        }
+                        {
+                            formSuccess ?
+                                <Alert severity="success">{formSuccess}</Alert>
+                                :
+                                null
+                        }
                         <TextField
                             id="standard-full-width"
                             label="First Name"
@@ -60,6 +114,8 @@ function Profile() {
                             InputLabelProps={{
                                 shrink: true,
                             }}
+                            value={userFields.firstName}
+                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, firstName: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
                         <TextField
                             id="standard-full-width"
@@ -70,8 +126,10 @@ function Profile() {
                             InputLabelProps={{
                                 shrink: true,
                             }}
+                            value={userFields.lastName}
+                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, lastName: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
-                        <Button variant="contained" className={classes.saveBtn}>
+                        <Button variant="contained" className={classes.saveBtn} onClick={() => { updateUser(userFields) }}>
                             Save
                         </Button>
                     </Grid>
