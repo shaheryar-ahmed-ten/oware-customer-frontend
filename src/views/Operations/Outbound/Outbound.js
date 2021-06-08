@@ -1,13 +1,14 @@
 import { Box, Button, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import SelectDropdown from '../../../components/SelectDropdown';
 import TableHeader from '../../../components/TableHeader';
 import { dateFormat, getURL } from '../../../utils/common';
 import OutboundDetails from './OutboundDetails';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import clsx from 'clsx';
+import { debounce } from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -162,7 +163,7 @@ function Outbound() {
     const [selectedOutboundOrder, setSelectedOutboundOrder] = useState(null);
     const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
 
-    const getOutwardOrders = () => {
+    const _getOutwardOrders = (page, searchKeyword) => {
         axios.get(getURL('/order'), {
             params: {
                 page,
@@ -181,6 +182,9 @@ function Outbound() {
                 console.log(err)
             })
     }
+    const getOutwardOrders = useCallback(debounce((page, searchKeyword) => {
+        _getOutwardOrders(page, searchKeyword)
+    }, 300), [])
 
     useEffect(() => {
         getRelations();
