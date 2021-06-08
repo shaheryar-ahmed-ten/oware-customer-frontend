@@ -1,9 +1,7 @@
-import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
-import { LineWeight } from '@material-ui/icons';
+import { Dialog, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { dateFormat, getURL } from '../../../utils/common';
-
+import { getURL } from '../../utils/common';
 
 const useStyles = makeStyles({
     tableContainerTop: {
@@ -28,112 +26,77 @@ const useStyles = makeStyles({
         fontWeight: '600'
     }
 });
-function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
+function ProductDetails({ open, handleClose, selectedProduct }) {
     const classes = useStyles()
     const columnsTop = [
         {
-            id: 'internalIdForBusiness',
-            label: 'ORDER ID',
+            id: 'Product.name',
+            label: 'PRODUCT NAME',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: (value, entity) => entity.Product.name,
+        },
+        {
+            id: 'category',
+            label: 'CATEGORY',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: (value, entity) => entity.Product.Category.name,
+        },
+        {
+            id: 'brand',
+            label: 'BRAND',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: (value, entity) => entity.Product.Brand.name,
+        },
+        {
+            id: 'availableQuantity',
+            label: 'QTY AVAILABLE',
             minWidth: 'auto',
             className: classes.topTableItem,
         },
         {
-            id: 'shipmentDate',
-            label: 'ORDER DATE',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-            format: dateFormat
-        },
-        {
-            id: 'warehouse',
-            label: 'WAREHOUSE',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-        },
-        {
-            id: 'product',
-            label: 'PRODUCT',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-        },
-        {
-            id: 'dispatchOrderQuantity',
-            label: 'QUANTITY ORDERD',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-        },
-        {
-            id: 'referenceId',
-            label: 'REFERENCE ID',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-        },
-        {
-            id: 'outwardQuantity',
-            label: 'QTY SHIPPED',
+            id: 'committedQuantity',
+            label: 'QTY COMMITED',
             minWidth: 'auto',
             className: classes.topTableItem,
         },
     ]
     const columns = [
         {
-            id: 'createdAt',
-            label: 'DISPATCH DATE',
+            id: 'Warehouse.name',
+            label: 'WAREHOUSE',
             minWidth: 'auto',
             className: '',
-            format: dateFormat
+            format: (value, entity) => entity.Warehouse.name,
         },
         {
-            id: 'quantity',
-            label: 'QUANTITY SHIPPED',
+            id: 'availableQuantity',
+            label: 'QTY AVAILABLE',
             minWidth: 'auto',
             className: '',
         },
         {
-            id: 'Vehicle.number',
-            label: 'VEHICLE #',
+            id: 'committedQuantity',
+            label: 'QTY COMMITED',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.Vehicle.number,
         },
-        {
-            id: 'Vehicle.type',
-            label: 'VEHICLE TYPE',
-            minWidth: 'auto',
-            className: '',
-            format: (value, entity) => entity.Vehicle.type,
-        },
-        {
-            id: 'receiverName',
-            label: 'RECEIVER NAME',
-            minWidth: 'auto',
-            className: '',
-            format: (value, entity, outwardOrder) => outwardOrder.receiverName
-        },
-        {
-            id: 'receiverPhone',
-            label: 'RECEIVER PHONE',
-            minWidth: 'auto',
-            className: '',
-            format: (value, entity, outwardOrder) => outwardOrder.receiverPhone
-        }
     ]
-
-    const [selectedProductOutwardDetails, setSelectedProductOutwardDetails] = useState([])
+    const [selectedProductDetails, setSelectedProductDetails] = useState([])
     useEffect(() => {
-        if (selectedOutboundOrder)
-            axios.get(getURL(`/order/${selectedOutboundOrder.dispatchOrderId}`))
+        if (selectedProduct)
+            axios.get(getURL(`/product/${selectedProduct.id}`))
                 .then((response) => {
-                    setSelectedProductOutwardDetails(response.data.data)
+                    setSelectedProductDetails(response.data.data)
                 })
                 .catch((err) => {
                     console.log(err)
                 })
-
-    }, [selectedOutboundOrder])
-
+    }, [selectedProduct])
     return (
-        selectedOutboundOrder ?
+        selectedProduct ?
             <div style={{ display: "inline" }}>
                 <form>
                     <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
@@ -152,13 +115,13 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                         ))}
                                     </TableHead>
                                     <TableBody>
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={selectedOutboundOrder.id}>
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={selectedProduct.id}>
                                             {columnsTop.map((column) => {
-                                                const value = selectedOutboundOrder[column.id];
+                                                const value = selectedProduct[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
                                                         className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                        {column.format ? column.format(value, selectedOutboundOrder) : (value || '')}
+                                                        {column.format ? column.format(value, selectedProduct) : (value || '')}
                                                     </TableCell>
                                                 );
                                             })}
@@ -182,40 +145,33 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                     </TableHead>
                                     <TableBody>
                                         {
-                                            selectedProductOutwardDetails.map((outwardOrder) => {
-                                                return outwardOrder.ProductOutwards.map((productOutward) => {
-                                                    return (
-                                                        <TableRow hover role="checkbox" tabIndex={-1} key={productOutward.id}>
-                                                            {columns.map((column) => {
-                                                                const value = productOutward[column.id];
-                                                                return (
-                                                                    <TableCell key={column.id} align={column.align}
-                                                                        className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                                        {column.format ? column.format(value, productOutward, outwardOrder) : (value || '')}
-                                                                    </TableCell>
-                                                                );
-                                                            })}
-                                                        </TableRow>
-                                                    )
-                                                })
+                                            selectedProductDetails.map((productDetail, index) => {
+                                                return (
+                                                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                                                        {columns.map((column, index) => {
+                                                            const value = productDetail[column.id];
+                                                            return (
+                                                                <TableCell key={index} align={column.align}
+                                                                    className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+                                                                    {column.format ? column.format(value, productDetail) : (value)}
+                                                                </TableCell>
+                                                            );
+                                                        })}
+                                                    </TableRow>
+                                                )
                                             })
                                         }
                                     </TableBody>
                                 </Table>
                             </TableContainer>
                         </DialogContent>
-                        <DialogActions>
-                            <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
-                                Close
-                            </Button>
-                        </DialogActions>
+
                     </Dialog>
                 </form>
-            </div >
+            </div>
             :
             null
-
     )
 }
 
-export default OutboundDetails
+export default ProductDetails
