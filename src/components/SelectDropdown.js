@@ -26,14 +26,14 @@ function SelectDropdown({ name, list, selectedType, setSelectedType, type, reset
                     inputProps={{ 'aria-label': 'Without label' }}
                     className={classes.placeholderText}
                 >
-                    <MenuItem value="" disabled>
+                    <MenuItem value={null} disabled>
                         <ListItemText primary={name} />
                     </MenuItem>
                     {
                         list.map((item, index) => {
                             return (
-                                <MenuItem key={index} value={item.distinct}>
-                                    <ListItemText primary={item.label || item.distinct} />
+                                <MenuItem key={index} value={item.id}>
+                                    <ListItemText primary={item.name || ''} />
                                 </MenuItem>
                             )
                         })
