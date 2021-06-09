@@ -96,25 +96,25 @@ function Inbound() {
     const [customerProducts, setCustomerProducts] = useState([])
     const [customerWarehouses, setCustomerWarehouses] = useState([])
     const [days] = useState([{
-        distinct: 7,
-        label: '7 days'
+        id: 7,
+        name: '7 days'
     }, {
-        distinct: 14,
-        label: '14 days'
+        id: 14,
+        name: '14 days'
     }, {
-        distinct: 30,
-        label: '30 days'
+        id: 30,
+        name: '30 days'
     }, {
-        distinct: 60,
-        label: '60 days'
+        id: 60,
+        name: '60 days'
     }])
-    const [selectedWarehouse, setSelectedWarehouse] = useState('')
-    const [selectedProduct, setSelectedProduct] = useState('')
-    const [selectedDay, setSelectedDay] = useState('')
+    const [selectedWarehouse, setSelectedWarehouse] = useState(null)
+    const [selectedProduct, setSelectedProduct] = useState(null)
+    const [selectedDay, setSelectedDay] = useState(null)
     const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
 
-    const _getInwardProducts = (page, searchKeyword) => {
-        axios.get(getURL('/inward'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
+    const _getInwardProducts = (page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay) => {
+        axios.get(getURL('/inward'), { params: { page, search: searchKeyword, warehouse: selectedWarehouse, product: selectedProduct, days: selectedDay } })
             .then(res => {
                 setPage(res.data.pages === 1 ? 1 : page)
                 setPageCount(res.data.pages)
@@ -122,14 +122,14 @@ function Inbound() {
                 setNumberOfTotalRecords(res.data.count)
             });
     }
-    const getInwardProducts = useCallback(debounce((page, searchKeyword) => {
-        _getInwardProducts(page, searchKeyword)
+    const getInwardProducts = useCallback(debounce((page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay) => {
+        _getInwardProducts(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay)
     }, 300), [])
     useEffect(() => {
         getRelations()
     }, [])
     useEffect(() => {
-        getInwardProducts(page, searchKeyword)
+        getInwardProducts(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay)
     }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
     const getRelations = () => {
         axios.get(getURL(`/inward/relations`))
@@ -161,13 +161,13 @@ function Inbound() {
         }
     />;
     const resetFilters = () => {
-        setSelectedWarehouse('')
-        setSelectedProduct('')
-        setSelectedDay('')
+        setSelectedWarehouse(null)
+        setSelectedProduct(null)
+        setSelectedDay(null)
     }
-    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ label: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
-    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ label: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
-    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[{ label: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
+    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ name: 'All', }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
+    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All', }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
+    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[{ name: 'All', }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
     const headerButtons = [warehouseSelect, productSelect, daysSelect]
     return (
         <>
