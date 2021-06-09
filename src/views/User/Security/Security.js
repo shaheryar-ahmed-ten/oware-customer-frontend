@@ -70,7 +70,6 @@ function Security() {
                 password: userFields.newPassword
             })
                 .then((res) => {
-                    console.log(res)
                     if (!res.data.success) {
                         setFormErrors(res.data.message);
                         return

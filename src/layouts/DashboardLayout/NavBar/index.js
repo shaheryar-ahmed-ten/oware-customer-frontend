@@ -14,7 +14,6 @@ import {
   MenuItem,
   Toolbar,
   Typography,
-  useTheme
 } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useContext, useState } from 'react'
@@ -23,7 +22,6 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import GetAppOutlinedIcon from '@material-ui/icons/GetAppOutlined';
 import BorderClearOutlinedIcon from '@material-ui/icons/BorderClearOutlined';
-import HomeWorkOutlinedIcon from '@material-ui/icons/HomeWorkOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { useLocation, useNavigate } from 'react-router-dom';
 import owareLogo from '../../../assets/logo/owareLogo.png'
@@ -137,7 +135,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 function Navbar(props) {
   const classes = useStyles();
-  const theme = useTheme();
   const [open, setOpen] = useState(true);
   const { currentUser } = useContext(SharedContext);
   let navigate = useNavigate();
@@ -226,13 +223,13 @@ function Navbar(props) {
                 onClose={handleClose}
                 style={{ transform: 'translateY(3%)' }}
               >
-                <MenuItem onClick={()=>{navigate(`/profile`)}}>
+                <MenuItem onClick={() => { navigate(`/profile`) }}>
                   <IconButton>
                     <PersonOutlineOutlinedIcon />
                   </IconButton>
                   Profile
                 </MenuItem>
-                <MenuItem onClick={()=>{navigate(`/profile/security`)}}>
+                <MenuItem onClick={() => { navigate(`/profile/security`) }}>
                   <IconButton>
                     <HttpsOutlinedIcon />
                   </IconButton>

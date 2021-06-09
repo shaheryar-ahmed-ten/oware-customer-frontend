@@ -1,7 +1,7 @@
 import { Box, Button, Grid, makeStyles, TextField, Typography } from '@material-ui/core'
 import { Alert } from '@material-ui/lab';
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { getURL, SharedContext, setUser } from '../../../utils/common';
 
 const useStyles = makeStyles((theme) => ({

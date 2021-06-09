@@ -1,5 +1,4 @@
 import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
-import { LineWeight } from '@material-ui/icons';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { dateFormat, getURL } from '../../../utils/common';
