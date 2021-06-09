@@ -27,7 +27,7 @@ import HomeWorkOutlinedIcon from '@material-ui/icons/HomeWorkOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { useLocation, useNavigate } from 'react-router-dom';
 import owareLogo from '../../../assets/logo/owareLogo.png'
-import { removeUserToken, SharedContext } from '../../../utils/common';
+import { removeAuth, SharedContext } from '../../../utils/common';
 import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
@@ -139,7 +139,7 @@ function Navbar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(true);
-  const { currentUser } = useContext(SharedContext);
+  const { currentUser, setCurrentUser } = useContext(SharedContext);
   let navigate = useNavigate();
   let currentLocation = useLocation().pathname
   const [anchorEl, setAnchorEl] = useState(null);
@@ -182,8 +182,9 @@ function Navbar(props) {
   };
 
   const handleLogout = () => {
-    removeUserToken()
-    navigate(`/login`)
+    removeAuth()
+    setCurrentUser(null)
+    navigate(`/`)
   }
 
   const handleDrawerOpen = () => {
@@ -226,13 +227,13 @@ function Navbar(props) {
                 onClose={handleClose}
                 style={{ transform: 'translateY(3%)' }}
               >
-                <MenuItem onClick={()=>{navigate(`/profile`)}}>
+                <MenuItem onClick={() => { navigate(`/profile`) }}>
                   <IconButton>
                     <PersonOutlineOutlinedIcon />
                   </IconButton>
                   Profile
                 </MenuItem>
-                <MenuItem onClick={()=>{navigate(`/profile/security`)}}>
+                <MenuItem onClick={() => { navigate(`/profile/security`) }}>
                   <IconButton>
                     <HttpsOutlinedIcon />
                   </IconButton>
