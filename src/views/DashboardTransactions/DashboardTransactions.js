@@ -69,10 +69,10 @@ function DashboardTransactions() {
         </Grid>
         <Grid container spacing={2} item={12} justify="space-between">
           <Grid item xs={6}>
-            <SecondaryWidget icon={<ArrowDownwardOutlinedIcon className={classes.successIcon} />} name="Inwards" value={inboundStats ? inboundStats.total : 0} type="Transactions" totalQuantity={inboundStats ? inboundStats.weight : 0} totalVolume={inboundStats ? inboundStats.dimensionsCBM : 0} />
+            <SecondaryWidget icon={<ArrowDownwardOutlinedIcon className={classes.successIcon} />} name="Inwards" value={(inboundStats && inboundStats.total)? inboundStats.total : 0} type="Transactions" totalQuantity={(inboundStats && inboundStats.weight)? inboundStats.weight : 0} totalVolume={(inboundStats && inboundStats.dimensionsCBM)? inboundStats.dimensionsCBM : 0} />
           </Grid>
           <Grid item xs={6}>
-            <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={outboundStats ? outboundStats.total : 0} type="Transactions" totalQuantity={outboundStats ? outboundStats.weight : 0} totalVolume={outboundStats ? outboundStats.dimensionsCBM : 0} />
+            <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={(outboundStats && outboundStats.total)? outboundStats.total : 0} type="Transactions" totalQuantity={(outboundStats && outboundStats.weight)? outboundStats.weight : 0} totalVolume={(outboundStats && outboundStats.dimensionsCBM)? outboundStats.dimensionsCBM : 0} />
           </Grid>
         </Grid>
       </Grid>
