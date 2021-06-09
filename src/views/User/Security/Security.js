@@ -1,4 +1,5 @@
 import { Box, Button, Grid, makeStyles, TextField, Typography } from '@material-ui/core'
+import { Alert } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useContext, useState } from 'react'
 import { getURL, SharedContext } from '../../../utils/common';
@@ -50,8 +51,34 @@ function Security() {
         newPassword: '',
         confirmNewPassword: ''
     })
+    const [formErrors, setFormErrors] = useState(null);
+    const [formSuccess, setFormSuccess] = useState(null);
     const updateUserPassword = data => {
-        
+        if (userFields.newPassword === '' || userFields.confirmNewPassowrd === '' || userFields.currentPassword === '') {
+            setFormErrors("Fields must not be empty.");
+            return 0
+        }
+        else if (userFields.newPassword === userFields.confirmNewPassword) {
+            axios.patch(getURL(`/user/me/password`), {
+                oldPassword: userFields.currentPassword,
+                password: userFields.newPassword
+            })
+                .then((res) => {
+                    console.log(res)
+                    if (!res.data.success) {
+                        setFormErrors(res.data.message);
+                        return
+                    }
+                    setFormSuccess(res.data.message)
+                })
+                .catch((err) => {
+                    console.log(err)
+                    setFormErrors(err.message);
+                })
+        }
+        else {
+            setFormErrors("New password and confirm password do not match.");
+        }
     };
     return (
         <>
@@ -63,6 +90,17 @@ function Security() {
                 </Grid>
                 <Grid container item xs={12} className={classes.contentContainer}>
                     <Grid item xs={4} className={classes.fieldGrid}>
+                        {
+                            formErrors ?
+                                <Alert severity="error">{formErrors}</Alert>
+                                : null
+                        }
+                        {
+                            formSuccess ?
+                                <Alert severity="success">{formSuccess}</Alert>
+                                :
+                                null
+                        }
                         <TextField
                             id="standard-full-width"
                             label="Current Passowrd"
@@ -74,7 +112,7 @@ function Security() {
                                 shrink: true,
                             }}
                             value={userFields.currentPassword}
-                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, currentPassword: e.target.value })) }}
+                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, currentPassword: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
                         <TextField
                             id="standard-full-width"
@@ -87,7 +125,7 @@ function Security() {
                                 shrink: true,
                             }}
                             value={userFields.newPassword}
-                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, newPassword: e.target.value })) }}
+                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, newPassword: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
                         <TextField
                             id="standard-full-width"
@@ -100,7 +138,7 @@ function Security() {
                                 shrink: true,
                             }}
                             value={userFields.confirmNewPassword}
-                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, confirmNewPassword: e.target.value })) }}
+                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, confirmNewPassword: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
                         <Button variant="contained" className={classes.saveBtn} onClick={() => { updateUserPassword(userFields) }}>
                             Save
