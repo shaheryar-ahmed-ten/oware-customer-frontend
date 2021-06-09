@@ -1,8 +1,8 @@
 import { Box, Button, Grid, makeStyles, TextField, Typography } from '@material-ui/core'
 import { Alert } from '@material-ui/lab';
 import axios from 'axios';
-import React, { useContext, useState } from 'react'
-import { getURL, SharedContext } from '../../../utils/common';
+import React, { useState } from 'react'
+import { getURL } from '../../../utils/common';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#01D2FF',
         color: 'white',
         border: '1px solid #01D2FF',
-        padding: '10px 30px'
+        padding: '10px 30px',
+        marginTop: '10px'
     },
     customFieldLabel: {
         color: '#383838',
@@ -51,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 function Security() {
     const classes = useStyles()
-    const { currentUser } = useContext(SharedContext);
     const [userFields, setUserFields] = useState({
         currentPassword: '',
         newPassword: '',
@@ -78,7 +78,7 @@ function Security() {
                     setFormSuccess(res.data.message)
                 })
                 .catch((err) => {
-                    console.log(err)
+                    console.log(err.message)
                     setFormErrors(err.message);
                 })
         }
@@ -110,7 +110,6 @@ function Security() {
                         <Typography className={classes.customFieldLabel}>Current Password</Typography>
                         <TextField
                             id="standard-full-width"
-                            // label="Current Passowrd"
                             fullWidth
                             type="password"
                             margin="normal"
@@ -121,10 +120,11 @@ function Security() {
                             value={userFields.currentPassword}
                             onChange={(e) => { setUserFields((prevState) => ({ ...prevState, currentPassword: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
+                        <br />
+                        <br />
                         <Typography className={classes.customFieldLabel}>New Password</Typography>
                         <TextField
                             id="standard-full-width"
-                            // label="New Passowrd"
                             fullWidth
                             type="password"
                             margin="normal"
@@ -135,10 +135,11 @@ function Security() {
                             value={userFields.newPassword}
                             onChange={(e) => { setUserFields((prevState) => ({ ...prevState, newPassword: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
+                        <br />
+                        <br />
                         <Typography className={classes.customFieldLabel}>Confirm New Password</Typography>
                         <TextField
                             id="standard-full-width"
-                            // label="Confirm New Passowrd"
                             fullWidth
                             type="password"
                             margin="normal"
