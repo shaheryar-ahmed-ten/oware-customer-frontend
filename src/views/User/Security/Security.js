@@ -41,7 +41,13 @@ const useStyles = makeStyles((theme) => ({
         color: 'white',
         border: '1px solid #01D2FF',
         padding: '10px 30px'
-    }
+    },
+    customFieldLabel: {
+        color: '#383838',
+        fontSize: 14,
+        lineHeight: '17px',
+        fontWeight: '400'
+    },
 }))
 function Security() {
     const classes = useStyles()
@@ -101,9 +107,10 @@ function Security() {
                                 :
                                 null
                         }
+                        <Typography className={classes.customFieldLabel}>Current Password</Typography>
                         <TextField
                             id="standard-full-width"
-                            label="Current Passowrd"
+                            // label="Current Passowrd"
                             fullWidth
                             type="password"
                             margin="normal"
@@ -114,9 +121,10 @@ function Security() {
                             value={userFields.currentPassword}
                             onChange={(e) => { setUserFields((prevState) => ({ ...prevState, currentPassword: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
+                        <Typography className={classes.customFieldLabel}>New Password</Typography>
                         <TextField
                             id="standard-full-width"
-                            label="New Passowrd"
+                            // label="New Passowrd"
                             fullWidth
                             type="password"
                             margin="normal"
@@ -127,9 +135,10 @@ function Security() {
                             value={userFields.newPassword}
                             onChange={(e) => { setUserFields((prevState) => ({ ...prevState, newPassword: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
+                        <Typography className={classes.customFieldLabel}>Confirm New Password</Typography>
                         <TextField
                             id="standard-full-width"
-                            label="Confirm New Passowrd"
+                            // label="Confirm New Passowrd"
                             fullWidth
                             type="password"
                             margin="normal"

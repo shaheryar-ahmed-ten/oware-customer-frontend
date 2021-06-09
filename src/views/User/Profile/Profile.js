@@ -39,7 +39,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#01D2FF',
         color: 'white',
         border: '1px solid #01D2FF',
-        padding: '10px 30px'
+        padding: '12px 30px',
+        marginTop: '20px'
     },
     customFieldLabel: {
         color: '#383838',
