@@ -1,7 +1,7 @@
 import { Box, Button, Grid, makeStyles, TextField, Typography } from '@material-ui/core'
 import { Alert } from '@material-ui/lab';
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { getURL, SharedContext, setUser } from '../../../utils/common';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,7 +39,17 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#01D2FF',
         color: 'white',
         border: '1px solid #01D2FF',
-        padding: '10px 30px'
+        padding: '12px 30px',
+        marginTop: '10px'
+    },
+    customFieldLabel: {
+        color: '#383838',
+        fontSize: 14,
+        lineHeight: '17px',
+        fontWeight: '400'
+    },
+    customField: {
+        // border: '1px solid black'
     }
 }))
 function Profile() {
@@ -78,7 +88,6 @@ function Profile() {
                     setFormSuccess(res.data.message)
                 })
                 .catch((err) => {
-                    console.log(err.message)
                     setFormErrors(err.message);
                 })
         }
@@ -105,9 +114,10 @@ function Profile() {
                                 :
                                 null
                         }
+                        <Typography className={classes.customFieldLabel}>First Name</Typography>
                         <TextField
+                            className={classes.customField}
                             id="standard-full-width"
-                            label="First Name"
                             fullWidth
                             margin="normal"
                             variant="outlined"
@@ -117,9 +127,12 @@ function Profile() {
                             value={userFields.firstName}
                             onChange={(e) => { setUserFields((prevState) => ({ ...prevState, firstName: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
+                        <br />
+                        <br />
+                        <Typography className={classes.customFieldLabel}>Last Name</Typography>
                         <TextField
+                            className={classes.customFieldLabel}
                             id="standard-full-width"
-                            label="Last Name"
                             fullWidth
                             margin="normal"
                             variant="outlined"

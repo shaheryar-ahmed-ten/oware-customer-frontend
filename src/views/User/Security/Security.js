@@ -1,7 +1,8 @@
 import { Box, Button, Grid, makeStyles, TextField, Typography } from '@material-ui/core'
+import { Alert } from '@material-ui/lab';
 import axios from 'axios';
-import React, { useContext, useState } from 'react'
-import { getURL, SharedContext } from '../../../utils/common';
+import React, { useState } from 'react'
+import { getURL } from '../../../utils/common';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,19 +40,50 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#01D2FF',
         color: 'white',
         border: '1px solid #01D2FF',
-        padding: '10px 30px'
-    }
+        padding: '10px 30px',
+        marginTop: '10px'
+    },
+    customFieldLabel: {
+        color: '#383838',
+        fontSize: 14,
+        lineHeight: '17px',
+        fontWeight: '400'
+    },
 }))
 function Security() {
     const classes = useStyles()
-    const { currentUser } = useContext(SharedContext);
     const [userFields, setUserFields] = useState({
         currentPassword: '',
         newPassword: '',
         confirmNewPassword: ''
     })
+    const [formErrors, setFormErrors] = useState(null);
+    const [formSuccess, setFormSuccess] = useState(null);
     const updateUserPassword = data => {
-        
+        if (userFields.newPassword === '' || userFields.confirmNewPassowrd === '' || userFields.currentPassword === '') {
+            setFormErrors("Fields must not be empty.");
+            return 0
+        }
+        else if (userFields.newPassword === userFields.confirmNewPassword) {
+            axios.patch(getURL(`/user/me/password`), {
+                oldPassword: userFields.currentPassword,
+                password: userFields.newPassword
+            })
+                .then((res) => {
+                    if (!res.data.success) {
+                        setFormErrors(res.data.message);
+                        return
+                    }
+                    setFormSuccess(res.data.message)
+                })
+                .catch((err) => {
+                    console.log(err.message)
+                    setFormErrors(err.message);
+                })
+        }
+        else {
+            setFormErrors("New password and confirm password do not match.");
+        }
     };
     return (
         <>
@@ -63,9 +95,20 @@ function Security() {
                 </Grid>
                 <Grid container item xs={12} className={classes.contentContainer}>
                     <Grid item xs={4} className={classes.fieldGrid}>
+                        {
+                            formErrors ?
+                                <Alert severity="error">{formErrors}</Alert>
+                                : null
+                        }
+                        {
+                            formSuccess ?
+                                <Alert severity="success">{formSuccess}</Alert>
+                                :
+                                null
+                        }
+                        <Typography className={classes.customFieldLabel}>Current Password</Typography>
                         <TextField
                             id="standard-full-width"
-                            label="Current Passowrd"
                             fullWidth
                             type="password"
                             margin="normal"
@@ -74,11 +117,13 @@ function Security() {
                                 shrink: true,
                             }}
                             value={userFields.currentPassword}
-                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, currentPassword: e.target.value })) }}
+                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, currentPassword: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
+                        <br />
+                        <br />
+                        <Typography className={classes.customFieldLabel}>New Password</Typography>
                         <TextField
                             id="standard-full-width"
-                            label="New Passowrd"
                             fullWidth
                             type="password"
                             margin="normal"
@@ -87,11 +132,13 @@ function Security() {
                                 shrink: true,
                             }}
                             value={userFields.newPassword}
-                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, newPassword: e.target.value })) }}
+                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, newPassword: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
+                        <br />
+                        <br />
+                        <Typography className={classes.customFieldLabel}>Confirm New Password</Typography>
                         <TextField
                             id="standard-full-width"
-                            label="Confirm New Passowrd"
                             fullWidth
                             type="password"
                             margin="normal"
@@ -100,7 +147,7 @@ function Security() {
                                 shrink: true,
                             }}
                             value={userFields.confirmNewPassword}
-                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, confirmNewPassword: e.target.value })) }}
+                            onChange={(e) => { setUserFields((prevState) => ({ ...prevState, confirmNewPassword: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
                         <Button variant="contained" className={classes.saveBtn} onClick={() => { updateUserPassword(userFields) }}>
                             Save

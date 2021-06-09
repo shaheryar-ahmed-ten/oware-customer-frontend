@@ -1,4 +1,4 @@
-import { FormControl, ListItemIcon, ListItemText, makeStyles, MenuItem, Select } from '@material-ui/core'
+import { FormControl, ListItemText, makeStyles, MenuItem, Select } from '@material-ui/core'
 import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
