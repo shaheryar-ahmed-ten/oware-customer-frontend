@@ -1,11 +1,13 @@
-import { Box, debounce, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
-import { Pagination } from '@material-ui/lab';
-import axios from 'axios';
-import React, { useCallback, useEffect, useState } from 'react'
-import SelectDropdown from '../../../components/SelectDropdown';
-import TableHeader from '../../../components/TableHeader';
-import { dateFormat, getURL } from '../../../utils/common';
+import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { getURL } from '../../utils/common'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
+import SelectDropdown from '../../components/SelectDropdown';
+import TableHeader from '../../components/TableHeader';
+import { Pagination } from '@material-ui/lab';
+import ProductDetails from './ProductDetails';
+
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -23,6 +25,14 @@ const useStyles = makeStyles((theme) => ({
     },
     tableContainer: {
         backgroundColor: 'white'
+    },
+    productNameStyle: {
+        color: '#1C7DFE',
+        textDecoration: 'underline'
+    },
+    statusButtons: {
+        fontSize: 12,
+        borderRadius: '20px'
     },
     gridContainer: {
         boxSizing: 'border-box',
@@ -49,98 +59,103 @@ const useStyles = makeStyles((theme) => ({
             color: '#01D5FF',
             fontSize: 14
         }
+    },
+    pendingStatusButtonStyling: {
+        backgroundColor: '#FFEEDB',
+        color: '#F69148'
+    },
+    partialStatusButtonStyling: {
+        backgroundColor: '#F0F0F0',
+        color: '#7D7D7D',
+        width: 150,
+    },
+    fullfilledStatusButtonStyling: {
+        backgroundColor: '#EAF7D5',
+        color: '#69A022'
     }
 }));
-
-function Inbound() {
+function Products() {
     const classes = useStyles()
     const columns = [
         {
-            id: 'createdAt',
-            label: 'DATE OF INWARD',
-            minWidth: 'auto',
-            className: '',
-            format: dateFormat
-        },
-        {
-            id: 'Warehouse.name',
-            label: 'WAREHOUSE',
-            minWidth: 'auto',
-            className: '',
-            format: (value, entity) => entity.Warehouse.name,
-        },
-        {
             id: 'Product.name',
-            label: 'PRODUCT',
+            label: 'PRODUCT NAME',
             minWidth: 'auto',
-            className: '',
+            className: classes.productNameStyle,
             format: (value, entity) => entity.Product.name,
         },
         {
-            id: 'quantity',
-            label: 'QUANTITY',
+            id: 'category',
+            label: 'CATEGORY',
+            minWidth: 'auto',
+            className: '',
+            format: (value, entity) => entity.Product.Category.name,
+        },
+        {
+            id: 'brand',
+            label: 'BRAND',
+            minWidth: 'auto',
+            className: '',
+            format: (value, entity) => entity.Product.Brand.name,
+        },
+        {
+            id: 'uom',
+            label: 'UOM',
+            minWidth: 'auto',
+            className: '',
+            format: (value, entity) => entity.Product.UOM.name,
+        },
+        {
+            id: 'availableQuantity',
+            label: 'QTY AVAILABLE',
             minWidth: 'auto',
             className: '',
         },
         {
-            id: 'referenceId',
-            label: 'REFERENCE NUMBER',
+            id: 'committedQuantity',
+            label: 'QTY COMMITED',
             minWidth: 'auto',
             className: '',
         },
     ]
-    const [searchKeyword, setSearchKeyword] = useState('');
-    const [productInwards, setProductInwards] = useState([]);
+    const [products, setProducts] = useState([]);
     const [pageCount, setPageCount] = useState(1);
     const [page, setPage] = useState(1);
-    const [customerProducts, setCustomerProducts] = useState([])
-    const [customerWarehouses, setCustomerWarehouses] = useState([])
-    const [days] = useState([{
-        distinct: 7,
-        label: '7 days'
-    }, {
-        distinct: 14,
-        label: '14 days'
-    }, {
-        distinct: 30,
-        label: '30 days'
-    }, {
-        distinct: 60,
-        label: '60 days'
-    }])
-    const [selectedWarehouse, setSelectedWarehouse] = useState('')
-    const [selectedProduct, setSelectedProduct] = useState('')
-    const [selectedDay, setSelectedDay] = useState('')
     const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const [productDetailsViewOpen, setProductDetailsViewOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
-    const _getInwardProducts = (page, searchKeyword) => {
-        axios.get(getURL('/inward'), { params: { page, search: searchKeyword || selectedWarehouse || selectedProduct, days: selectedDay } })
-            .then(res => {
+    useEffect(() => {
+        getProducts()
+    }, [page, searchKeyword])
+    const getProducts = () => {
+        axios.get(getURL(`/product`), {
+            params: {
+                page,
+                search: searchKeyword
+            }
+        })
+            .then((res) => {
                 setPage(res.data.pages === 1 ? 1 : page)
                 setPageCount(res.data.pages)
-                setProductInwards(res.data.data)
+                setProducts(res.data.data)
                 setNumberOfTotalRecords(res.data.count)
-            });
-    }
-    const getInwardProducts = useCallback(debounce((page, searchKeyword) => {
-        _getInwardProducts(page, searchKeyword)
-    }, 300), [])
-    useEffect(() => {
-        getRelations()
-    }, [])
-    useEffect(() => {
-        getInwardProducts(page, searchKeyword)
-    }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
-    const getRelations = () => {
-        axios.get(getURL(`/inward/relations`))
-            .then((response) => {
-                setCustomerProducts(response.data.relations.products)
-                setCustomerWarehouses(response.data.relations.warehouses)
             })
             .catch((err) => {
                 console.log(err)
             })
-    };
+    }
+
+    const openViewDetails = product => {
+        setSelectedProduct(product);
+        setProductDetailsViewOpen(true)
+    }
+    const closeOutboundDetailsView = () => {
+        setProductDetailsViewOpen(false)
+        setSelectedProduct(null)
+    }
+
     const searchInput = <InputBase
         className={classes.searchInput}
         id="search"
@@ -149,9 +164,8 @@ function Inbound() {
         variant="outlined"
         value={searchKeyword}
         key={1}
-        placeholder="Warehouse / Product / Reference No."
+        placeholder="Product Name"
         onChange={e => {
-            resetFilters();
             setSearchKeyword(e.target.value)
         }}
         startAdornment={
@@ -159,22 +173,17 @@ function Inbound() {
                 <SearchOutlinedIcon />
             </InputAdornment>
         }
-    />;
-    const resetFilters = () => {
-        setSelectedWarehouse('')
-        setSelectedProduct('')
-        setSelectedDay('')
-    }
-    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ label: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
-    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ label: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
-    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[{ label: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
-    const headerButtons = [warehouseSelect, productSelect, daysSelect]
+    />
+    const productDetailsView = <ProductDetails open={productDetailsViewOpen} handleClose={closeOutboundDetailsView} selectedProduct={selectedProduct} />
+
+    const headerButtons = [productDetailsView]
+
     return (
         <>
             <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
-                        <Box className={classes.heading}>Inwards</Box>
+                        <Box className={classes.heading}>Outwards</Box>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -194,15 +203,15 @@ function Inbound() {
                                 ))}
                             </TableHead>
                             <TableBody>
-                                {productInwards.map((productInward, index) => {
+                                {products.map((product, index) => {
                                     return (
-                                        <TableRow key={index} hover role="checkbox" tabIndex={-1}>
+                                        <TableRow key={index} hover role="checkbox" tabIndex={-1} onClick={() => openViewDetails(product)}>
                                             {columns.map((column) => {
-                                                const value = productInward[column.id];
+                                                const value = product[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
                                                         className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                        {column.format ? column.format(value, productInward) : (value || '')}
+                                                        {column.format ? column.format(value, product) : (value || '')}
                                                     </TableCell>
                                                 );
                                             })}
@@ -223,7 +232,7 @@ function Inbound() {
                             />
                         </Grid>
                         <Grid item>
-                            <Typography variant="body">Showing {productInwards.length} out of {numberOfTotalRecords} records.</Typography>
+                            <Typography variant="body">Showing {products.length} out of {numberOfTotalRecords} records.</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -232,4 +241,4 @@ function Inbound() {
     )
 }
 
-export default Inbound
+export default Products

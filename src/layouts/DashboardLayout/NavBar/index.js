@@ -165,7 +165,7 @@ function Navbar(props) {
   {
     title: "Products",
     icon: <ClassOutlinedIcon />,
-    route: '/dashboard',
+    route: '/products',
     color: currentLocation.includes('products') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('products') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
   },

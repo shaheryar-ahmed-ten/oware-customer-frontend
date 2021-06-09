@@ -8,8 +8,9 @@ import Inbound from './views/Operations/Inbound/Inbound';
 import Outbound from './views/Operations/Outbound/Outbound';
 import Profile from './views/User/Profile/Profile';
 import Security from './views/User/Security/Security';
+import Products from './views/Products/Products';
 
-const routes = (user) => [
+const routes = user => [
   {
     path: '/',
     element: <MainLayout />,
@@ -23,25 +24,32 @@ const routes = (user) => [
     path: '/dashboard',
     element: <DashboardLayout />,
     children: [
-      { path: '/', element: (user) ? <DashboardTransactions /> : <Navigate to='/login' /> },
+      { path: '/', element: user ? <DashboardTransactions /> : <Navigate to='/login' /> },
     ]
   },
   {
     path: '/operation-transactions',
     element: <DashboardLayout />,
     children: [
-      { path: '/inwards', element: (user) ? <Inbound /> : <Navigate to='/login' /> },
-      { path: '/orders', element: (user) ? <Outbound /> : <Navigate to='/login' /> },
+      { path: '/inwards', element: user ? <Inbound /> : <Navigate to='/login' /> },
+      { path: '/orders', element: user ? <Outbound /> : <Navigate to='/login' /> },
     ]
   },
   {
     path: '/profile',
     element: <DashboardLayout />,
     children: [
-      { path: '/', element: (user) ? <Profile /> : <Navigate to='/login' /> },
-      { path: '/security', element: (user) ? <Security /> : <Navigate to='/login' /> },
+      { path: '/', element: user ? <Profile /> : <Navigate to='/login' /> },
+      { path: '/security', element: user ? <Security /> : <Navigate to='/login' /> },
     ]
   },
+  {
+    path: '/products',
+    element: <DashboardLayout />,
+    children: [
+      { path: '/', element: user ? <Products /> : <Navigate to='/login' /> }
+    ]
+  }
 ];
 
 export default routes;
