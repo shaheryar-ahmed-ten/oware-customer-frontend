@@ -30,7 +30,7 @@ const TableHeader = ({ searchInput, buttons, filterCount }) => {
             <Grid item xs={filterCount > 3 ? 5 : 6}>
               {searchInput}
             </Grid>
-            <Grid container item xs={filterCount > 3 ? 7 : 6} justify="space-between">
+            <Grid container item xs={filterCount > 3 ? 7 : 6} justify={filterCount > 1 ? 'space-between':'flex-end'}>
               {
                 buttons.map((button, index) => {
                   return (
