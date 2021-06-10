@@ -9,7 +9,10 @@ import OutboundDetails from './OutboundDetails';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import clsx from 'clsx';
 import { debounce } from 'lodash';
-
+import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
+import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
+import MoreHorizOutlinedIcon from '@material-ui/icons/MoreHorizOutlined';
 const useStyles = makeStyles((theme) => ({
     heading: {
         fontWeight: "600"
@@ -231,10 +234,10 @@ function Outbound() {
         setSelectedDay(null);
         setSelectedStatus(null);
     }
-    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ name: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
-    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
-    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[{ name: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
-    const statusSelect = <SelectDropdown resetFilters={resetFilters} type="Status" name="Select Status" list={[{ name: 'All' }, ...statuses]} selectedType={selectedStatus} setSelectedType={setSelectedStatus} />
+    const warehouseSelect = <SelectDropdown icon={<HomeOutlinedIcon />} resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ name: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
+    const productSelect = <SelectDropdown icon={<ClassOutlinedIcon />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
+    const daysSelect = <SelectDropdown icon={<CalendarTodayOutlinedIcon />} resetFilters={resetFilters} type="Days" name="Select Days" list={[{ name: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
+    const statusSelect = <SelectDropdown icon={<MoreHorizOutlinedIcon />} resetFilters={resetFilters} type="Status" name="Select Status" list={[{ name: 'All' }, ...statuses]} selectedType={selectedStatus} setSelectedType={setSelectedStatus} />
 
     const outboundDetailsView = <OutboundDetails open={outboundDetailViewOpen} handleClose={closeOutboundDetailsView} selectedOutboundOrder={selectedOutboundOrder} />
 
