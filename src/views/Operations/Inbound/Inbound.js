@@ -179,7 +179,7 @@ function Inbound() {
                 </Grid>
                 <Grid item xs={12}>
                     <TableContainer className={classes.tableContainer}>
-                        <TableHeader searchInput={searchInput} buttons={headerButtons} />
+                        <TableHeader searchInput={searchInput} buttons={headerButtons} filterCount={3} />
                         <Divider />
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>

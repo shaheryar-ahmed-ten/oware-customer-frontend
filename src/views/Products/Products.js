@@ -125,15 +125,21 @@ function Products() {
     const [searchKeyword, setSearchKeyword] = useState('');
     const [productDetailsViewOpen, setProductDetailsViewOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [selectedProductForDropdown, setSelectedProductForDropdown] = useState(null);
+    const [customerProducts, setCustomerProducts] = useState([])
 
     useEffect(() => {
         getProducts()
-    }, [page, searchKeyword])
+    }, [page, searchKeyword, selectedProductForDropdown])
+    useEffect(() => {
+        getRealtions()
+    }, [])
     const getProducts = () => {
         axios.get(getURL(`/product`), {
             params: {
                 page,
-                search: searchKeyword
+                search: searchKeyword,
+                product: selectedProductForDropdown,
             }
         })
             .then((res) => {
@@ -141,6 +147,17 @@ function Products() {
                 setPageCount(res.data.pages)
                 setProducts(res.data.data)
                 setNumberOfTotalRecords(res.data.count)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    const getRealtions = () => {
+        axios.get(getURL('/product/relations'))
+            .then((res) => {
+                console.log(res)
+                setCustomerProducts(res.data.relations.products)
             })
             .catch((err) => {
                 console.log(err)
@@ -166,6 +183,7 @@ function Products() {
         key={1}
         placeholder="Product Name"
         onChange={e => {
+            resetFilters();
             setSearchKeyword(e.target.value)
         }}
         startAdornment={
@@ -174,21 +192,27 @@ function Products() {
             </InputAdornment>
         }
     />
+    const resetFilters = () => {
+        setSelectedProductForDropdown(null);
+    }
+    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProductForDropdown} setSelectedType={setSelectedProductForDropdown} />
+
+
     const productDetailsView = <ProductDetails open={productDetailsViewOpen} handleClose={closeOutboundDetailsView} selectedProduct={selectedProduct} />
 
-    const headerButtons = [productDetailsView]
+    const headerButtons = [productSelect, productDetailsView]
 
     return (
         <>
             <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
-                        <Box className={classes.heading}>Outwards</Box>
+                        <Box className={classes.heading}>Products</Box>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <TableContainer className={classes.tableContainer}>
-                        <TableHeader searchInput={searchInput} buttons={headerButtons} />
+                        <TableHeader searchInput={searchInput} buttons={headerButtons} filterCount={1} />
                         <Divider />
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>

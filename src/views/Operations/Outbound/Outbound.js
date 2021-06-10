@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.6,
         marginRight: 7,
         height: 30,
-        width: 400,
+        width: 350,
         boxSizing: "border-box",
         padding: "15px 15px"
     },
@@ -253,7 +253,7 @@ function Outbound() {
                 </Grid>
                 <Grid item xs={12}>
                     <TableContainer className={classes.tableContainer}>
-                        <TableHeader searchInput={searchInput} buttons={headerButtons} />
+                        <TableHeader searchInput={searchInput} buttons={headerButtons} filterCount={4} />
                         <Divider />
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>

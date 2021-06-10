@@ -16,7 +16,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
@@ -140,7 +140,6 @@ function Navbar(props) {
   let navigate = useNavigate();
   let currentLocation = useLocation().pathname
   const [anchorEl, setAnchorEl] = useState(null);
-
   const navList = [{
     title: "Dashboard",
     icon: <HomeOutlinedIcon />,
@@ -206,8 +205,8 @@ function Navbar(props) {
           })} />
           <Box display="flex" alignItems="center" textAlign="right">
             <Box>
-              <Typography className={classes.userName}>{currentUser ? currentUser.username : ''}</Typography>
-              <Typography className={classes.userType}>{currentUser ? currentUser.Role.type.toLowerCase() : ''}</Typography>
+              <Typography className={classes.userName}>{currentUser ? currentUser.firstName+' '+currentUser.lastName : ''}</Typography>
+              <Typography className={classes.userType}>{currentUser ? currentUser.username : ''}</Typography>
             </Box>
             <Box p={1}>
               <Avatar>
