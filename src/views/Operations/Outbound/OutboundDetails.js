@@ -9,19 +9,19 @@ const useStyles = makeStyles({
         backgroundColor: '#F8F8F8'
     },
     tableContainer: {
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        paddingTop: 31
     },
     closeButton: {
         backgroundColor: '#0DBDE0;'
-    },
-    dialogContent: {
-        padding: '0'
     },
     tableHeaderItem: {
         fontSize: 12,
         color: '#A9AEAF',
         fontWeight: '600',
-        LineWeight: '15px'
+        LineWeight: '15px',
+        backgroundColor: '#F8F8F8',
+        borderBottom: "none"
     },
     topTableItem: {
         fontWeight: '600'
@@ -136,7 +136,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             <div style={{ display: "inline" }}>
                 <form>
                     <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
-                        <DialogContent className={classes.dialogContent}>
+                        <DialogContent style={{ padding: 0, minHeight:'80vh' }}>
                             <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
@@ -203,7 +203,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                 </Table>
                             </TableContainer>
                         </DialogContent>
-                        <DialogActions>
+                        <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
                             <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
                                 Close
                             </Button>
