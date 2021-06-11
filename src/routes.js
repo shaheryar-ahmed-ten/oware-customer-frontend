@@ -9,6 +9,8 @@ import Outbound from './views/Operations/Outbound/Outbound';
 import Profile from './views/User/Profile/Profile';
 import Security from './views/User/Security/Security';
 import Products from './views/Products/Products';
+import ForgotPassword from './views/Auth/ForgotPassword';
+import ChangePassword from './views/Auth/ChangePassword';
 import { checkPermission } from './utils/auth';
 import {
   CP_DASHBOARD_FULL,
@@ -22,7 +24,9 @@ const routes = user => [
     path: '/',
     element: <MainLayout />,
     children: [
-      { path: 'login', element: checkPermission(user, CP_DASHBOARD_FULL) ? <Navigate to='/dashboard' /> : <LoginView /> },
+      { path: 'login', element: user ? <Navigate to='/dashboard' /> : <LoginView /> },
+      { path: 'forgot-password', element: user ? <Navigate to='/dashboard' /> : <ForgotPassword /> },
+      { path: 'forgot-password/change-password', element: user ? <Navigate to='/dashboard' /> : <ChangePassword /> },
       { path: '404', element: <h1>Not found view</h1> },
       { path: '/', element: user ? <Navigate to='/dashboard' /> : <Navigate to='/login' /> }
     ]
