@@ -25,11 +25,12 @@ import BorderClearOutlinedIcon from '@material-ui/icons/BorderClearOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { useLocation, useNavigate } from 'react-router-dom';
 import owareLogo from '../../../assets/logo/owareLogo.png'
-import { removeAuth, SharedContext } from '../../../utils/common';
+import { SharedContext } from '../../../utils/common';
 import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import HttpsOutlinedIcon from '@material-ui/icons/HttpsOutlined';
+import { removeAuth } from '../../../utils/auth';
 const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
