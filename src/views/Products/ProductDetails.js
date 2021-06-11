@@ -122,6 +122,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                                 const value = selectedProduct[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
+                                                        style={{ paddingTop: '0' }}
                                                         className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
                                                         {column.format ? column.format(value, selectedProduct) : (value || '')}
                                                     </TableCell>

@@ -136,7 +136,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             <div style={{ display: "inline" }}>
                 <form>
                     <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
-                        <DialogContent style={{ padding: 0, minHeight:'80vh' }}>
+                        <DialogContent style={{ padding: 0, minHeight: '80vh' }}>
                             <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
@@ -156,6 +156,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                                 const value = selectedOutboundOrder[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
+                                                        style={{ paddingTop: '0' }}
                                                         className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
                                                         {column.format ? column.format(value, selectedOutboundOrder) : (value || '')}
                                                     </TableCell>

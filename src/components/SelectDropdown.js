@@ -37,14 +37,14 @@ function SelectDropdown({ name, list, selectedType, setSelectedType, icon, reset
                     }
                 >
                     <MenuItem value={null} disabled>
-                        <ListItemText primary={name} classes={{root:classes.dropdownListItem}} />
+                        <ListItemText primary={name} classes={{ root: classes.dropdownListItem }} />
                     </MenuItem>
 
                     {
                         list.map((item, index) => {
                             return (
                                 <MenuItem key={index} value={item.id}>
-                                    <ListItemText primary={item.name || ''} classes={{root:classes.dropdownListItem}} />
+                                    <ListItemText primary={item.name || ''} classes={{ root: classes.dropdownListItem }} />
                                 </MenuItem>
                             )
                         })
