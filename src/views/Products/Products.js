@@ -7,6 +7,7 @@ import SelectDropdown from '../../components/SelectDropdown';
 import TableHeader from '../../components/TableHeader';
 import { Pagination } from '@material-ui/lab';
 import ProductDetails from './ProductDetails';
+import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -195,7 +196,7 @@ function Products() {
     const resetFilters = () => {
         setSelectedProductForDropdown(null);
     }
-    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProductForDropdown} setSelectedType={setSelectedProductForDropdown} />
+    const productSelect = <SelectDropdown icon={<ClassOutlinedIcon />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProductForDropdown} setSelectedType={setSelectedProductForDropdown} />
 
 
     const productDetailsView = <ProductDetails open={productDetailsViewOpen} handleClose={closeOutboundDetailsView} selectedProduct={selectedProduct} />
