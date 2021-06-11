@@ -25,11 +25,13 @@ import BorderClearOutlinedIcon from '@material-ui/icons/BorderClearOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { useLocation, useNavigate } from 'react-router-dom';
 import owareLogo from '../../../assets/logo/owareLogo.png'
-import { removeAuth, SharedContext } from '../../../utils/common';
+import { SharedContext } from '../../../utils/common';
 import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import HttpsOutlinedIcon from '@material-ui/icons/HttpsOutlined';
+import { checkPermission, removeAuth } from '../../../utils/auth';
+import { CP_DASHBOARD_FULL, CP_INWARD_FULL, CP_ORDER_FULL, CP_PRODUCT_FULL } from '../../../PermissionConstants';
 const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
@@ -146,6 +148,7 @@ function Navbar(props) {
     route: '/dashboard',
     color: currentLocation.includes('dashboard') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('dashboard') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
+    canActivate: checkPermission(currentUser,CP_DASHBOARD_FULL)
   },
   {
     title: "Inwards",
@@ -153,6 +156,7 @@ function Navbar(props) {
     route: '/operation-transactions/inwards',
     color: currentLocation.includes('inwards') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('inwards') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
+    canActivate: checkPermission(currentUser,CP_INWARD_FULL)
   },
   {
     title: "Orders",
@@ -160,6 +164,7 @@ function Navbar(props) {
     route: '/operation-transactions/orders',
     color: currentLocation.includes('orders') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('orders') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
+    canActivate: checkPermission(currentUser,CP_ORDER_FULL)
   },
   {
     title: "Products",
@@ -167,6 +172,8 @@ function Navbar(props) {
     route: '/products',
     color: currentLocation.includes('products') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('products') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
+    canActivate: checkPermission(currentUser,CP_PRODUCT_FULL)
+
   },
   ]
   const handleClick = (event) => {
@@ -266,10 +273,13 @@ function Navbar(props) {
         <Divider />
         <List>
           {navList.map((item, index) => (
+            item.canActivate ?
             <ListItem button key={index} onClick={() => { handleNavigation(item.route) }} style={{ backgroundColor: item.bgColor }}>
               <ListItemIcon style={{ color: item.color }}>{item.icon}</ListItemIcon>
               <ListItemText classes={{ primary: classes.listItemText }} style={{ color: item.color }} primary={item.title} />
             </ListItem>
+            :
+            ''
           ))}
         </List>
         <IconButton style={{ backgroundColor: 'transparent', position: 'absolute', bottom: '0', right: '0' }} disableRipple disableFocusRipple onClick={!open ? handleDrawerOpen : handleDrawerClose}>

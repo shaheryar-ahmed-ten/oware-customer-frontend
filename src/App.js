@@ -4,8 +4,9 @@ import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from '../src/components/GlobalStyles';
 import theme from './theme';
 import routes from '../src/routes';
-import { SharedContext, getUserToken, getUser } from './utils/common';
+import { SharedContext } from './utils/common';
 import { setRequestInterceptor, setResponseInterceptor, ejectRequestInterceptor, ejectResponseInterceptor } from './utils/interceptors';
+import { getUser, getUserToken } from './utils/auth';
 
 function App() {
   const location = useLocation();
