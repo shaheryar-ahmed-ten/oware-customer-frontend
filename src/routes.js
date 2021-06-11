@@ -9,13 +9,20 @@ import Outbound from './views/Operations/Outbound/Outbound';
 import Profile from './views/User/Profile/Profile';
 import Security from './views/User/Security/Security';
 import Products from './views/Products/Products';
+import { checkPermission } from './utils/auth';
+import {
+  CP_DASHBOARD_FULL,
+  CP_INWARD_FULL,
+  CP_ORDER_FULL,
+  CP_PRODUCT_FULL
+} from './PermissionConstants';
 
 const routes = user => [
   {
     path: '/',
     element: <MainLayout />,
     children: [
-      { path: 'login', element: user ? <Navigate to='/dashboard' /> : <LoginView /> },
+      { path: 'login', element: checkPermission(user, CP_DASHBOARD_FULL) ? <Navigate to='/dashboard' /> : <LoginView /> },
       { path: '404', element: <h1>Not found view</h1> },
       { path: '/', element: user ? <Navigate to='/dashboard' /> : <Navigate to='/login' /> }
     ]
@@ -24,30 +31,30 @@ const routes = user => [
     path: '/dashboard',
     element: <DashboardLayout />,
     children: [
-      { path: '/', element: user ? <DashboardTransactions /> : <Navigate to='/login' /> },
+      { path: '/', element: checkPermission(user, CP_DASHBOARD_FULL) ? <DashboardTransactions /> : <Navigate to='/login' /> },
     ]
   },
   {
     path: '/operation-transactions',
     element: <DashboardLayout />,
     children: [
-      { path: '/inwards', element: user ? <Inbound /> : <Navigate to='/login' /> },
-      { path: '/orders', element: user ? <Outbound /> : <Navigate to='/login' /> },
+      { path: '/inwards', element: checkPermission(user,CP_INWARD_FULL) ? <Inbound /> : <Navigate to='/login' /> },
+      { path: '/orders', element: checkPermission(user,CP_ORDER_FULL) ? <Outbound /> : <Navigate to='/login' /> },
     ]
   },
   {
     path: '/profile',
     element: <DashboardLayout />,
     children: [
-      { path: '/', element: user ? <Profile /> : <Navigate to='/login' /> },
-      { path: '/security', element: user ? <Security /> : <Navigate to='/login' /> },
+      { path: '/', element: checkPermission(user, CP_DASHBOARD_FULL) ? <Profile /> : <Navigate to='/login' /> },
+      { path: '/security', element: checkPermission(user, CP_DASHBOARD_FULL) ? <Security /> : <Navigate to='/login' /> },
     ]
   },
   {
     path: '/products',
     element: <DashboardLayout />,
     children: [
-      { path: '/', element: user ? <Products /> : <Navigate to='/login' /> }
+      { path: '/', element: checkPermission(user,CP_PRODUCT_FULL) ? <Products /> : <Navigate to='/login' /> }
     ]
   }
 ];
