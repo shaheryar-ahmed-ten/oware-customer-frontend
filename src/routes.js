@@ -10,6 +10,7 @@ import Profile from './views/User/Profile/Profile';
 import Security from './views/User/Security/Security';
 import Products from './views/Products/Products';
 import ForgetPassword from './views/Auth/ForgetPassword';
+import ChangePassword from './views/Auth/ChangePassword';
 
 const routes = user => [
   {
@@ -18,6 +19,7 @@ const routes = user => [
     children: [
       { path: 'login', element: user ? <Navigate to='/dashboard' /> : <LoginView /> },
       { path: 'forgot-password', element: user ? <Navigate to='/dashboard' /> : <ForgetPassword /> },
+      { path: 'forgot-password/change-password', element: user ? <Navigate to='/dashboard' /> : <ChangePassword /> },
       { path: '404', element: <h1>Not found view</h1> },
       { path: '/', element: user ? <Navigate to='/dashboard' /> : <Navigate to='/login' /> }
     ]
