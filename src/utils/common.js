@@ -7,10 +7,6 @@ export const getURL = uri => {
   return `${apiBaseURL}${uri}`;
 }
 
-export const isSuperAdmin = user => {
-  return user && user.Role && user.Role.PermissionAccesses.find(pa => pa.Permission.type === 'superadmin_privileges');
-}
-
 export const digitize = (value, places) => {
   let strVal = (value + '');
   return new Array(places - strVal.length).fill('0').join('') + strVal;
