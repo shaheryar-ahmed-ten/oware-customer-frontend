@@ -1,4 +1,5 @@
 import { Paper, Grid, Typography, TextField, Button, makeStyles, Box } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import React, { useState } from 'react';
 import Logo from '../../components/Logo';
 
@@ -21,6 +22,8 @@ const useStyle = makeStyles(theme => ({
 
 const ForgetPassword = () => {
     const classes = useStyle();
+    const [formErrors, setFormErrors] = useState(<Alert elevation={6} variant="filled" severity="error" onClose={() => setFormErrors('')}>Some error message</Alert>);
+    const [formSuccess, setFormSuccess] = useState(<Alert elevation={6} variant="filled" severity="success" onClose={() => setFormErrors('')}>Reset code has been on this email.</Alert>);
     const [email, setEmail] = useState('')
     return (
         <Grid>
@@ -38,6 +41,10 @@ const ForgetPassword = () => {
                         value={email} onChange={(e) => { setEmail(e.target.value) }} />
                 </Box>
 
+                <Box mt={2}>
+                    {formErrors}
+                    {formSuccess}
+                </Box>
                 <Box mt={2}>
                     <Button variant="contained" color="primary" fullWidth="true">Send Reset Code</Button>
                 </Box>
