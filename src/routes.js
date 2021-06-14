@@ -26,7 +26,7 @@ const routes = user => [
     children: [
       { path: 'login', element: user ? <Navigate to='/dashboard' /> : <LoginView /> },
       { path: 'forgot-password', element: user ? <Navigate to='/dashboard' /> : <ForgotPassword /> },
-      { path: 'forgot-password/change-password', element: user ? <Navigate to='/dashboard' /> : <ChangePassword /> },
+      { path: 'forgot-password/change-password/:id/:otp', element: user ? <Navigate to='/dashboard' /> : <ChangePassword /> },
       { path: '404', element: <h1>Not found view</h1> },
       { path: '/', element: user ? <Navigate to='/dashboard' /> : <Navigate to='/login' /> }
     ]
