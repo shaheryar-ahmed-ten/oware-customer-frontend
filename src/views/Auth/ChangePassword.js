@@ -27,10 +27,11 @@ function ChangePassword() {
     const [formSuccess, setFormSuccess] = useState('');
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [otp, setOtp] = useState('')
 
     const handleSetNewPassword = () => {
         if (password !== confirmPassword) {
-            setFormErrors(<Alert elevation={6} variant="filled" severity="error" onClose={() => setFormErrors('')}>Some error message</Alert>)
+            setFormErrors(<Alert elevation={6} variant="filled" severity="error" onClose={() => setFormErrors('')}>Passwords do not match.</Alert>)
         }
         else {
             setFormSuccess(<Alert elevation={6} variant="filled" severity="success" onClose={() => setFormSuccess('')}>Your password has been updated.</Alert>)
@@ -43,13 +44,17 @@ function ChangePassword() {
                     <Logo variant="h1" />
                 </Grid>
                 <Grid>
-                    <Typography className={classes.text} variant="p" component="div" align="center">Please enter your new password.</Typography>
+                    <Typography className={classes.text} variant="p" component="div" align="center">Please enter your OTP and new password.</Typography>
                 </Grid>
-                <Box mt={4}>
+                <Box mt={2}>
+                    <TextField type="password" placeholder="******" label="OTP" variant="outlined" fullWidth="true" required
+                        value={otp} onChange={(e) => { setOtp(e.target.value) }} />
+                </Box>
+                <Box mt={2}>
                     <TextField type="password" placeholder="****" label="New Password" variant="outlined" fullWidth="true" required
                         value={password} onChange={(e) => { setPassword(e.target.value) }} />
                 </Box>
-                <Box mt={4}>
+                <Box mt={2}>
                     <TextField type="password" placeholder="****" label="Confirm New Password" variant="outlined" fullWidth="true" required
                         value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value) }} />
                 </Box>
