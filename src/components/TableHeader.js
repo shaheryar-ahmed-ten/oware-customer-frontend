@@ -7,7 +7,7 @@ import React from 'react'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginBottom: '20px',
+    // marginBottom: '20px',
   },
   pageHeader: {
     padding: theme.spacing(2),

@@ -117,7 +117,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                         ))}
                                     </TableHead>
                                     <TableBody>
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={selectedProduct.id}>
+                                        <TableRow role="checkbox" tabIndex={-1} key={selectedProduct.id}>
                                             {columnsTop.map((column) => {
                                                 const value = selectedProduct[column.id];
                                                 return (
