@@ -1,7 +1,7 @@
 import { Box, Button, Grid, makeStyles, Paper, TextField, Typography } from '@material-ui/core'
 import { Alert } from '@material-ui/lab';
 import React, { useState } from 'react'
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import Logo from '../../components/Logo';
 import { getURL } from '../../utils/common';
 import axios from 'axios';
@@ -31,6 +31,9 @@ function ChangePassword() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [otp, setOtp] = useState(params.otp);
+    const [showLoginBtn, setShowLoginBtn] = useState(false)
+    let navigate = useNavigate();
+
     const handleSetNewPassword = () => {
         setFormErrors(null);
         setFormSuccess(null);
@@ -40,8 +43,10 @@ function ChangePassword() {
         else {
             axios.post(getURL(`/user/auth/change-password/${params.id}/${params.otp}`), { password })
                 .then(res => {
-                    if (res.data.success)
+                    if (res.data.success) {
                         setFormSuccess(<Alert elevation={6} variant="filled" severity="success" onClose={() => setFormErrors('')}>Password has been changed.</Alert>);
+                        setShowLoginBtn(true)
+                    }
                     else
                         setFormErrors(<Alert elevation={6} variant="filled" severity="error" onClose={() => setFormErrors('')}>{res.message}</Alert>);
                 })
@@ -78,7 +83,12 @@ function ChangePassword() {
                     {formSuccess}
                 </Box>
                 <Box mt={2}>
-                    <Button variant="contained" color="primary" fullWidth="true" onClick={handleSetNewPassword}>Reset Password</Button>
+                    {
+                        showLoginBtn ?
+                            <Button variant="contained" color="primary" fullWidth="true" onClick={() => navigate('/login')}>Go to login</Button>
+                            :
+                            <Button variant="contained" color="primary" fullWidth="true" onClick={handleSetNewPassword} >Reset Password</Button>
+                    }
                 </Box>
             </Paper>
         </Grid>
