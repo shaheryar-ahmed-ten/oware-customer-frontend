@@ -8,7 +8,8 @@ const useStyles = makeStyles({
         backgroundColor: '#F8F8F8'
     },
     tableContainer: {
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        paddingTop: 31
     },
     closeButton: {
         backgroundColor: '#0DBDE0;'
