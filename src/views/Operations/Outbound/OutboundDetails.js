@@ -151,7 +151,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                         ))}
                                     </TableHead>
                                     <TableBody>
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={selectedOutboundOrder.id}>
+                                        <TableRow role="checkbox" tabIndex={-1} key={selectedOutboundOrder.id}>
                                             {columnsTop.map((column) => {
                                                 const value = selectedOutboundOrder[column.id];
                                                 return (
