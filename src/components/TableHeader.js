@@ -27,14 +27,14 @@ const TableHeader = ({ searchInput, buttons, filterCount }) => {
       <Paper elevation={0} square className={classes.root}>
         <div className={classes.pageHeader}>
           <Grid container justify="space-between" alignItems="center">
-            <Grid item xs={filterCount > 3 ? 5 : 6}>
+            <Grid item xs={filterCount > 3 ? 4 : 5} >
               {searchInput}
             </Grid>
-            <Grid container item xs={filterCount > 3 ? 7 : 6} justify={filterCount > 1 ? 'space-between':'flex-end'}>
+            <Grid container item xs={filterCount > 3 ? 8 : 7} justify={filterCount > 1 ? 'center' : 'flex-end'} spacing={2}>
               {
                 buttons.map((button, index) => {
                   return (
-                    <Grid item key={index}>
+                    <Grid container item xs={filterCount > 3 ? 3 : 4} key={index} justify='center'>
                       {button}
                     </Grid>
                   )

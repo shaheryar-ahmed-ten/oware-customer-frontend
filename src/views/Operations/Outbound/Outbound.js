@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.6,
         marginRight: 7,
         height: 30,
-        width: 350,
+        // width: 350,
+        width: '100%',
         boxSizing: "border-box",
         padding: "15px 15px"
     },
