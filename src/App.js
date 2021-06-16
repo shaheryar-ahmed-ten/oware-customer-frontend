@@ -4,14 +4,15 @@ import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from '../src/components/GlobalStyles';
 import theme from './theme';
 import routes from '../src/routes';
-import { SharedContext, getUserToken } from './utils/common';
+import { SharedContext } from './utils/common';
 import { setRequestInterceptor, setResponseInterceptor, ejectRequestInterceptor, ejectResponseInterceptor } from './utils/interceptors';
+import { getUser, getUserToken } from './utils/auth';
 
 function App() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [authToken, setAuthToken] = useState(getUserToken());
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(getUser());
   const routing = useRoutes(routes(currentUser));
 
   const updateInterceptors = () => {

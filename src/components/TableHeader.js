@@ -7,7 +7,7 @@ import React from 'react'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginBottom: '20px',
+    // marginBottom: '20px',
   },
   pageHeader: {
     padding: theme.spacing(2),
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const TableHeader = ({ searchInput, buttons }) => {
+const TableHeader = ({ searchInput, buttons, filterCount }) => {
   const classes = useStyles();
 
   return (
@@ -27,14 +27,14 @@ const TableHeader = ({ searchInput, buttons }) => {
       <Paper elevation={0} square className={classes.root}>
         <div className={classes.pageHeader}>
           <Grid container justify="space-between" alignItems="center">
-            <Grid item xs={6}>
+            <Grid item xs={filterCount > 3 ? 4 : 5} >
               {searchInput}
             </Grid>
-            <Grid container item xs={6} justify="space-between">
+            <Grid container item xs={filterCount > 3 ? 8 : 7} justify={filterCount > 1 ? 'center' : 'flex-end'} spacing={2}>
               {
                 buttons.map((button, index) => {
                   return (
-                    <Grid item key={index}>
+                    <Grid container item xs={filterCount > 3 ? 3 : 4} key={index} justify='center'>
                       {button}
                     </Grid>
                   )

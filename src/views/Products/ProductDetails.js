@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { getURL } from '../../utils/common';
@@ -8,7 +8,8 @@ const useStyles = makeStyles({
         backgroundColor: '#F8F8F8'
     },
     tableContainer: {
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        paddingTop: 31
     },
     closeButton: {
         backgroundColor: '#0DBDE0;'
@@ -20,7 +21,9 @@ const useStyles = makeStyles({
         fontSize: 12,
         color: '#A9AEAF',
         fontWeight: '600',
-        LineWeight: '15px'
+        LineWeight: '15px',
+        backgroundColor: '#F8F8F8',
+        borderBottom: "none"
     },
     topTableItem: {
         fontWeight: '600'
@@ -52,13 +55,13 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
         },
         {
             id: 'availableQuantity',
-            label: 'QTY AVAILABLE',
+            label: 'QUANTITY AVAILABLE',
             minWidth: 'auto',
             className: classes.topTableItem,
         },
         {
             id: 'committedQuantity',
-            label: 'QTY COMMITED',
+            label: 'QUANTITY COMMITED',
             minWidth: 'auto',
             className: classes.topTableItem,
         },
@@ -73,13 +76,13 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
         },
         {
             id: 'availableQuantity',
-            label: 'QTY AVAILABLE',
+            label: 'QUANTITY AVAILABLE',
             minWidth: 'auto',
             className: '',
         },
         {
             id: 'committedQuantity',
-            label: 'QTY COMMITED',
+            label: 'QUANTITY COMMITED',
             minWidth: 'auto',
             className: '',
         },
@@ -100,7 +103,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
             <div style={{ display: "inline" }}>
                 <form>
                     <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
-                        <DialogContent className={classes.dialogContent}>
+                        <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: '80vh' }}>
                             <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
@@ -115,11 +118,12 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                         ))}
                                     </TableHead>
                                     <TableBody>
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={selectedProduct.id}>
+                                        <TableRow role="checkbox" tabIndex={-1} key={selectedProduct.id}>
                                             {columnsTop.map((column) => {
                                                 const value = selectedProduct[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
+                                                        style={{ paddingTop: '0' }}
                                                         className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
                                                         {column.format ? column.format(value, selectedProduct) : (value || '')}
                                                     </TableCell>
@@ -165,7 +169,11 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                 </Table>
                             </TableContainer>
                         </DialogContent>
-
+                        <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
+                            <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
+                                Close
+                            </Button>
+                        </DialogActions>
                     </Dialog>
                 </form>
             </div>
