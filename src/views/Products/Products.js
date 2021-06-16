@@ -1,6 +1,6 @@
 import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { getURL } from '../../utils/common'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import SelectDropdown from '../../components/SelectDropdown';
@@ -8,6 +8,7 @@ import TableHeader from '../../components/TableHeader';
 import { Pagination } from '@material-ui/lab';
 import ProductDetails from './ProductDetails';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
+import { debounce } from 'lodash';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -131,12 +132,12 @@ function Products() {
     const [customerProducts, setCustomerProducts] = useState([])
 
     useEffect(() => {
-        getProducts()
+        getProducts(page, searchKeyword, selectedProductForDropdown)
     }, [page, searchKeyword, selectedProductForDropdown])
     useEffect(() => {
         getRealtions()
     }, [])
-    const getProducts = () => {
+    const _getProducts = (page, searchKeyword, selectedProductForDropdown) => {
         axios.get(getURL(`/product`), {
             params: {
                 page,
@@ -154,6 +155,9 @@ function Products() {
                 console.log(err)
             })
     }
+    const getProducts = useCallback(debounce((page, searchKeyword, selectedProductForDropdown) => {
+        _getProducts(page, searchKeyword, selectedProductForDropdown)
+    }, 300), [])
 
     const getRealtions = () => {
         axios.get(getURL('/product/relations'))
