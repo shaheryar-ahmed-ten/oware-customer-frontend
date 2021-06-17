@@ -12,7 +12,8 @@ const useStyles = makeStyles({
         padding: "19px 19px",
         backgroundColor: "#FFFFFF",
         borderRadius: "4px",
-        border: "1px solid #F0F0F0"
+        border: "1px solid #F0F0F0",
+        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.05)"
     },
     title: {
         fontSize: 18,

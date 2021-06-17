@@ -1,4 +1,4 @@
-import { Box, debounce, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react'
@@ -9,6 +9,9 @@ import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
+import { debounce } from 'lodash';
+import { DEBOUNCE_TIME } from '../../../config';
+
 const useStyles = makeStyles((theme) => ({
     heading: {
         fontWeight: "600"
@@ -52,6 +55,18 @@ const useStyles = makeStyles((theme) => ({
             color: '#01D5FF',
             fontSize: 14
         }
+    },
+    tableCellStyle: {
+        color: '#383838',
+        fontSize: 14
+    },
+    tableHeaderItem: {
+        background: 'transparent',
+        fontWeight: '600',
+        fontSize: '12px',
+        color: '#A9AEAF',
+        borderBottom: 'none',
+        paddingBottom: '0'
     }
 }));
 
@@ -62,34 +77,34 @@ function Inbound() {
             id: 'createdAt',
             label: 'DATE OF INWARD',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
             format: dateFormat
         },
         {
             id: 'Warehouse.name',
             label: 'WAREHOUSE',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
             format: (value, entity) => entity.Warehouse.name,
         },
         {
             id: 'Product.name',
             label: 'PRODUCT',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
             format: (value, entity) => entity.Product.name,
         },
         {
             id: 'quantity',
             label: 'QUANTITY',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
         },
         {
             id: 'referenceId',
             label: 'REFERENCE NUMBER',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
         },
     ]
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -127,7 +142,7 @@ function Inbound() {
     }
     const getInwardProducts = useCallback(debounce((page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay) => {
         _getInwardProducts(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay)
-    }, 300), [])
+    }, DEBOUNCE_TIME), [])
     useEffect(() => {
         getRelations()
     }, [])
@@ -190,7 +205,7 @@ function Inbound() {
                                     <TableCell
                                         key={index}
                                         align={column.align}
-                                        style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: '600', fontSize: '12px', color: '#A9AEAF' }}
+                                        className={classes.tableHeaderItem}
                                     >
                                         {column.label}
                                     </TableCell>

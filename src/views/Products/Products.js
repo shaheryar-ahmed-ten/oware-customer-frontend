@@ -9,6 +9,7 @@ import { Pagination } from '@material-ui/lab';
 import ProductDetails from './ProductDetails';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { debounce } from 'lodash';
+import { DEBOUNCE_TIME } from '../../config';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -75,6 +76,18 @@ const useStyles = makeStyles((theme) => ({
     fullfilledStatusButtonStyling: {
         backgroundColor: '#EAF7D5',
         color: '#69A022'
+    },
+    tableCellStyle: {
+        color: '#383838',
+        fontSize: 14
+    },
+    tableHeaderItem: {
+        background: 'transparent',
+        fontWeight: '600',
+        fontSize: '12px',
+        color: '#A9AEAF',
+        borderBottom: 'none',
+        paddingBottom: '0'
     }
 }));
 function Products() {
@@ -91,34 +104,34 @@ function Products() {
             id: 'category',
             label: 'CATEGORY',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
             format: (value, entity) => entity.Product.Category.name,
         },
         {
             id: 'brand',
             label: 'BRAND',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
             format: (value, entity) => entity.Product.Brand.name,
         },
         {
             id: 'uom',
             label: 'UOM',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
             format: (value, entity) => entity.Product.UOM.name,
         },
         {
             id: 'availableQuantity',
             label: 'QTY AVAILABLE',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
         },
         {
             id: 'committedQuantity',
             label: 'QTY COMMITED',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
         },
     ]
     const [products, setProducts] = useState([]);
@@ -157,7 +170,7 @@ function Products() {
     }
     const getProducts = useCallback(debounce((page, searchKeyword, selectedProductForDropdown) => {
         _getProducts(page, searchKeyword, selectedProductForDropdown)
-    }, 300), [])
+    }, DEBOUNCE_TIME), [])
 
     const getRealtions = () => {
         axios.get(getURL('/product/relations'))
@@ -226,7 +239,8 @@ function Products() {
                                     <TableCell
                                         key={index}
                                         align={column.align}
-                                        style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: '600', fontSize: '12px', color: '#A9AEAF' }}
+                                        style={{ minWidth: column.minWidth }}
+                                        className={classes.tableHeaderItem}
                                     >
                                         {column.label}
                                     </TableCell>
