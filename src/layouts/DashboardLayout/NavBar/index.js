@@ -135,7 +135,11 @@ const useStyles = makeStyles((theme) => ({
     bottom: '0',
   },
   menuDropdownStyle: {
-    transform: 'translateY(5%)'
+    transform: 'translateY(5%)',
+  },
+  menuItemStyle:{
+    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+    paddingRight: '100px'
   }
 }));
 function Navbar(props) {
@@ -223,7 +227,7 @@ function Navbar(props) {
                 {currentUser.firstName.charAt(0)}
               </Avatar>
             </Box>
-            <Box p={1} style={{ position: 'relative' }}>
+            <Box p={1} >
               <KeyboardArrowDownOutlinedIcon onClick={handleClick} />
               <Menu
                 id="simple-menu"
@@ -234,7 +238,6 @@ function Navbar(props) {
                 className={classes.menuDropdownStyle}
               >
                 <MenuItem onClick={() => { navigate(`/profile`) }}
-                  style={{ paddingRight: '100px' }}
                 >
                   <IconButton>
                     <PersonOutlineOutlinedIcon />
@@ -248,7 +251,7 @@ function Navbar(props) {
                   Security
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleLogout}>
+                <MenuItem className={classes.menuItemStyle} onClick={handleLogout}>
                   <IconButton>
                     <ExitToAppOutlinedIcon />
                   </IconButton>
