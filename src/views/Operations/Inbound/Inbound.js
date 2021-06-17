@@ -56,6 +56,14 @@ const useStyles = makeStyles((theme) => ({
     tableCellStyle: {
         color: '#383838',
         fontSize: 14
+    },
+    tableHeaderItem: {
+        background: 'transparent',
+        fontWeight: '600',
+        fontSize: '12px',
+        color: '#A9AEAF',
+        borderBottom: 'none',
+        paddingBottom: '0'
     }
 }));
 
@@ -194,7 +202,7 @@ function Inbound() {
                                     <TableCell
                                         key={index}
                                         align={column.align}
-                                        style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: '600', fontSize: '12px', color: '#A9AEAF' }}
+                                        className={classes.tableHeaderItem}
                                     >
                                         {column.label}
                                     </TableCell>
