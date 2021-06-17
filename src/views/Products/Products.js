@@ -9,6 +9,7 @@ import { Pagination } from '@material-ui/lab';
 import ProductDetails from './ProductDetails';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { debounce } from 'lodash';
+import { DEBOUNCE_TIME } from '../../config';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -169,7 +170,7 @@ function Products() {
     }
     const getProducts = useCallback(debounce((page, searchKeyword, selectedProductForDropdown) => {
         _getProducts(page, searchKeyword, selectedProductForDropdown)
-    }, 300), [])
+    }, DEBOUNCE_TIME), [])
 
     const getRealtions = () => {
         axios.get(getURL('/product/relations'))

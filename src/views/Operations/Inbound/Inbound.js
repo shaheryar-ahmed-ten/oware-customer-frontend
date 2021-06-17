@@ -1,4 +1,4 @@
-import { Box, debounce, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react'
@@ -9,6 +9,9 @@ import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
+import { debounce } from 'lodash';
+import { DEBOUNCE_TIME } from '../../../config';
+
 const useStyles = makeStyles((theme) => ({
     heading: {
         fontWeight: "600"
@@ -139,7 +142,7 @@ function Inbound() {
     }
     const getInwardProducts = useCallback(debounce((page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay) => {
         _getInwardProducts(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay)
-    }, 300), [])
+    }, DEBOUNCE_TIME), [])
     useEffect(() => {
         getRelations()
     }, [])

@@ -13,6 +13,7 @@ import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import MoreHorizOutlinedIcon from '@material-ui/icons/MoreHorizOutlined';
+import { DEBOUNCE_TIME } from '../../../config';
 const useStyles = makeStyles((theme) => ({
     heading: {
         fontWeight: "600"
@@ -199,7 +200,7 @@ function Outbound() {
     }
     const getOutwardOrders = useCallback(debounce((page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus) => {
         _getOutwardOrders(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus)
-    }, 300), [])
+    }, DEBOUNCE_TIME), [])
 
     useEffect(() => {
         getRelations();
