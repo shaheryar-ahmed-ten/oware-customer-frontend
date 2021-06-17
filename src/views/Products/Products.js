@@ -75,6 +75,10 @@ const useStyles = makeStyles((theme) => ({
     fullfilledStatusButtonStyling: {
         backgroundColor: '#EAF7D5',
         color: '#69A022'
+    },
+    tableCellStyle: {
+        color: '#383838',
+        fontSize: 14
     }
 }));
 function Products() {
@@ -91,34 +95,34 @@ function Products() {
             id: 'category',
             label: 'CATEGORY',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
             format: (value, entity) => entity.Product.Category.name,
         },
         {
             id: 'brand',
             label: 'BRAND',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
             format: (value, entity) => entity.Product.Brand.name,
         },
         {
             id: 'uom',
             label: 'UOM',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
             format: (value, entity) => entity.Product.UOM.name,
         },
         {
             id: 'availableQuantity',
             label: 'QTY AVAILABLE',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
         },
         {
             id: 'committedQuantity',
             label: 'QTY COMMITED',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
         },
     ]
     const [products, setProducts] = useState([]);

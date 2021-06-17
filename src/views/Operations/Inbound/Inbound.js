@@ -52,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
             color: '#01D5FF',
             fontSize: 14
         }
+    },
+    tableCellStyle: {
+        color: '#383838',
+        fontSize: 14
     }
 }));
 
@@ -62,34 +66,34 @@ function Inbound() {
             id: 'createdAt',
             label: 'DATE OF INWARD',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
             format: dateFormat
         },
         {
             id: 'Warehouse.name',
             label: 'WAREHOUSE',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
             format: (value, entity) => entity.Warehouse.name,
         },
         {
             id: 'Product.name',
             label: 'PRODUCT',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
             format: (value, entity) => entity.Product.name,
         },
         {
             id: 'quantity',
             label: 'QUANTITY',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
         },
         {
             id: 'referenceId',
             label: 'REFERENCE NUMBER',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
         },
     ]
     const [searchKeyword, setSearchKeyword] = useState('');
