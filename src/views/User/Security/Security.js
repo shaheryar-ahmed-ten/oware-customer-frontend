@@ -94,18 +94,7 @@ function Security() {
                     </Typography>
                 </Grid>
                 <Grid container item xs={12} className={classes.contentContainer}>
-                    <Grid item xs={4} className={classes.fieldGrid}>
-                        {
-                            formErrors ?
-                                <Alert severity="error">{formErrors}</Alert>
-                                : null
-                        }
-                        {
-                            formSuccess ?
-                                <Alert severity="success">{formSuccess}</Alert>
-                                :
-                                null
-                        }
+                    <Grid item xs={12} className={classes.fieldGrid}>
                         <Typography className={classes.customFieldLabel}>Current Password</Typography>
                         <TextField
                             id="standard-full-width"
@@ -149,6 +138,17 @@ function Security() {
                             value={userFields.confirmNewPassword}
                             onChange={(e) => { setUserFields((prevState) => ({ ...prevState, confirmNewPassword: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
+                        {
+                            formErrors ?
+                                <Alert severity="error">{formErrors}</Alert>
+                                : null
+                        }
+                        {
+                            formSuccess ?
+                                <Alert severity="success">{formSuccess}</Alert>
+                                :
+                                null
+                        }
                         <Button variant="contained" className={classes.saveBtn} onClick={() => { updateUserPassword(userFields) }}>
                             Save
                         </Button>
