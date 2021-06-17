@@ -16,12 +16,10 @@ import {
   Typography,
 } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-import GetAppOutlinedIcon from '@material-ui/icons/GetAppOutlined';
-import BorderClearOutlinedIcon from '@material-ui/icons/BorderClearOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { useLocation, useNavigate } from 'react-router-dom';
 import owareLogo from '../../../assets/logo/owareLogo.png'
@@ -32,6 +30,8 @@ import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import HttpsOutlinedIcon from '@material-ui/icons/HttpsOutlined';
 import { checkPermission, removeAuth } from '../../../utils/auth';
 import { CP_DASHBOARD_FULL, CP_INWARD_FULL, CP_ORDER_FULL, CP_PRODUCT_FULL } from '../../../PermissionConstants';
+import EventNoteOutlinedIcon from '@material-ui/icons/EventNoteOutlined';
+import AssignmentReturnedOutlinedIcon from '@material-ui/icons/AssignmentReturnedOutlined';
 const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
@@ -137,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
   menuDropdownStyle: {
     transform: 'translateY(5%)',
   },
-  menuItemStyle:{
+  menuItemStyle: {
     boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
     paddingRight: '100px'
   }
@@ -151,7 +151,7 @@ function Navbar(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const navList = [{
     title: "Dashboard",
-    icon: <HomeOutlinedIcon />,
+    icon: <HomeOutlinedIcon fontSize="small" />,
     route: '/dashboard',
     color: currentLocation.includes('dashboard') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('dashboard') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
@@ -159,7 +159,7 @@ function Navbar(props) {
   },
   {
     title: "Inwards",
-    icon: <GetAppOutlinedIcon />,
+    icon: <AssignmentReturnedOutlinedIcon fontSize="small" />,
     route: '/operation-transactions/inwards',
     color: currentLocation.includes('inwards') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('inwards') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
@@ -167,7 +167,7 @@ function Navbar(props) {
   },
   {
     title: "Orders",
-    icon: <BorderClearOutlinedIcon />,
+    icon: <EventNoteOutlinedIcon fontSize="small" />,
     route: '/operation-transactions/orders',
     color: currentLocation.includes('orders') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('orders') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
@@ -175,7 +175,7 @@ function Navbar(props) {
   },
   {
     title: "Products",
-    icon: <ClassOutlinedIcon />,
+    icon: <ClassOutlinedIcon fontSize="small" />,
     route: '/products',
     color: currentLocation.includes('products') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('products') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
