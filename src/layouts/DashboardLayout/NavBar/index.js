@@ -133,6 +133,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'transparent',
     postion: 'absolute',
     bottom: '0',
+  },
+  menuDropdownStyle: {
+    transform: 'translateY(5%)'
   }
 }));
 function Navbar(props) {
@@ -228,9 +231,11 @@ function Navbar(props) {
                 keepMounted
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
-                style={{ transform: 'translateY(3%)' }}
+                className={classes.menuDropdownStyle}
               >
-                <MenuItem onClick={() => { navigate(`/profile`) }}>
+                <MenuItem onClick={() => { navigate(`/profile`) }}
+                  style={{ paddingRight: '100px' }}
+                >
                   <IconButton>
                     <PersonOutlineOutlinedIcon />
                   </IconButton>
@@ -242,7 +247,7 @@ function Navbar(props) {
                   </IconButton>
                   Security
                 </MenuItem>
-
+                <Divider />
                 <MenuItem onClick={handleLogout}>
                   <IconButton>
                     <ExitToAppOutlinedIcon />
