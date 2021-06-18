@@ -214,7 +214,7 @@ function Products() {
     const resetFilters = () => {
         setSelectedProductForDropdown(null);
     }
-    const productSelect = <SelectDropdown icon={<ClassOutlinedIcon />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProductForDropdown} setSelectedType={setSelectedProductForDropdown} />
+    const productSelect = <SelectDropdown icon={<ClassOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProductForDropdown} setSelectedType={setSelectedProductForDropdown} />
 
 
     const productDetailsView = <ProductDetails open={productDetailsViewOpen} handleClose={closeOutboundDetailsView} selectedProduct={selectedProduct} />

@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
   },
   successIcon: {
-    color: 'green',
+    color: '#85C830',
   },
   errorIcon: {
     color: 'red',
