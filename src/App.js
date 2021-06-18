@@ -6,7 +6,7 @@ import theme from './theme';
 import routes from '../src/routes';
 import { SharedContext } from './utils/common';
 import { setRequestInterceptor, setResponseInterceptor, ejectRequestInterceptor, ejectResponseInterceptor } from './utils/interceptors';
-import { getUser, getUserToken } from './utils/auth';
+import { getUser, getUserToken, removeAuth } from './utils/auth';
 
 function App() {
   const navigate = useNavigate();
@@ -27,7 +27,9 @@ function App() {
       setIsLoading(false);
       if (error.response && error.response.status === 401) {
         if (location.pathname.split('/').pop() !== 'login') {
-          navigate('/login');
+          removeAuth()
+          setCurrentUser(null)
+          navigate(`/`)
         }
       }
       return Promise.reject(error)
