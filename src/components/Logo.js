@@ -1,7 +1,6 @@
-import { Typography } from '@material-ui/core';
-
+import owareLogo from '../assets/logo/owareLogo.png'
 export default function Logo({ variant }) {
   return (
-    <Typography variant={variant || 'h3'} style={{ fontWeight: "bolder" }} component="div" color="primary">oware</Typography>
+    <img src={owareLogo} />
   );
 };

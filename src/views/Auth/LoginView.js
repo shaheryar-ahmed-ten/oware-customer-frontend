@@ -4,14 +4,16 @@ import {
   Paper,
   TextField,
   Button,
-  Box
+  Box,
+  Typography
 } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 import React, { useContext, useState } from 'react'
 import axios from 'axios';
-import { setUser, setUserToken, getURL, SharedContext } from '../../utils/common';
+import { getURL, SharedContext } from '../../utils/common';
 import Logo from '../../components/Logo';
 import { useNavigate } from 'react-router-dom';
+import { setUser, setUserToken } from '../../utils/auth';
 
 const useStyles = makeStyles(theme => ({
   paperStyle: {
@@ -24,6 +26,9 @@ const useStyles = makeStyles(theme => ({
   },
   children: {
     margin: "5px auto",
+  },
+  fopBtn: {
+    cursor: 'pointer'
   }
 }))
 
@@ -95,6 +100,9 @@ export default function LoginView() {
           </Box>
           <Box mt={2}>
             <Button type="submit" color="primary" variant="contained" fullWidth>Login</Button>
+          </Box>
+          <Box mt={2}>
+            <Typography className={classes.fopBtn} variant="body" color="primary" onClick={() => { navigate('/forgot-password') }}>Forgot Your Password ?</Typography>
           </Box>
         </Paper>
       </Grid>

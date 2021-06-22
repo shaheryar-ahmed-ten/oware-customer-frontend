@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getUserToken } from '../utils/common';
+import { getUserToken } from './auth';
 
 export const setRequestInterceptor = (callback) => {
   return axios.interceptors.request.use(request => {

@@ -9,7 +9,10 @@ import OutboundDetails from './OutboundDetails';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import clsx from 'clsx';
 import { debounce } from 'lodash';
-
+import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
+import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
+import MoreHorizOutlinedIcon from '@material-ui/icons/MoreHorizOutlined';
 const useStyles = makeStyles((theme) => ({
     heading: {
         fontWeight: "600"
@@ -20,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.6,
         marginRight: 7,
         height: 30,
-        width: 400,
+        // width: 350,
+        width: '100%',
         boxSizing: "border-box",
         padding: "15px 15px"
     },
@@ -142,34 +146,33 @@ function Outbound() {
     const [customerProducts, setCustomerProducts] = useState([])
     const [customerWarehouses, setCustomerWarehouses] = useState([])
     const [days] = useState([{
-        distinct: 7,
-        label: '7 days'
+        id: 7,
+        name: '7 days'
     }, {
-        distinct: 14,
-        label: '14 days'
+        id: 14,
+        name: '14 days'
     }, {
-        distinct: 30,
-        label: '30 days'
+        id: 30,
+        name: '30 days'
     }, {
-        distinct: 60,
-        label: '60 days'
+        id: 60,
+        name: '60 days'
     }])
-    const [statuses] = useState([{ distinct: 0, label: 'Pending' }, { distinct: 1, label: 'Partially fulfilled' }, { distinct: 2, label: 'Fulfilled' }])
-    const [selectedWarehouse, setSelectedWarehouse] = useState('')
-    const [selectedProduct, setSelectedProduct] = useState('')
-    const [selectedDay, setSelectedDay] = useState('')
-    const [selectedStatus, setSelectedStatus] = useState('')
+    const [statuses] = useState([{ id: 0, name: 'Pending' }, { id: 1, name: 'Partially fulfilled' }, { id: 2, name: 'Fulfilled' }])
+
+    const [selectedWarehouse, setSelectedWarehouse] = useState(null)
+    const [selectedProduct, setSelectedProduct] = useState(null)
+    const [selectedDay, setSelectedDay] = useState(null)
+    const [selectedStatus, setSelectedStatus] = useState(null)
     const [outboundDetailViewOpen, setOutboundDetailViewOpen] = useState(false);
     const [selectedOutboundOrder, setSelectedOutboundOrder] = useState(null);
     const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
 
-    const _getOutwardOrders = (page, searchKeyword) => {
+    const _getOutwardOrders = (page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus) => {
         axios.get(getURL('/order'), {
             params: {
                 page,
-                search: searchKeyword || selectedWarehouse || selectedProduct,
-                days: selectedDay,
-                status: selectedStatus
+                search: searchKeyword, warehouse: selectedWarehouse, product: selectedProduct, days: selectedDay, status: selectedStatus
             }
         })
             .then((res) => {
@@ -182,15 +185,15 @@ function Outbound() {
                 console.log(err)
             })
     }
-    const getOutwardOrders = useCallback(debounce((page, searchKeyword) => {
-        _getOutwardOrders(page, searchKeyword)
+    const getOutwardOrders = useCallback(debounce((page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus) => {
+        _getOutwardOrders(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus)
     }, 300), [])
 
     useEffect(() => {
         getRelations();
     }, []);
     useEffect(() => {
-        getOutwardOrders(page, searchKeyword);
+        getOutwardOrders(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus);
     }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus]);
     const getRelations = () => {
         axios.get(getURL(`/order/relations`))
@@ -227,15 +230,15 @@ function Outbound() {
         }
     />;
     const resetFilters = () => {
-        setSelectedWarehouse('');
-        setSelectedProduct('');
-        setSelectedDay('');
-        setSelectedStatus('');
+        setSelectedWarehouse(null);
+        setSelectedProduct(null);
+        setSelectedDay(null);
+        setSelectedStatus(null);
     }
-    const warehouseSelect = <SelectDropdown resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ label: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
-    const productSelect = <SelectDropdown resetFilters={resetFilters} type="Products" name="Select Product" list={[{ label: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
-    const daysSelect = <SelectDropdown resetFilters={resetFilters} type="Days" name="Select Days" list={[{ label: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
-    const statusSelect = <SelectDropdown resetFilters={resetFilters} type="Status" name="Select Status" list={[{ label: 'All' }, ...statuses]} selectedType={selectedStatus} setSelectedType={setSelectedStatus} />
+    const warehouseSelect = <SelectDropdown icon={<HomeOutlinedIcon />} resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ name: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
+    const productSelect = <SelectDropdown icon={<ClassOutlinedIcon />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
+    const daysSelect = <SelectDropdown icon={<CalendarTodayOutlinedIcon />} resetFilters={resetFilters} type="Days" name="Select Days" list={[{ name: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
+    const statusSelect = <SelectDropdown icon={<MoreHorizOutlinedIcon />} resetFilters={resetFilters} type="Status" name="Select Status" list={[{ name: 'All' }, ...statuses]} selectedType={selectedStatus} setSelectedType={setSelectedStatus} />
 
     const outboundDetailsView = <OutboundDetails open={outboundDetailViewOpen} handleClose={closeOutboundDetailsView} selectedOutboundOrder={selectedOutboundOrder} />
 
@@ -254,7 +257,7 @@ function Outbound() {
                 </Grid>
                 <Grid item xs={12}>
                     <TableContainer className={classes.tableContainer}>
-                        <TableHeader searchInput={searchInput} buttons={headerButtons} />
+                        <TableHeader searchInput={searchInput} buttons={headerButtons} filterCount={4} />
                         <Divider />
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
