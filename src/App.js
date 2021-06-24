@@ -26,7 +26,7 @@ function App() {
       setIsLoading(false);
       if (error.response && error.response.status === 401) {
         if (location.pathname.split('/').pop() !== 'login') {
-          // navigate('/login');
+          navigate('/login');
         }
       }
       return Promise.reject(error)

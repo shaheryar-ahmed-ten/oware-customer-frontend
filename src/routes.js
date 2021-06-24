@@ -24,9 +24,9 @@ const routes = user => [
     path: '/',
     element: <MainLayout />,
     children: [
-      { path: 'login', element: user ? <Navigate to='/dashboard' /> : <LoginView /> },
-      { path: 'forgot-password', element: user ? <Navigate to='/dashboard' /> : <ForgotPassword /> },
-      { path: 'forgot-password/change-password/:id/:otp', element: user ? <Navigate to='/dashboard' /> : <ChangePassword /> },
+      { path: 'login', element: <LoginView /> },
+      { path: 'forgot-password', element: <ForgotPassword /> },
+      { path: 'forgot-password/change-password/:id/:otp', element: <ChangePassword /> },
       { path: '404', element: <h1>Not found view</h1> },
       { path: '/', element: user ? <Navigate to='/dashboard' /> : <Navigate to='/login' /> }
     ]
@@ -42,8 +42,8 @@ const routes = user => [
     path: '/operation-transactions',
     element: <DashboardLayout />,
     children: [
-      { path: '/inwards', element: checkPermission(user,CP_INWARD_FULL) ? <Inbound /> : <Navigate to='/login' /> },
-      { path: '/orders', element: checkPermission(user,CP_ORDER_FULL) ? <Outbound /> : <Navigate to='/login' /> },
+      { path: '/inwards', element: checkPermission(user, CP_INWARD_FULL) ? <Inbound /> : <Navigate to='/login' /> },
+      { path: '/orders', element: checkPermission(user, CP_ORDER_FULL) ? <Outbound /> : <Navigate to='/login' /> },
     ]
   },
   {
@@ -58,7 +58,7 @@ const routes = user => [
     path: '/products',
     element: <DashboardLayout />,
     children: [
-      { path: '/', element: checkPermission(user,CP_PRODUCT_FULL) ? <Products /> : <Navigate to='/login' /> }
+      { path: '/', element: checkPermission(user, CP_PRODUCT_FULL) ? <Products /> : <Navigate to='/login' /> }
     ]
   }
 ];
