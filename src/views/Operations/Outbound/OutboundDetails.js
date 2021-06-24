@@ -89,18 +89,18 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             className: '',
         },
         {
-            id: 'Vehicle.number',
+            id: 'number',
             label: 'VEHICLE #',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.Vehicle.number,
+            format: (value, entity) => entity.Vehicle.number || '',
         },
         {
-            id: 'Vehicle.type',
+            id: 'type',
             label: 'VEHICLE TYPE',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.Vehicle.type,
+            format: (value, entity) => entity.Vehicle.type || '',
         },
         {
             id: 'receiverName',
