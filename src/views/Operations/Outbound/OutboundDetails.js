@@ -90,18 +90,18 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             className: '',
         },
         {
-            id: 'Vehicle.number',
+            id: 'number',
             label: 'VEHICLE #',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.Vehicle.number,
+            format: (value, entity) => entity.Vehicle ? entity.Vehicle.number : '',
         },
         {
-            id: 'Vehicle.type',
+            id: 'type',
             label: 'VEHICLE TYPE',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.Vehicle.type,
+            format: (value, entity) => entity.Vehicle ? entity.Vehicle.type : '',
         },
         {
             id: 'receiverName',
@@ -125,8 +125,8 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         if (selectedOutboundOrder)
             axios.get(getURL(`/order/${selectedOutboundOrder.dispatchOrderId}`))
                 .then((response) => {
-                    setSelectedProductOutwardDetails(response.data.data)
-                    setProductOutwardsLength(response.data.data[0].ProductOutwards.length)
+                    if (response.data.success)
+                        setSelectedProductOutwardDetails(response.data.data)
                 })
                 .catch((err) => {
                     console.log(err)

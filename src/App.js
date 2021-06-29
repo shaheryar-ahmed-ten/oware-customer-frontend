@@ -15,6 +15,7 @@ function App() {
   const [authToken, setAuthToken] = useState(getUserToken());
   const [currentUser, setCurrentUser] = useState(getUser());
   const routing = useRoutes(routes(currentUser));
+  const navigate = useNavigate();
 
   const updateInterceptors = () => {
     const requestInterceptor = setRequestInterceptor(() => {
@@ -27,9 +28,7 @@ function App() {
       setIsLoading(false);
       if (error.response && error.response.status === 401) {
         if (location.pathname.split('/').pop() !== 'login') {
-          removeAuth()
-          setCurrentUser(null)
-          navigate(`/`)
+          navigate('/login');
         }
       }
       return Promise.reject(error)
