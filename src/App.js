@@ -15,7 +15,6 @@ function App() {
   const [authToken, setAuthToken] = useState(getUserToken());
   const [currentUser, setCurrentUser] = useState(getUser());
   const routing = useRoutes(routes(currentUser));
-  const navigate = useNavigate();
 
   const updateInterceptors = () => {
     const requestInterceptor = setRequestInterceptor(() => {
