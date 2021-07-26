@@ -13,6 +13,7 @@ import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import MoreHorizOutlinedIcon from '@material-ui/icons/MoreHorizOutlined';
+import { DEBOUNCE_TIME } from '../../../config';
 const useStyles = makeStyles((theme) => ({
     heading: {
         fontWeight: "600"
@@ -77,6 +78,18 @@ const useStyles = makeStyles((theme) => ({
     fullfilledStatusButtonStyling: {
         backgroundColor: '#EAF7D5',
         color: '#69A022'
+    },
+    tableCellStyle: {
+        color: '#383838',
+        fontSize: 14
+    },
+    tableHeaderItem: {
+        background: 'transparent',
+        fontWeight: '600',
+        fontSize: '12px',
+        color: '#A9AEAF',
+        borderBottom: 'none',
+        paddingBottom: '0'
     }
 }));
 function Outbound() {
@@ -92,44 +105,44 @@ function Outbound() {
             id: 'shipmentDate',
             label: 'DATE OF ORDER',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
             format: dateFormat
         },
         {
             id: 'warehouse',
             label: 'WAREHOUSE',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
         },
         {
             id: 'product',
             label: 'PRODUCT',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
         },
         {
             id: 'dispatchOrderQuantity',
             label: 'QUANTITY ORDERD',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
         },
         {
             id: 'referenceId',
             label: 'REFERENCE NUMBER',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
         },
         {
             id: 'outwardQuantity',
             label: 'QUANTITY SHIPPED',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
         },
         {
             id: 'Status',
             label: 'STATUS',
             minWidth: 'auto',
-            className: '',
+            className: classes.tableCellStyle,
             format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
                 Pending
       </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
@@ -187,7 +200,7 @@ function Outbound() {
     }
     const getOutwardOrders = useCallback(debounce((page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus) => {
         _getOutwardOrders(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus)
-    }, 300), [])
+    }, DEBOUNCE_TIME), [])
 
     useEffect(() => {
         getRelations();
@@ -235,10 +248,10 @@ function Outbound() {
         setSelectedDay(null);
         setSelectedStatus(null);
     }
-    const warehouseSelect = <SelectDropdown icon={<HomeOutlinedIcon />} resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ name: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
-    const productSelect = <SelectDropdown icon={<ClassOutlinedIcon />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
-    const daysSelect = <SelectDropdown icon={<CalendarTodayOutlinedIcon />} resetFilters={resetFilters} type="Days" name="Select Days" list={[{ name: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
-    const statusSelect = <SelectDropdown icon={<MoreHorizOutlinedIcon />} resetFilters={resetFilters} type="Status" name="Select Status" list={[{ name: 'All' }, ...statuses]} selectedType={selectedStatus} setSelectedType={setSelectedStatus} />
+    const warehouseSelect = <SelectDropdown icon={<HomeOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ name: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
+    const productSelect = <SelectDropdown icon={<ClassOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
+    const daysSelect = <SelectDropdown icon={<CalendarTodayOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Days" name="Select Days" list={[{ name: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
+    const statusSelect = <SelectDropdown icon={<MoreHorizOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Status" name="Select Status" list={[{ name: 'All' }, ...statuses]} selectedType={selectedStatus} setSelectedType={setSelectedStatus} />
 
     const outboundDetailsView = <OutboundDetails open={outboundDetailViewOpen} handleClose={closeOutboundDetailsView} selectedOutboundOrder={selectedOutboundOrder} />
 
@@ -265,7 +278,8 @@ function Outbound() {
                                     <TableCell
                                         key={index}
                                         align={column.align}
-                                        style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: '600', fontSize: '12px', color: '#A9AEAF' }}
+                                        style={{ minWidth: column.minWidth }}
+                                        className={classes.tableHeaderItem}
                                     >
                                         {column.label}
                                     </TableCell>

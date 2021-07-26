@@ -1,6 +1,6 @@
 import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { getURL } from '../../utils/common'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import SelectDropdown from '../../components/SelectDropdown';
@@ -8,6 +8,8 @@ import TableHeader from '../../components/TableHeader';
 import { Pagination } from '@material-ui/lab';
 import ProductDetails from './ProductDetails';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
+import { debounce } from 'lodash';
+import { DEBOUNCE_TIME } from '../../config';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -74,6 +76,18 @@ const useStyles = makeStyles((theme) => ({
     fullfilledStatusButtonStyling: {
         backgroundColor: '#EAF7D5',
         color: '#69A022'
+    },
+    tableCellStyle: {
+        color: '#383838',
+        fontSize: 14
+    },
+    tableHeaderItem: {
+        background: 'transparent',
+        fontWeight: '600',
+        fontSize: '12px',
+        color: '#A9AEAF',
+        borderBottom: 'none',
+        paddingBottom: '0'
     }
 }));
 function Products() {
@@ -90,34 +104,34 @@ function Products() {
             id: 'category',
             label: 'CATEGORY',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
             format: (value, entity) => entity.Product.Category.name,
         },
         {
             id: 'brand',
             label: 'BRAND',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
             format: (value, entity) => entity.Product.Brand.name,
         },
         {
             id: 'uom',
             label: 'UOM',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
             format: (value, entity) => entity.Product.UOM.name,
         },
         {
             id: 'availableQuantity',
             label: 'QTY AVAILABLE',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
         },
         {
             id: 'committedQuantity',
             label: 'QTY COMMITED',
             minWidth: 'auto',
-            className: '',
+            className: classes.orderIdStyle,
         },
     ]
     const [products, setProducts] = useState([]);
@@ -131,12 +145,12 @@ function Products() {
     const [customerProducts, setCustomerProducts] = useState([])
 
     useEffect(() => {
-        getProducts()
+        getProducts(page, searchKeyword, selectedProductForDropdown)
     }, [page, searchKeyword, selectedProductForDropdown])
     useEffect(() => {
         getRealtions()
     }, [])
-    const getProducts = () => {
+    const _getProducts = (page, searchKeyword, selectedProductForDropdown) => {
         axios.get(getURL(`/product`), {
             params: {
                 page,
@@ -154,6 +168,9 @@ function Products() {
                 console.log(err)
             })
     }
+    const getProducts = useCallback(debounce((page, searchKeyword, selectedProductForDropdown) => {
+        _getProducts(page, searchKeyword, selectedProductForDropdown)
+    }, DEBOUNCE_TIME), [])
 
     const getRealtions = () => {
         axios.get(getURL('/product/relations'))
@@ -197,7 +214,7 @@ function Products() {
     const resetFilters = () => {
         setSelectedProductForDropdown(null);
     }
-    const productSelect = <SelectDropdown icon={<ClassOutlinedIcon />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProductForDropdown} setSelectedType={setSelectedProductForDropdown} />
+    const productSelect = <SelectDropdown icon={<ClassOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProductForDropdown} setSelectedType={setSelectedProductForDropdown} />
 
 
     const productDetailsView = <ProductDetails open={productDetailsViewOpen} handleClose={closeOutboundDetailsView} selectedProduct={selectedProduct} />
@@ -222,7 +239,8 @@ function Products() {
                                     <TableCell
                                         key={index}
                                         align={column.align}
-                                        style={{ minWidth: column.minWidth, background: 'transparent', fontWeight: '600', fontSize: '12px', color: '#A9AEAF' }}
+                                        style={{ minWidth: column.minWidth }}
+                                        className={classes.tableHeaderItem}
                                     >
                                         {column.label}
                                     </TableCell>

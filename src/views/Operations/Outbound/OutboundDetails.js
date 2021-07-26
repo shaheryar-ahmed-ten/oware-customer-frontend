@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
+import { Alert, AlertTitle } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { dateFormat, getURL } from '../../../utils/common';
@@ -119,6 +120,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
     ]
 
     const [selectedProductOutwardDetails, setSelectedProductOutwardDetails] = useState([])
+    const [productOutwardsLength, setProductOutwardsLength] = useState(0)
     useEffect(() => {
         if (selectedOutboundOrder)
             axios.get(getURL(`/order/${selectedOutboundOrder.dispatchOrderId}`))
@@ -167,43 +169,51 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            <TableContainer className={classes.tableContainer}>
-                                <Table stickyHeader aria-label="sticky table">
-                                    <TableHead>
-                                        {columns.map((column, index) => (
-                                            <TableCell
-                                                key={index}
-                                                align={column.align}
-                                                className={classes.tableHeaderItem}
-                                                style={{ backgroundColor: 'white' }}
-                                            >
-                                                {column.label}
-                                            </TableCell>
-                                        ))}
-                                    </TableHead>
-                                    <TableBody>
-                                        {
-                                            selectedProductOutwardDetails.map((outwardOrder) => {
-                                                return outwardOrder.ProductOutwards.map((productOutward) => {
-                                                    return (
-                                                        <TableRow hover role="checkbox" tabIndex={-1} key={productOutward.id}>
-                                                            {columns.map((column) => {
-                                                                const value = productOutward[column.id];
-                                                                return (
-                                                                    <TableCell key={column.id} align={column.align}
-                                                                        className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                                        {column.format ? column.format(value, productOutward, outwardOrder) : (value || '')}
-                                                                    </TableCell>
-                                                                );
-                                                            })}
-                                                        </TableRow>
-                                                    )
-                                                })
-                                            })
-                                        }
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                            {
+                                productOutwardsLength !== 0 ?
+                                    <TableContainer className={classes.tableContainer}>
+                                        <Table stickyHeader aria-label="sticky table">
+                                            <TableHead>
+                                                {columns.map((column, index) => (
+                                                    <TableCell
+                                                        key={index}
+                                                        align={column.align}
+                                                        className={classes.tableHeaderItem}
+                                                        style={{ backgroundColor: 'white' }}
+                                                    >
+                                                        {column.label}
+                                                    </TableCell>
+                                                ))}
+                                            </TableHead>
+                                            <TableBody>
+                                                {
+                                                    selectedProductOutwardDetails.map((outwardOrder) => {
+                                                        return outwardOrder.ProductOutwards.map((productOutward) => {
+                                                            return (
+                                                                <TableRow hover role="checkbox" tabIndex={-1} key={productOutward.id}>
+                                                                    {columns.map((column) => {
+                                                                        const value = productOutward[column.id];
+                                                                        return (
+                                                                            <TableCell key={column.id} align={column.align}
+                                                                                className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+                                                                                {column.format ? column.format(value, productOutward, outwardOrder) : (value || '')}
+                                                                            </TableCell>
+                                                                        );
+                                                                    })}
+                                                                </TableRow>
+                                                            )
+                                                        })
+                                                    })
+                                                }
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                    :
+                                    <Alert severity="info">
+                                        <AlertTitle>No Record</AlertTitle>
+                                        <strong>No dispatches yet!</strong>
+                                    </Alert>
+                            }
                         </DialogContent>
                         <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
                             <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">

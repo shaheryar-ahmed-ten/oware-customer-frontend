@@ -6,9 +6,10 @@ import theme from './theme';
 import routes from '../src/routes';
 import { SharedContext } from './utils/common';
 import { setRequestInterceptor, setResponseInterceptor, ejectRequestInterceptor, ejectResponseInterceptor } from './utils/interceptors';
-import { getUser, getUserToken } from './utils/auth';
+import { getUser, getUserToken, removeAuth } from './utils/auth';
 
 function App() {
+  const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [authToken, setAuthToken] = useState(getUserToken());
