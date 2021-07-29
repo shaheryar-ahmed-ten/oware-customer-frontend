@@ -16,8 +16,10 @@ import {
   CP_DASHBOARD_FULL,
   CP_INWARD_FULL,
   CP_ORDER_FULL,
-  CP_PRODUCT_FULL
+  CP_PRODUCT_FULL,
+  CP_LOGISTIC_FULL
 } from './PermissionConstants';
+import Logistics from './views/Logistics/Logistic';
 
 const routes = user => [
   {
@@ -59,6 +61,13 @@ const routes = user => [
     element: <DashboardLayout />,
     children: [
       { path: '/', element: checkPermission(user, CP_PRODUCT_FULL) ? <Products /> : <Navigate to='/login' /> }
+    ]
+  },
+  {
+    path: '/logistics',
+    element: <DashboardLayout />,
+    children: [
+      { path: '/', element: checkPermission(user, CP_PRODUCT_FULL) ? <Logistics /> : <Navigate to='/login' /> }
     ]
   }
 ];
