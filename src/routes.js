@@ -68,7 +68,7 @@ const routes = user => [
     path: '/logistics',
     element: <DashboardLayout />,
     children: [
-      { path: '/', element: checkPermission(user, CP_RIDE_FULL) ? <Logistics /> : <Navigate to='/login' /> }
+      { path: '/', element: checkPermission(user, CP_DASHBOARD_FULL) ? <Logistics /> : <Navigate to='/login' /> }
     ]
   }
 ];
