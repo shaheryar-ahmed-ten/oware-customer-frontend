@@ -46,21 +46,21 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             label: 'STATUS',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.status,
+            // format: (value, entity) => entity,
         },
         {
             id: "driverId",
             label: 'DRIVER',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.driverId,
+            // format: (value, entity) => entity.driverId,
         },
         {
             id: "vehicleId",
             label: 'VEHICLE',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.vehicleId,
+            // format: (value, entity) => entity.vehicleId,
         },
         {
             id: "DropOffArea.name",
@@ -91,12 +91,12 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             // format: (value, entity) => entity.DropoffArea.name,
         },
         {
-            id: "DropoffArea.createdAt",
+            id: "dropoffDate",
             label: 'DROP OFF DATE/TIME',
             minWidth: 'auto',
             className: classes.topTableItem,
-            // format: (value, entity) => entity.DropoffArea.createdAt,
-        },
+            format : dateFormat
+        }    
     ]
     const columns = [
         {
