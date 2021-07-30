@@ -33,63 +33,63 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
     const classes = useStyles();
     const columnsTop = [
         {
-            id: logisticDetails.id,
+            id: "id",
             label: 'RIDEID',
             minWidth: 'auto',
             className: classes.topTableItem,
             format: (value, entity) => entity,
         },
         {
-            id: logisticDetails.status,
+            id: "status",
             label: 'STATUS',
             minWidth: 'auto',
             className: classes.topTableItem,
             format: (value, entity) => entity.status,
         },
         {
-            id: logisticDetails.driverId,
+            id: "driverId",
             label: 'DRIVER',
             minWidth: 'auto',
             className: classes.topTableItem,
             format: (value, entity) => entity.driverId,
         },
         {
-            id: logisticDetails.vehicleId,
+            id: "vehicleId",
             label: 'VEHICLE',
             minWidth: 'auto',
             className: classes.topTableItem,
             format: (value, entity) => entity.vehicleId,
         },
         {
-            id: logisticDetails.DropOffArea.name,
+            id: "DropOffArea.name",
             label: 'VENDOR',
             minWidth: 'auto',
             className: classes.topTableItem,
             format: (value, entity) => entity.DropOffArea.name,
         },
         {
-            id: logisticDetails.PickupArea.name,
+            id: "PickupArea.name",
             label: 'PICKUP AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
             format: (value, entity) => entity.PickupArea.name,
         },
         {
-            id: logisticDetails.PickupArea.createdAt,
+            id: "PickupArea.createdAt",
             label: 'PICKUP AREA DATE/TIME',
             minWidth: 'auto',
             className: classes.topTableItem,
             format : dateFormat
         },
         {
-            id: logisticDetails.DropoffArea.name,
+            id: "DropoffArea.name",
             label: 'DROP OFF AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
             format: (value, entity) => entity.DropoffArea.name,
         },
         {
-            id: logisticDetails.DropoffArea.createdAt,
+            id: "DropoffArea.createdAt",
             label: 'DROP OFF DATE/TIME',
             minWidth: 'auto',
             className: classes.topTableItem,
@@ -125,7 +125,6 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
         if (selectedProduct)
             axios.get(getURL(`/ride/${selectedProduct}`))
                 .then((response) => {
-                    console.log("responsnsssssss", response)
                     setSelectedProductDetails(response.data.data.RideProducts)
                     setLogisticDetails(response.data.data)
                 })
