@@ -31,9 +31,11 @@ const useStyles = makeStyles({
 });
 function LogisticDetails({ open, handleClose, selectedProduct }) {
     const classes = useStyles();
+    const [logisticDetails, setLogisticDetails] = useState(null);
+
     const columnsTop = [
         {
-            id: "id",
+            id: "rideId",
             label: 'RIDEID',
             minWidth: 'auto',
             className: classes.topTableItem,
@@ -65,14 +67,14 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             label: 'VENDOR',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.DropOffArea.name,
+            // format: (value, entity) => entity.DropOffArea.name,
         },
         {
             id: "PickupArea.name",
             label: 'PICKUP AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.PickupArea.name,
+            // format: (value, entity) => entity.PickupArea.name,
         },
         {
             id: "PickupArea.createdAt",
@@ -86,14 +88,14 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             label: 'DROP OFF AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.DropoffArea.name,
+            // format: (value, entity) => entity.DropoffArea.name,
         },
         {
             id: "DropoffArea.createdAt",
             label: 'DROP OFF DATE/TIME',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.DropoffArea.createdAt,
+            // format: (value, entity) => entity.DropoffArea.createdAt,
         },
     ]
     const columns = [
@@ -118,8 +120,8 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
         },
     ]
     const 
-    [selectedProductDetails, setSelectedProductDetails] = useState([]),
-    [logisticDetails, setLogisticDetails] = useState(null)
+    [selectedProductDetails, setSelectedProductDetails] = useState([]);
+    
 
     useEffect(() => {
         if (selectedProduct)
@@ -154,7 +156,7 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
                                     </TableHead>
                                     <TableBody>
                                         <TableRow role="checkbox" tabIndex={-1} key={selectedProduct.id}>
-                                        {/* {columnsTop.map((column) => {
+                                         {columnsTop.map((column) => {
                                                 const value = selectedProduct[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
@@ -163,18 +165,7 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
                                                         {column.format ? column.format(value, selectedProduct) : (value || '')}
                                                     </TableCell>
                                                 );
-                                            })} */}
-                                            {
-                                                console.log("laiba logistic details", logisticDetails)
-                                                // const value = selectedProduct[column.id];
-                                                // return (
-                                                //     <TableCell key={column.id} align={column.align}
-                                                //         style={{ paddingTop: '0' }}
-                                                //         className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                //         {column.format ? column.format(value, selectedProduct) : (value || '')}
-                                                //     </TableCell>
-                                                // );
-                                            }
+                                            })} 
                                         </TableRow>
                                     </TableBody>
                                 </Table>
