@@ -92,13 +92,14 @@ function Inbound() {
             label: 'PRODUCT',
             minWidth: 'auto',
             className: classes.tableCellStyle,
-            format: (value, entity) => entity.Product.name,
+            format: (value, entity, product) => product.name,
         },
         {
             id: 'quantity',
             label: 'QUANTITY',
             minWidth: 'auto',
             className: classes.tableCellStyle,
+            format: (value, entity, product) => product.InwardGroup.quantity,
         },
         {
             id: 'referenceId',
@@ -214,17 +215,21 @@ function Inbound() {
                             <TableBody>
                                 {productInwards.map((productInward, index) => {
                                     return (
-                                        <TableRow key={index} hover role="checkbox" tabIndex={-1}>
-                                            {columns.map((column) => {
-                                                const value = productInward[column.id];
-                                                return (
-                                                    <TableCell key={column.id} align={column.align}
-                                                        className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                        {column.format ? column.format(value, productInward) : (value || '')}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
+                                        productInward.Products.map((product, idx) => {
+                                            return (
+                                                <TableRow key={idx} hover role="checkbox" tabIndex={-1}>
+                                                    {columns.map((column) => {
+                                                        const value = productInward[column.id];
+                                                        return (
+                                                            <TableCell key={column.id} align={column.align}
+                                                                className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+                                                                {column.format ? column.format(value, productInward, product) : (value || '')}
+                                                            </TableCell>
+                                                        );
+                                                    })}
+                                                </TableRow>
+                                            )
+                                        })
                                     );
                                 })}
                             </TableBody>
