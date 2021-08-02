@@ -39,14 +39,14 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             label: 'RIDEID',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity,
+            format: (value, entity) => entity.id,
         },
         {
             id: "status",
             label: 'STATUS',
             minWidth: 'auto',
             className: classes.topTableItem,
-            // format: (value, entity) => entity,
+            format: (value, entity) => entity.status,
         },
         {
             id: "driverId",
@@ -70,25 +70,25 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             // format: (value, entity) => entity.DropOffArea.name,
         },
         {
-            id: "PickupArea.name",
+            id: "pickupAddress",
             label: 'PICKUP AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
-            // format: (value, entity) => entity.PickupArea.name,
+            format: (value, entity) => entity.pickupAddress,
         },
         {
-            id: "PickupArea.createdAt",
+            id: "pickupDate",
             label: 'PICKUP AREA DATE/TIME',
             minWidth: 'auto',
             className: classes.topTableItem,
             format : dateFormat
         },
         {
-            id: "DropoffArea.name",
+            id: "dropoffAddress",
             label: 'DROP OFF AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
-            // format: (value, entity) => entity.DropoffArea.name,
+            format: (value, entity) => entity.dropoffAddress,
         },
         {
             id: "dropoffDate",
@@ -125,7 +125,7 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
 
     useEffect(() => {
         if (selectedProduct)
-            axios.get(getURL(`/ride/${selectedProduct}`))
+            axios.get(getURL(`/ride/${selectedProduct.id}`))
                 .then((response) => {
                     setSelectedProductDetails(response.data.data.RideProducts)
                     setLogisticDetails(response.data.data)

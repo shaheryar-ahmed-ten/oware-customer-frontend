@@ -159,14 +159,10 @@ function Logistics() {
     const [logisticDetailsViewOpen, setLogisticDetailsViewOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedProductForDropdown, setSelectedProductForDropdown] = useState(null);
-    const [customerProducts, setCustomerProducts] = useState([])
 
     useEffect(() => {
         getLogistics(page, searchKeyword, selectedProductForDropdown)
     }, [page, searchKeyword, selectedProductForDropdown])
-    useEffect(() => {
-        getRealtions()
-    }, [])
     const _getLogistics = (page, searchKeyword, selectedProductForDropdown) => {
         axios.get(getURL(`/ride`), {
             params: {
@@ -188,17 +184,6 @@ function Logistics() {
     const getLogistics = useCallback(debounce((page, searchKeyword, selectedProductForDropdown) => {
         _getLogistics(page, searchKeyword, selectedProductForDropdown)
     }, DEBOUNCE_TIME), [])
-
-    const getRealtions = () => {
-        axios.get(getURL('/product/relations'))
-            .then((res) => {
-                console.log(res)
-                setCustomerProducts(res.data.relations.products)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }
 
     const openViewDetails = logistic => {
         setSelectedProduct(logistic);
@@ -231,8 +216,6 @@ function Logistics() {
     const resetFilters = () => {
         setSelectedProductForDropdown(null);
     }
-    // const productSelect = <SelectDropdown icon={<ClassOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProductForDropdown} setSelectedType={setSelectedProductForDropdown} />
-
     const productDetailsView = <LogisticDetails open={logisticDetailsViewOpen} handleClose={closeLogisticDetailsView} selectedProduct={selectedProduct} />
 
     const headerButtons = [ productDetailsView]
@@ -265,7 +248,7 @@ function Logistics() {
                             <TableBody>
                                 {logistics.map((logistic, index) => {
                                     return (
-                                        <TableRow key={index} hover role="checkbox" tabIndex={-1} onClick={() => openViewDetails(logistic.id)}>
+                                        <TableRow key={index} hover role="checkbox" tabIndex={-1} onClick={() => openViewDetails(logistic)}>
                                             {columns.map((column) => {
                                                 const value = logistic[column.id];
                                                 return (
