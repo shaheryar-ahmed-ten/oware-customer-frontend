@@ -95,13 +95,14 @@ function Inbound() {
             label: 'PRODUCT',
             minWidth: 'auto',
             className: classes.tableCellStyle,
-            format: (value, entity) => entity.Product.name,
+            format: (value, entity, product) => product.name,
         },
         {
             id: 'quantity',
             label: 'QUANTITY',
             minWidth: 'auto',
             className: classes.tableCellStyle,
+            format: (value, entity, product) => product.InwardGroup.quantity,
         },
         {
             id: 'referenceId',
@@ -193,8 +194,68 @@ function Inbound() {
 
     return (
         <>
-   
-      </>
+            <Grid container spacing={2} className={classes.gridContainer}>
+                <Grid item xs={12}>
+                    <Typography variant="h3">
+                        <Box className={classes.heading}>Inwards</Box>
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <TableContainer className={classes.tableContainer}>
+                        <TableHeader searchInput={searchInput} buttons={headerButtons} filterCount={3} />
+                        <Divider />
+                        <Table stickyHeader aria-label="sticky table">
+                            <TableHead>
+                                {columns.map((column, index) => (
+                                    <TableCell
+                                        key={index}
+                                        align={column.align}
+                                        className={classes.tableHeaderItem}
+                                    >
+                                        {column.label}
+                                    </TableCell>
+                                ))}
+                            </TableHead>
+                            <TableBody>
+                                {productInwards.map((productInward, index) => {
+                                    return (
+                                        productInward.Products.map((product, idx) => {
+                                            return (
+                                                <TableRow key={idx} hover role="checkbox" tabIndex={-1}>
+                                                    {columns.map((column) => {
+                                                        const value = productInward[column.id];
+                                                        return (
+                                                            <TableCell key={column.id} align={column.align}
+                                                                className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+                                                                {column.format ? column.format(value, productInward, product) : (value || '')}
+                                                            </TableCell>
+                                                        );
+                                                    })}
+                                                </TableRow>
+                                            )
+                                        })
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <Grid container item justify="space-between" className={classes.paginationGrid}>
+                        <Grid item>
+                            <Pagination
+                                component="div"
+                                count={pageCount}
+                                page={page}
+                                classes={{ root: classes.paginationRoot }}
+                                onChange={(e, page) => setPage(page)}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="body">Showing {productInwards.length} out of {numberOfTotalRecords} records.</Typography>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </>
     )
 }
 

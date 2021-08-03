@@ -2,6 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableB
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { dateFormat, getURL } from '../../utils/common';
+import PrintOutlinedIcon from '@material-ui/icons/PrintOutlined';
 
 const useStyles = makeStyles({
     tableContainerTop: {
@@ -209,6 +210,7 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
                         
                         </DialogContent>
                         <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
+                           <PrintOutlinedIcon onClick = {() => window.print()} />
                             <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
                                 Close
                             </Button>
