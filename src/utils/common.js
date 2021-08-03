@@ -16,5 +16,6 @@ export const dateFormat = value => moment(value).format('DD-MM-yyyy hh:mm A');
 
 export const dateToPickerFormat = value => moment(value).format('yyyy-MM-DDTHH:mm')
 
+export const dateFormatWithoutTime = value => moment(value).format('DD-MM-yyyy');
 
 export const SharedContext = createContext(null);

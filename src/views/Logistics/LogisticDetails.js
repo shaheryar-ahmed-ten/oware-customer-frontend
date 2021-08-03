@@ -1,10 +1,16 @@
-import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { dateFormat, getURL } from '../../utils/common';
+import { dateFormat, dateFormatWithoutTime, getURL } from '../../utils/common';
 import PrintOutlinedIcon from '@material-ui/icons/PrintOutlined';
+import owareLogo from '../../assets/logo/owareLogo.png'
 
 const useStyles = makeStyles({
+    heading: {
+        fontWeight: "600",
+        margin : "10px",
+        textAlign : "center"
+    },
     tableContainerTop: {
         backgroundColor: '#F8F8F8'
     },
@@ -24,7 +30,8 @@ const useStyles = makeStyles({
         fontWeight: '600',
         LineWeight: '15px',
         backgroundColor: '#F8F8F8',
-        borderBottom: "none"
+        borderBottom: "none",
+        padding : "10px"
     },
     topTableItem: {
         fontWeight: '600'
@@ -48,6 +55,13 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             minWidth: 'auto',
             className: classes.topTableItem,
             format: (value, entity) => entity.status,
+        },
+        {
+            id: "price",
+            label: 'Price',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: (value, entity) => `RS. ${entity.price ? entity.price : "-"}`,
         },
         {
             id: "driverId",
@@ -79,10 +93,10 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
         },
         {
             id: "pickupDate",
-            label: 'PICKUP AREA DATE/TIME',
+            label: 'PICKUP AREA DATE',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format : dateFormat
+            format : dateFormatWithoutTime
         },
         {
             id: "dropoffAddress",
@@ -93,10 +107,10 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
         },
         {
             id: "dropoffDate",
-            label: 'DROP OFF DATE/TIME',
+            label: 'DROP OFF DATE',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format : dateFormat
+            format : dateFormatWithoutTime
         }    
     ]
     const columns = [
@@ -140,7 +154,11 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
         selectedProduct ?
             <div style={{ display: "inline" }}>
                 <form>
-                    <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
+                    <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title"> 
+                    <Typography variant="h3">
+                        <img style = {{width : "10%", margin : "10px", justifyContent : "center"}} src={owareLogo} />
+                        <Box className={classes.heading}>Delivery Details</Box>
+                    </Typography>
                         <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: '80vh' }}>
                              <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
