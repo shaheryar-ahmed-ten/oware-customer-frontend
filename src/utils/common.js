@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import moment from 'moment';
 
-export const apiBaseURL = (process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : '') + '/api/v1';
+export const apiBaseURL = (process.env.NODE_ENV === 'development' ? 'http://3.225.149.130:443' : '') + '/api/v1';
 
 export const getURL = uri => {
   return `${apiBaseURL}${uri}`;
@@ -18,3 +18,12 @@ export const dateToPickerFormat = value => moment(value).format('yyyy-MM-DDTHH:m
 
 
 export const SharedContext = createContext(null);
+
+
+export const checkForMatchInArray = (array, propertyToMatch, valueToMatch) => {
+  for (var i = 0; i < array.length; i++) {
+    if (array[i][propertyToMatch] == valueToMatch)
+      return true;
+  }
+  return false;
+}

@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography , Button} from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react'
@@ -11,6 +11,7 @@ import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined'
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { debounce } from 'lodash';
 import { DEBOUNCE_TIME } from '../../../config';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -71,7 +72,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Inbound() {
-    const classes = useStyles()
+    const classes = useStyles();
+    const navigate = useNavigate();
+
     const columns = [
         {
             id: 'createdAt',
@@ -187,66 +190,11 @@ function Inbound() {
     const productSelect = <SelectDropdown icon={<ClassOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All', }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
     const daysSelect = <SelectDropdown icon={<CalendarTodayOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Days" name="Select Days" list={[{ name: 'All', }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
     const headerButtons = [warehouseSelect, productSelect, daysSelect]
+
     return (
         <>
-            <Grid container spacing={2} className={classes.gridContainer}>
-                <Grid item xs={12}>
-                    <Typography variant="h3">
-                        <Box className={classes.heading}>Inwards</Box>
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <TableContainer className={classes.tableContainer}>
-                        <TableHeader searchInput={searchInput} buttons={headerButtons} filterCount={3} />
-                        <Divider />
-                        <Table stickyHeader aria-label="sticky table">
-                            <TableHead>
-                                {columns.map((column, index) => (
-                                    <TableCell
-                                        key={index}
-                                        align={column.align}
-                                        className={classes.tableHeaderItem}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
-                            </TableHead>
-                            <TableBody>
-                                {productInwards.map((productInward, index) => {
-                                    return (
-                                        <TableRow key={index} hover role="checkbox" tabIndex={-1}>
-                                            {columns.map((column) => {
-                                                const value = productInward[column.id];
-                                                return (
-                                                    <TableCell key={column.id} align={column.align}
-                                                        className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                        {column.format ? column.format(value, productInward) : (value || '')}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    );
-                                })}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <Grid container item justify="space-between" className={classes.paginationGrid}>
-                        <Grid item>
-                            <Pagination
-                                component="div"
-                                count={pageCount}
-                                page={page}
-                                classes={{ root: classes.paginationRoot }}
-                                onChange={(e, page) => setPage(page)}
-                            />
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body">Showing {productInwards.length} out of {numberOfTotalRecords} records.</Typography>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </>
+   
+      </>
     )
 }
 

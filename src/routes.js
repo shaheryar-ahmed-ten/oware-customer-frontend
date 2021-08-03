@@ -21,6 +21,7 @@ import {
   CP_RIDE_FULL
 } from './PermissionConstants';
 import Logistics from './views/Logistics/Logistic';
+import AddProductInwardView from './views/Operations/Inbound/AddInbound';
 
 const routes = user => [
   {
@@ -62,6 +63,13 @@ const routes = user => [
     element: <DashboardLayout />,
     children: [
       { path: '/', element: checkPermission(user, CP_PRODUCT_FULL) ? <Products /> : <Navigate to='/login' /> }
+    ]
+  },
+  {
+    path: '/product-inward/create',
+    element: <DashboardLayout />,
+    children: [
+      { path: '/', element: checkPermission(user, CP_PRODUCT_FULL) ? <AddProductInwardView /> : <Navigate to='/login' /> }
     ]
   },
   {
