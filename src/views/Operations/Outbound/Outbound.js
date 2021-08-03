@@ -114,12 +114,12 @@ function Outbound() {
             minWidth: 'auto',
             className: classes.tableCellStyle,
         },
-        {
-            id: 'product',
-            label: 'PRODUCT',
-            minWidth: 'auto',
-            className: classes.tableCellStyle,
-        },
+        // {
+        //     id: 'product',
+        //     label: 'PRODUCT',
+        //     minWidth: 'auto',
+        //     className: classes.tableCellStyle,
+        // },
         {
             id: 'dispatchOrderQuantity',
             label: 'QUANTITY ORDERD',
@@ -189,7 +189,6 @@ function Outbound() {
             }
         })
             .then((res) => {
-                console.log(res)
                 setPage(res.data.pages === 1 ? 1 : page)
                 setPageCount(res.data.pages)
                 setOutwardOrders(res.data.data)

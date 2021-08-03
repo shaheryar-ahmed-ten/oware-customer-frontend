@@ -29,6 +29,7 @@ const useStyles = makeStyles({
     }
 });
 function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
+    // console.log(selectedOutboundOrder)
     const classes = useStyles()
     const columnsTop = [
         {
@@ -50,12 +51,12 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             minWidth: 'auto',
             className: classes.topTableItem,
         },
-        {
-            id: 'product',
-            label: 'PRODUCT',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-        },
+        // {
+        //     id: 'product',
+        //     label: 'PRODUCT',
+        //     minWidth: 'auto',
+        //     className: classes.topTableItem,
+        // },
         {
             id: 'dispatchOrderQuantity',
             label: 'QUANTITY ORDERD',
@@ -88,12 +89,26 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             label: 'PRODUCT',
             minWidth: 'auto',
             className: '',
+            format: (value, po, outwardOrder, inventory) => inventory.Product.name
+        },
+        {
+            id: 'quantity',
+            label: 'QUANTITY REQUESTED',
+            minWidth: 'auto',
+            className: '',
+            format: (value, po, outwardOrder, inventory) => {
+                const DistpatchInventory = outwardOrder.Inventories.find((doInventory) => doInventory.OrderGroup.inventoryId === inventory.OutwardGroup.inventoryId)
+                return (
+                    DistpatchInventory.OrderGroup.quantity
+                )
+            }
         },
         {
             id: 'quantity',
             label: 'QUANTITY SHIPPED',
             minWidth: 'auto',
             className: '',
+            format: (value, po, outwardOrder, inventory) => inventory.OutwardGroup.quantity
         },
         {
             id: 'number',
@@ -102,13 +117,6 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             className: '',
             format: (value, entity) => entity.Vehicle ? entity.Vehicle.registrationNumber : '',
         },
-        // {
-        //     id: 'type',
-        //     label: 'VEHICLE TYPE',
-        //     minWidth: 'auto',
-        //     className: '',
-        //     format: (value, entity) => entity.Vehicle ? entity.Vehicle.type : '',
-        // },
         {
             id: 'receiverName',
             label: 'RECEIVER NAME',
@@ -127,11 +135,12 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
 
     const [selectedProductOutwardDetails, setSelectedProductOutwardDetails] = useState([])
     const [productOutwardsLength, setProductOutwardsLength] = useState(0)
+
     useEffect(() => {
         if (selectedOutboundOrder)
             axios.get(getURL(`/order/${selectedOutboundOrder.dispatchOrderId}`))
                 .then((response) => {
-                    // console.log(response)
+                    console.log(response.data.data)
                     if (response.data.success) {
                         setSelectedProductOutwardDetails(response.data.data)
                         setProductOutwardsLength(response.data.count)
@@ -198,19 +207,23 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                                 {
                                                     selectedProductOutwardDetails.map((outwardOrder) => {
                                                         return outwardOrder.ProductOutwards.map((productOutward) => {
-                                                            return (
-                                                                <TableRow hover role="checkbox" tabIndex={-1} key={productOutward.id}>
-                                                                    {columns.map((column) => {
-                                                                        const value = productOutward[column.id];
-                                                                        return (
-                                                                            <TableCell key={column.id} align={column.align}
-                                                                                className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                                                {column.format ? column.format(value, productOutward, outwardOrder) : (value || '')}
-                                                                            </TableCell>
-                                                                        );
-                                                                    })}
-                                                                </TableRow>
-                                                            )
+                                                            return productOutward.Inventories.map((poInventory) => {
+                                                                return (
+                                                                    <TableRow hover role="checkbox" tabIndex={- 1} key={poInventory.id}>
+                                                                        {
+                                                                            columns.map((column) => {
+                                                                                const value = poInventory[column.id];
+                                                                                return (
+                                                                                    <TableCell key={column.id} align={column.align}
+                                                                                        className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+                                                                                        {column.format ? column.format(value, productOutward, outwardOrder, poInventory) : (value || '')}
+                                                                                    </TableCell>
+                                                                                )
+                                                                            })
+                                                                        }
+                                                                    </TableRow>
+                                                                )
+                                                            })
                                                         })
                                                     })
                                                 }
@@ -239,3 +252,16 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
 }
 
 export default OutboundDetails
+    // < TableRow hover role = "checkbox" tabIndex = {- 1} key = { productOutward.id } >
+    // {
+    //     columns.map((column) => {
+    //         const value = productOutward[column.id];
+    //         return (
+    //             <TableCell key={column.id} align={column.align}
+    //                 className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+    //                 {column.format ? column.format(value, productOutward, outwardOrder) : (value || '')}
+    //             </TableCell>
+    //         );
+    //     })
+    // }
+    //                                                             </TableRow >
