@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { dateFormat, dateFormatWithoutTime, getURL } from '../../utils/common';
+import { dateFormatWithoutTime, getURL } from '../../utils/common';
 import PrintOutlinedIcon from '@material-ui/icons/PrintOutlined';
 import owareLogo from '../../assets/logo/owareLogo.png'
 
