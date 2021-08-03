@@ -114,12 +114,12 @@ function Outbound() {
             minWidth: 'auto',
             className: classes.tableCellStyle,
         },
-        {
-            id: 'product',
-            label: 'PRODUCT',
-            minWidth: 'auto',
-            className: classes.tableCellStyle,
-        },
+        // {
+        //     id: 'product',
+        //     label: 'PRODUCT',
+        //     minWidth: 'auto',
+        //     className: classes.tableCellStyle,
+        // },
         {
             id: 'dispatchOrderQuantity',
             label: 'QUANTITY ORDERD',
@@ -145,11 +145,11 @@ function Outbound() {
             className: classes.tableCellStyle,
             format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
                 Pending
-      </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+            </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
                 Partially fulfilled
-          </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
+            </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
                 Fulfilled
-          </Button> : ''
+            </Button> : ''
         },
     ]
     const [searchKeyword, setSearchKeyword] = useState('');
