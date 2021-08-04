@@ -29,7 +29,6 @@ const useStyles = makeStyles({
     }
 });
 function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
-    // console.log(selectedOutboundOrder)
     const classes = useStyles()
     const columnsTop = [
         {

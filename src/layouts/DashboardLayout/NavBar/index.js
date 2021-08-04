@@ -21,6 +21,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
+import LocalShippingOutlinedIcon from '@material-ui/icons/LocalShippingOutlined';
 import { useLocation, useNavigate } from 'react-router-dom';
 import owareLogo from '../../../assets/logo/owareLogo.png'
 import { SharedContext } from '../../../utils/common';
@@ -29,7 +30,7 @@ import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined'
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import HttpsOutlinedIcon from '@material-ui/icons/HttpsOutlined';
 import { checkPermission, removeAuth } from '../../../utils/auth';
-import { CP_DASHBOARD_FULL, CP_INWARD_FULL, CP_ORDER_FULL, CP_PRODUCT_FULL } from '../../../PermissionConstants';
+import { CP_DASHBOARD_FULL, CP_INWARD_FULL, CP_ORDER_FULL, CP_PRODUCT_FULL, CP_LOGISTIC_FULL } from '../../../PermissionConstants';
 import EventNoteOutlinedIcon from '@material-ui/icons/EventNoteOutlined';
 import AssignmentReturnedOutlinedIcon from '@material-ui/icons/AssignmentReturnedOutlined';
 const drawerWidth = 250;
@@ -181,6 +182,14 @@ function Navbar(props) {
     bgColor: currentLocation.includes('products') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
     canActivate: checkPermission(currentUser, CP_PRODUCT_FULL)
 
+  },
+  {
+    title: "Logistics",
+    icon: <LocalShippingOutlinedIcon fontSize="small" />,
+    route: '/logistics',
+    color: currentLocation.includes('logistics') ? "#01D5FF" : '#383838',
+    bgColor: currentLocation.includes('logistics') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
+    canActivate: checkPermission(currentUser, CP_PRODUCT_FULL)
   },
   ]
   const handleClick = (event) => {
