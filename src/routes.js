@@ -22,6 +22,7 @@ import {
 } from './PermissionConstants';
 import Logistics from './views/Logistics/Logistic';
 import AddProductInwardView from './views/Operations/Inbound/AddInbound';
+import AddProductOutwardView from './views/Operations/Outbound/AddOutbound';
 
 const routes = user => [
   {
@@ -66,10 +67,17 @@ const routes = user => [
     ]
   },
   {
-    path: '/product-inward/create',
+    path: '/inward/add',
     element: <DashboardLayout />,
     children: [
       { path: '/', element: checkPermission(user, CP_PRODUCT_FULL) ? <AddProductInwardView /> : <Navigate to='/login' /> }
+    ]
+  },
+  {
+    path: '/outward/add',
+    element: <DashboardLayout />,
+    children: [
+      { path: '/', element: checkPermission(user, CP_PRODUCT_FULL) ? <AddProductOutwardView /> : <Navigate to='/login' /> }
     ]
   },
   {

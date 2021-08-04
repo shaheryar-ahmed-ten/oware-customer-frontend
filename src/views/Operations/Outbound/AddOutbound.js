@@ -1,19 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  Grid,
-  Button,
-  TextField,
-  FormControl,
-  Typography,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Box,
-  makeStyles
-} from '@material-ui/core';
+import {Grid, Button, TextField, FormControl, Typography, TableContainer, Table,TableHead, TableRow, TableCell, TableBody, Box,makeStyles} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import { Alert } from '@material-ui/lab';
 import { isRequired } from '../../../utils/validators';
@@ -51,7 +37,7 @@ tableHeadText: {
 
 }));
 
-export default function AddProductInwardView() {
+export default function AddProductOutwardView() {
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -69,8 +55,6 @@ export default function AddProductInwardView() {
   [showMessage, setShowMessage] = useState(null),
   [messageType, setMessageType] = useState(null),
   [validation, setValidation] = useState({});
-
-
 
   useEffect(() => {
     getRelations();
@@ -90,8 +74,6 @@ export default function AddProductInwardView() {
 
   useEffect(() => {
   }, [productGroups]);
-
-  console.log("proddfnvndfvnvnf", productGroups)
 
   const updateProductsTable = () => {
     if (isRequired(quantity) &&
@@ -131,10 +113,10 @@ export default function AddProductInwardView() {
         return
       }
       setShowMessage({
-        message: "New products inward have been created."
+        message: "New products outward have been created."
       });
       setTimeout(() => {
-        navigate('/operation-transactions/inwards')
+        navigate('/operation-transactions/orders')
       }, 2000);
     })
       .catch((err) => {
@@ -144,7 +126,7 @@ export default function AddProductInwardView() {
 
   const handleSubmit = e => {
     setMessageType('green')
-    const newProductInward = {
+    const newProductOutward = {
       productId,
       quantity,
       warehouseId,
@@ -160,7 +142,7 @@ export default function AddProductInwardView() {
     if (isRequired(quantity) &&
       isRequired(productId) &&
       isRequired(warehouseId)) {
-      addProductInward(newProductInward);
+      addProductInward(newProductOutward);
     }
   }
 
@@ -170,7 +152,7 @@ export default function AddProductInwardView() {
         <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
-                        <Box className={classes.heading}>Add Inwards</Box>
+                        <Box className={classes.heading}>Add Outwards</Box>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -187,15 +169,14 @@ export default function AddProductInwardView() {
                   setInternalIdForBusiness(`PI-${newValue.businessWarehouseCode}-`);
                 }
               }}
-              onBlur={e => setValidation({ ...validation, warehouseId: true })}
               renderInput={(params) => <TextField {...params} label="Warehouse" variant="outlined" />}
             />
-            {validation.warehouseId && !isRequired(warehouseId) ? <Typography color="error">Warehouse is required!</Typography> : ''}
+           
           </FormControl>
         </Grid>
         
         <Grid item sm={12}>
-                       <TextField
+            <TextField
                           fullWidth={true}
                           margin="dense"
                            id="referenceId"
@@ -205,34 +186,66 @@ export default function AddProductInwardView() {
                            onChange={e => setReferenceId(e.target.value)}
                            variant="outlined"
                               inputProps={{ maxLength: 30 }}
-                              onBlur={e => setValidation({ ...validation, referenceId: true })}
                            />
-                      {validation.referenceId && !isRequired(referenceId) ? <Typography color="error">ReferenceId is required!</Typography> : ''}
-                       </Grid>
+          
+        </Grid>
 
-                       <Grid style = {{marginTop : "20px"}} item xs={12}>
-                           <Typography variant="h4" className={classes.heading}>Product Details</Typography>
-                       </Grid>
+        <Grid item sm={12}>
+          <FormControl margin="dense" fullWidth={true} variant="outlined">
+            <Autocomplete
+              id="dispatchorder"
+              options={warehouses}
+              getOptionLabel={(warehouse) => warehouse.name}
+              onChange={(event, newValue) => {
+                if (newValue) {
+                  setWarehouseId(newValue.id);
+                }
+              }}
+              renderInput={(params) => <TextField {...params} label="Dispatch Order Id" variant="outlined" />}
+            />
+           
+          </FormControl>
+        </Grid>
 
-                       <Grid container alignItems="center" spacing={2}>
-                         <Grid item xs={6}>
+
+        <Grid item sm={12}>
+          <FormControl margin="dense" fullWidth={true} variant="outlined">
+            <Autocomplete
+              id="vehicle"
+              options={warehouses}
+              getOptionLabel={(warehouse) => warehouse.name}
+              onChange={(event, newValue) => {
+                if (newValue) {
+                  setWarehouseId(newValue.id);
+                }
+              }}
+              renderInput={(params) => <TextField {...params} label="Vehicle" variant="outlined" />}
+            />
+           
+          </FormControl>
+        </Grid>
+
+        <Grid style = {{marginTop : "20px"}} item xs={12}>
+            <Typography variant="h4" className={classes.heading}>Product Details</Typography>
+        </Grid>
+
+        <Grid container alignItems="center" spacing={2}>
+            <Grid item xs={6}>
             <FormControl margin="dense" fullWidth={true} variant="outlined">
               <Autocomplete
                 id="Product"
-                margin="dense"
                 options={products}
                 getOptionLabel={(product) => product.name}
                 onChange={(event, newValue) => {
                   if (newValue)
                     selectProduct(newValue.id)
                 }}
-                onBlur={e => setValidation({ ...validation, productId: true })}
                 renderInput={(params) => <TextField {...params} label="Product" variant="outlined" />}
               />
-              {validation.productId && !isRequired(productId) ? <Typography color="error">Product is required!</Typography> : ''}
+             
             </FormControl>
           </Grid>
-          <Grid item xs={2}>
+             <Grid item xs={2}>
             <TextField
               fullWidth={true}
               margin="dense"
@@ -242,11 +255,10 @@ export default function AddProductInwardView() {
               variant="outlined"
               value={quantity}
               onChange={e => setQuantity(e.target.value)}
-              onBlur={e => setValidation({ ...validation, quantity: true })}
             />
-           {validation.quantity && !isRequired(quantity) ? <Typography color="error">Quantity is required!</Typography> : ''} 
+            
           </Grid>
-          <Grid item xs={2}>
+             <Grid item xs={2}>
             <TextField
               fullWidth={true}
               margin="dense"
@@ -255,18 +267,18 @@ export default function AddProductInwardView() {
               type="text"
               variant="filled"
               value={uom}
-              disabled
             />
           </Grid>
+        
+
         <Grid item xs={2} className={classes.parentContainer}>
             <FormControl margin="dense" fullWidth={true} variant="outlined">
               <Button onClick = {() => updateProductsTable()} color="primary" variant="contained">Add Product</Button>
             </FormControl>
           </Grid>
-      </Grid>
+        </Grid>           
 
-
-     <TableContainer style = {{marginTop : "20px"}} className={classes.parentContainer}>
+    <TableContainer style = {{marginTop : "20px"}} className={classes.parentContainer}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow className={classes.shadedTableHeader}>
@@ -309,6 +321,7 @@ export default function AddProductInwardView() {
         </Table>
       </TableContainer>
 
+
           <Grid container className={classes.parentContainer} xs={12} spacing={3}>
             <Grid item xs={3}>
               <FormControl margin="dense" fullWidth={true} variant="outlined">
@@ -319,12 +332,12 @@ export default function AddProductInwardView() {
             </Grid>
           </Grid>
 
-         <MessageSnackbar showMessage={showMessage} type={messageType} />
-      </TableContainer>
+               <MessageSnackbar showMessage={showMessage} type={messageType} />
+                    </TableContainer>
                 
-      </Grid>
+                </Grid>
            
-   </Grid>
+            </Grid>
         
     </>
   );

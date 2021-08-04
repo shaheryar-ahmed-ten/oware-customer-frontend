@@ -198,6 +198,13 @@ function Inbound() {
                 <Grid item xs={12}>
                     <Typography variant="h3">
                         <Box className={classes.heading}>Inwards</Box>
+                        <Button
+                        key={2}
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        style = {{ float : "right"}}
+                        onClick={() => navigate('/inward/add')}>ADD INWARD</Button>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
