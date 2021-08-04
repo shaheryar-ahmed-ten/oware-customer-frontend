@@ -14,6 +14,8 @@ import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined'
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import MoreHorizOutlinedIcon from '@material-ui/icons/MoreHorizOutlined';
 import { DEBOUNCE_TIME } from '../../../config';
+import { useNavigate } from 'react-router';
+
 const useStyles = makeStyles((theme) => ({
     heading: {
         fontWeight: "600"
@@ -93,7 +95,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 function Outbound() {
-    const classes = useStyles()
+    const classes = useStyles();
+    const navigate = useNavigate();
+    
     const columns = [
         {
             id: 'internalIdForBusiness',
@@ -114,12 +118,12 @@ function Outbound() {
             minWidth: 'auto',
             className: classes.tableCellStyle,
         },
-        {
-            id: 'product',
-            label: 'PRODUCT',
-            minWidth: 'auto',
-            className: classes.tableCellStyle,
-        },
+        // {
+        //     id: 'product',
+        //     label: 'PRODUCT',
+        //     minWidth: 'auto',
+        //     className: classes.tableCellStyle,
+        // },
         {
             id: 'dispatchOrderQuantity',
             label: 'QUANTITY ORDERD',
@@ -145,11 +149,11 @@ function Outbound() {
             className: classes.tableCellStyle,
             format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
                 Pending
-      </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+            </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
                 Partially fulfilled
-          </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
+            </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
                 Fulfilled
-          </Button> : ''
+            </Button> : ''
         },
     ]
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -266,6 +270,13 @@ function Outbound() {
                 <Grid item xs={12}>
                     <Typography variant="h3">
                         <Box className={classes.heading}>Outwards</Box>
+                        <Button
+                        key={2}
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        style = {{ float : "right"}}
+                        onClick={() => navigate('/outward/add')}>ADD Outward</Button>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>

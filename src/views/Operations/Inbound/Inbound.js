@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography , Button} from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react'
@@ -11,6 +11,7 @@ import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined'
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { debounce } from 'lodash';
 import { DEBOUNCE_TIME } from '../../../config';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -71,7 +72,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Inbound() {
-    const classes = useStyles()
+    const classes = useStyles();
+    const navigate = useNavigate();
+
     const columns = [
         {
             id: 'createdAt',
@@ -92,13 +95,14 @@ function Inbound() {
             label: 'PRODUCT',
             minWidth: 'auto',
             className: classes.tableCellStyle,
-            format: (value, entity) => entity.Product.name,
+            format: (value, entity, product) => product.name,
         },
         {
             id: 'quantity',
             label: 'QUANTITY',
             minWidth: 'auto',
             className: classes.tableCellStyle,
+            format: (value, entity, product) => product.InwardGroup.quantity,
         },
         {
             id: 'referenceId',
@@ -187,12 +191,20 @@ function Inbound() {
     const productSelect = <SelectDropdown icon={<ClassOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All', }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
     const daysSelect = <SelectDropdown icon={<CalendarTodayOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Days" name="Select Days" list={[{ name: 'All', }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
     const headerButtons = [warehouseSelect, productSelect, daysSelect]
+
     return (
         <>
             <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
                         <Box className={classes.heading}>Inwards</Box>
+                        <Button
+                        key={2}
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        style = {{ float : "right"}}
+                        onClick={() => navigate('/inward/add')}>ADD INWARD</Button>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -214,17 +226,21 @@ function Inbound() {
                             <TableBody>
                                 {productInwards.map((productInward, index) => {
                                     return (
-                                        <TableRow key={index} hover role="checkbox" tabIndex={-1}>
-                                            {columns.map((column) => {
-                                                const value = productInward[column.id];
-                                                return (
-                                                    <TableCell key={column.id} align={column.align}
-                                                        className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                        {column.format ? column.format(value, productInward) : (value || '')}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
+                                        productInward.Products.map((product, idx) => {
+                                            return (
+                                                <TableRow key={idx} hover role="checkbox" tabIndex={-1}>
+                                                    {columns.map((column) => {
+                                                        const value = productInward[column.id];
+                                                        return (
+                                                            <TableCell key={column.id} align={column.align}
+                                                                className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+                                                                {column.format ? column.format(value, productInward, product) : (value || '')}
+                                                            </TableCell>
+                                                        );
+                                                    })}
+                                                </TableRow>
+                                            )
+                                        })
                                     );
                                 })}
                             </TableBody>
