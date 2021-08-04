@@ -64,32 +64,25 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             format: (value, entity) => `RS. ${entity.price ? entity.price : "-"}`,
         },
         {
-            id: "driverId",
+            id: "Vehicle.Driver.name",
             label: 'DRIVER',
             minWidth: 'auto',
             className: classes.topTableItem,
-            // format: (value, entity) => entity.driverId,
+            format: (value, entity) => entity.Vehicle.Driver.name,
         },
         {
-            id: "vehicleId",
-            label: 'VEHICLE',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-            // format: (value, entity) => entity.vehicleId,
-        },
-        {
-            id: "DropOffArea.name",
+            id: "Vehicle.Vendor.name",
             label: 'VENDOR',
             minWidth: 'auto',
             className: classes.topTableItem,
-            // format: (value, entity) => entity.DropOffArea.name,
+            format: (value, entity) => entity.Vehicle.Vendor.name,
         },
         {
-            id: "pickupAddress",
+            id: "PickupArea.name",
             label: 'PICKUP AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.pickupAddress,
+            format: (value, entity) => entity.PickupArea.name,
         },
         {
             id: "pickupDate",
@@ -99,11 +92,11 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             format : dateFormatWithoutTime
         },
         {
-            id: "dropoffAddress",
+            id: "DropoffArea.name",
             label: 'DROP OFF AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.dropoffAddress,
+            format: (value, entity) => entity.DropoffArea.name,
         },
         {
             id: "dropoffDate",
