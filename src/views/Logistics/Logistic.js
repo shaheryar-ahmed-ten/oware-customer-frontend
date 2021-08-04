@@ -1,15 +1,14 @@
-import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography , Button } from '@material-ui/core';
 import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
 import { dateFormat, getURL } from '../../utils/common'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
-import SelectDropdown from '../../components/SelectDropdown';
 import TableHeader from '../../components/TableHeader';
 import { Pagination } from '@material-ui/lab';
-import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { debounce } from 'lodash';
 import { DEBOUNCE_TIME } from '../../config';
 import LogisticDetails from './LogisticDetails';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -69,13 +68,14 @@ const useStyles = makeStyles((theme) => ({
     },
     partialStatusButtonStyling: {
         backgroundColor: '#F0F0F0',
-        color: '#7D7D7D',
-        width: 150,
-        borderRadius : "10px",
-        margin : "20px"
+        color: '#7D7D7D'
     },
     fullfilledStatusButtonStyling: {
         backgroundColor: '#EAF7D5',
+        color: '#69A022'
+    },
+    completedStatusButtonStyling: {
+        backgroundColor: '#32CD32',
         color: '#69A022'
     },
     tableCellStyle: {
@@ -88,7 +88,8 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '12px',
         color: '#A9AEAF',
         borderBottom: 'none',
-        paddingBottom: '0'
+        paddingBottom: '0',
+        margin : "20px"
     }
 }));
 function Logistics() {
@@ -116,11 +117,11 @@ function Logistics() {
             format: dateFormat,
         },
         {
-            id: 'pickupAddress',
+            id: 'PickupArea.name',
             label: 'PICKUP AREA',
             minWidth: 'auto',
             className: classes.orderIdStyle,
-            format: (value, entity) => entity.pickupAddress,
+            format: (value, entity) => entity.PickupArea.name,
         },
         {
             id: 'pickupAddress',
@@ -130,11 +131,11 @@ function Logistics() {
             format: (value, entity) => entity.pickupAddress,
         },
         {
-            id: 'dropoffAreaId',
+            id: 'DropoffArea.name',
             label: 'DROPOFF AREA',
             minWidth: 'auto',
             className: classes.orderIdStyle,
-            format: (value, entity) => entity.dropoffAddress,
+            format: (value, entity) => entity.DropoffArea.name,
         },
         {
             id: 'dropoffDate',
@@ -148,7 +149,19 @@ function Logistics() {
             label: 'STATUS',
             minWidth: 'auto',
             className: classes.orderIdStyle,
-            format: (value, entity) => entity.status,
+            format: (value, entity) => entity.status === "ASSIGNED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
+            ASSIGNED
+        </Button> : entity.status === "PENDING" ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
+            PENDING
+        </Button> : entity.status === "UNASSIGNED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+                UNASSIGNED
+            </Button> : entity.status === "INPROGRESS" ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+                IN-PROGRESS
+            </Button>  : entity.status === "COMPLETED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.completedStatusButtonStyling)}>
+                COMPLETED
+            </Button> : entity.status === "CANCELLED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+                CANCELLED
+            </Button> : ""
         },
     ]
     const [logistics, setLogistics] = useState([]);

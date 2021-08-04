@@ -2,8 +2,8 @@ import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableB
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { dateFormatWithoutTime, getURL } from '../../utils/common';
+import owareLogo from '../../assets/logo/owareLogo.png';
 import PrintOutlinedIcon from '@material-ui/icons/PrintOutlined';
-import owareLogo from '../../assets/logo/owareLogo.png'
 
 const useStyles = makeStyles({
     heading: {
@@ -57,39 +57,32 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             format: (value, entity) => entity.status,
         },
         {
-            id: "price",
-            label: 'Price',
+            id: 'price',
+            label: 'PRICE',
             minWidth: 'auto',
-            className: classes.topTableItem,
+            className: classes.orderIdStyle,
             format: (value, entity) => `RS. ${entity.price ? entity.price : "-"}`,
         },
         {
-            id: "driverId",
+            id: "Vehicle.Driver.name",
             label: 'DRIVER',
             minWidth: 'auto',
             className: classes.topTableItem,
-            // format: (value, entity) => entity.driverId,
+            format: (value, entity) => entity.Vehicle.Driver.name,
         },
         {
-            id: "vehicleId",
-            label: 'VEHICLE',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-            // format: (value, entity) => entity.vehicleId,
-        },
-        {
-            id: "DropOffArea.name",
+            id: "Vehicle.Vendor.name",
             label: 'VENDOR',
             minWidth: 'auto',
             className: classes.topTableItem,
-            // format: (value, entity) => entity.DropOffArea.name,
+            format: (value, entity) => entity.Vehicle.Vendor.name,
         },
         {
-            id: "pickupAddress",
+            id: "PickupArea.name",
             label: 'PICKUP AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.pickupAddress,
+            format: (value, entity) => entity.PickupArea.name,
         },
         {
             id: "pickupDate",
@@ -99,11 +92,11 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             format : dateFormatWithoutTime
         },
         {
-            id: "dropoffAddress",
+            id: "DropoffArea.name",
             label: 'DROP OFF AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.dropoffAddress,
+            format: (value, entity) => entity.DropoffArea.name,
         },
         {
             id: "dropoffDate",
@@ -160,6 +153,10 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
                         <Box className={classes.heading}>Delivery Details</Box>
                     </Typography>
                         <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: '80vh' }}>
+                          <Typography variant="h3">
+                            <img style = {{width : "10%", margin : "20px"}} src={owareLogo} />
+                            <Box className={classes.heading}>Delivery Details</Box>
+                          </Typography>
                              <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
