@@ -11,9 +11,9 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Box,
-  makeStyles
+  Box
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import { Alert } from '@material-ui/lab';
 import { isRequired } from '../../../utils/validators';
@@ -58,19 +58,17 @@ export default function AddProductInwardView() {
   const 
   [referenceId, setReferenceId] = useState(''),
   [warehouseId, setWarehouseId] = useState(''),
-  [uom, setUom] = useState(''),
   [productId, setProductId] = useState(''),
   [quantity, setQuantity] = useState(0),
   [productGroups, setProductGroups] = useState([]),
   [products, setProducts] = useState([]),
+  [newProducts, setNewProducts] = useState([]),
   [warehouses, setWarehouses] = useState([]),
   [formErrors, setFormErrors] = useState([]),
   [internalIdForBusiness, setInternalIdForBusiness] = useState(''),
   [showMessage, setShowMessage] = useState(null),
   [messageType, setMessageType] = useState(null),
   [validation, setValidation] = useState({});
-
-
 
   useEffect(() => {
     getRelations();
@@ -89,9 +87,28 @@ export default function AddProductInwardView() {
   }
 
   useEffect(() => {
-  }, [productGroups]);
+      setQuantity(0);
+      selectProduct('');
+      setWarehouseId(warehouseId || '');
+      setReferenceId(referenceId || '');
+      if (products.length > 0 && productGroups.length == 0) {
+        productGroups.forEach(product => {
+          //correct way of updating states.
+          setProductGroups((prevState) => ([
+            {
+              product: products.find(_product => _product.id == product.id),
+              id: product.id,
+              quantity: quantity
+            }
+          ]))
+        });
+      }
+    } 
+  , [products, warehouses]);
 
-  console.log("proddfnvndfvnvnf", productGroups)
+
+  useEffect(() => {
+  }, [productGroups]);
 
   const updateProductsTable = () => {
     if (isRequired(quantity) &&
@@ -124,7 +141,7 @@ export default function AddProductInwardView() {
 
   const addProductInward = data => {
     let apiPromise = null;
-    apiPromise = axios.post(getURL('/product-inward'), data);
+    apiPromise = axios.post(getURL('/inward'), data);
     apiPromise.then(res => {
       if (!res.data.success) {
         setFormErrors(<Alert elevation={6} variant="filled" severity="error" onClose={() => setFormErrors('')}>{res.data.message}</Alert>);
@@ -149,7 +166,7 @@ export default function AddProductInwardView() {
       quantity,
       warehouseId,
       referenceId,
-      products: productGroups
+      products: productGroups,
     }
 
     setValidation({
@@ -246,18 +263,6 @@ export default function AddProductInwardView() {
             />
            {validation.quantity && !isRequired(quantity) ? <Typography color="error">Quantity is required!</Typography> : ''} 
           </Grid>
-          <Grid item xs={2}>
-            <TextField
-              fullWidth={true}
-              margin="dense"
-              id="uom"
-              label="UOM"
-              type="text"
-              variant="filled"
-              value={uom}
-              disabled
-            />
-          </Grid>
         <Grid item xs={2} className={classes.parentContainer}>
             <FormControl margin="dense" fullWidth={true} variant="outlined">
               <Button onClick = {() => updateProductsTable()} color="primary" variant="contained">Add Product</Button>
@@ -276,10 +281,6 @@ export default function AddProductInwardView() {
               </TableCell>
               <TableCell
                 className={classes.tableHeadText}>
-                UoM
-              </TableCell>
-              <TableCell
-                className={classes.tableHeadText}>
                 Quantity
               </TableCell>
               <TableCell className={classes.tableHeadText}>Actions</TableCell>
@@ -291,8 +292,6 @@ export default function AddProductInwardView() {
                 <TableRow hover role="checkbox">
                   <TableCell>
                     {productGroup.product.name}
-                  </TableCell>
-                  <TableCell>
                   </TableCell>
                   <TableCell>
                     {productGroup.quantity}
