@@ -148,10 +148,6 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             <div style={{ display: "inline" }}>
                 <form>
                     <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title"> 
-                    <Typography variant="h3">
-                        <img style = {{width : "10%", margin : "10px", justifyContent : "center"}} src={owareLogo} />
-                        <Box className={classes.heading}>Delivery Details</Box>
-                    </Typography>
                         <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: '80vh' }}>
                           <Typography variant="h3">
                             <img style = {{width : "10%", margin : "20px"}} src={owareLogo} />
