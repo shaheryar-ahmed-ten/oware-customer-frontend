@@ -6,7 +6,7 @@ import theme from './theme';
 import routes from '../src/routes';
 import { SharedContext } from './utils/common';
 import { setRequestInterceptor, setResponseInterceptor, ejectRequestInterceptor, ejectResponseInterceptor } from './utils/interceptors';
-import { getUser, getUserToken, removeAuth } from './utils/auth';
+import { getUser, getUserToken } from './utils/auth';
 
 function App() {
   const navigate = useNavigate();
@@ -36,11 +36,11 @@ function App() {
   };
   updateInterceptors();
 
-  useEffect(async () => {
-    const { requestInterceptor, responseInterceptor } = await updateInterceptors();
+  useEffect(() => {
+    const { requestInterceptor, responseInterceptor } = updateInterceptors();
     return async () => {
-      await ejectRequestInterceptor(requestInterceptor || 0);
-      await ejectResponseInterceptor(responseInterceptor || 0);
+      ejectRequestInterceptor(requestInterceptor || 0);
+      ejectResponseInterceptor(responseInterceptor || 0);
     };
   }, [authToken]);
 

@@ -17,8 +17,6 @@ import {
   CP_INWARD_FULL,
   CP_ORDER_FULL,
   CP_PRODUCT_FULL,
-  CP_LOGISTIC_FULL,
-  CP_RIDE_FULL
 } from './PermissionConstants';
 import Logistics from './views/Logistics/Logistic';
 import AddProductInwardView from './views/Operations/Inbound/AddInbound';

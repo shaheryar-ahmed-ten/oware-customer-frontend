@@ -30,7 +30,7 @@ import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined'
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import HttpsOutlinedIcon from '@material-ui/icons/HttpsOutlined';
 import { checkPermission, removeAuth } from '../../../utils/auth';
-import { CP_DASHBOARD_FULL, CP_INWARD_FULL, CP_ORDER_FULL, CP_PRODUCT_FULL, CP_LOGISTIC_FULL } from '../../../PermissionConstants';
+import { CP_DASHBOARD_FULL, CP_INWARD_FULL, CP_ORDER_FULL, CP_PRODUCT_FULL } from '../../../PermissionConstants';
 import EventNoteOutlinedIcon from '@material-ui/icons/EventNoteOutlined';
 import AssignmentReturnedOutlinedIcon from '@material-ui/icons/AssignmentReturnedOutlined';
 const drawerWidth = 250;
