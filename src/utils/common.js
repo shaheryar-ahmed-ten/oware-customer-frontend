@@ -16,10 +16,9 @@ export const dateFormat = value => moment(value).format('DD-MM-yyyy hh:mm A');
 
 export const dateToPickerFormat = value => moment(value).format('yyyy-MM-DDTHH:mm')
 
-export const dateFormatWithoutTime = value => moment(value).format('DD-MM-yyyy');
+export const dateFormatWithoutTime = value => moment(value).format('yyyy-MM-DD')
 
 export const SharedContext = createContext(null);
-
 
 export const checkForMatchInArray = (array, propertyToMatch, valueToMatch) => {
   for (var i = 0; i < array.length; i++) {
