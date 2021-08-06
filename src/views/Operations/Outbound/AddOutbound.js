@@ -57,7 +57,7 @@ export default function AddProductOutwardView() {
   [receiverPhone, setReceiverPhone] = useState(''),
   [dispatchOrders, setDispatchOrders] = useState([]),
   [dispatchOrderId, setDispatchOrderId] = useState(''),
-  [shipmentDate, setShipmentDate] = useState(''),
+  [shipmentDate, setShipmentDate] = useState(dateToPickerFormat(new Date())),
   [showMessage, setShowMessage] = useState(null),
   [messageType, setMessageType] = useState(null),
   [validation, setValidation] = useState({});
@@ -115,9 +115,9 @@ export default function AddProductOutwardView() {
     }
   }
 
-  const addProductInward = data => {
+  const addProductOutward = data => {
     let apiPromise = null;
-    apiPromise = axios.post(getURL('/product-inward'), data);
+    apiPromise = axios.post(getURL('/outward'), data);
     apiPromise.then(res => {
       if (!res.data.success) {
         setFormErrors(<Alert elevation={6} variant="filled" severity="error" onClose={() => setFormErrors('')}>{res.data.message}</Alert>);
@@ -142,7 +142,6 @@ export default function AddProductOutwardView() {
       quantity,
       warehouseId,
       referenceId,
-      products: productGroups,
       shipmentDate,
       receiverName,
       receiverPhone,
@@ -162,28 +161,9 @@ export default function AddProductOutwardView() {
        isRequired(dispatchOrderId)
       && isRequired(productId) &&
       isRequired(warehouseId)) {
-      addProductInward(newProductOutward);
+      addProductOutward(newProductOutward);
     }
   }
-
-  const dispatchOrdersForDropdown = []
-  const filterDispatchOrdersForDropdown = () => {
-    dispatchOrders.forEach(dispatchOrder => {
-      //    loop to get the PO of each DO
-      // let totalQuantityDispatched = dispatchOrder.ProductOutwards.reduce((acc, po) => acc + po.quantity, 0); // 1 DO
-      let totalRequestedQuantity = dispatchOrder.Inventories.reduce((acc, inv) => acc + inv.OrderGroup.quantity, 0); // 1 DO
-      let totalDispatchedQuantity = 0;
-      dispatchOrder.ProductOutwards.forEach(po => {
-        totalDispatchedQuantity += po.Inventories.reduce((acc, inv) => acc + inv.OutwardGroup.quantity, 0)
-      });
-      let remainingQuantityOfDispatch = totalRequestedQuantity - totalDispatchedQuantity // 1 DO's remaining quantity
-
-      if (remainingQuantityOfDispatch != 0) {
-        dispatchOrdersForDropdown.push(dispatchOrder);
-      }
-    });
-  }
-  filterDispatchOrdersForDropdown();
 
   return (
     <>
@@ -213,23 +193,6 @@ export default function AddProductOutwardView() {
            
           </FormControl>
         </Grid>
-           
-        <Grid item sm={12}>
-          <FormControl margin="dense" fullWidth={true} variant="outlined">
-            <Autocomplete
-              id="dispatchorder"
-              options={dispatchOrdersForDropdown}
-              getOptionLabel={(dispatchOrder) => dispatchOrder.internalIdForBusiness || ''}
-              onChange={(event, newValue) => {
-                if (newValue)
-                  setInternalIdForBusiness(newValue.id, (newValue.internalIdForBusiness || ''))
-              }}
-              renderInput={(params) => <TextField {...params} label="Dispatch Order Id" variant="outlined" />}
-            />
-           {validation.dispatchOrderId && !isRequired(dispatchOrderId) ? <Typography color="error">Dispatch order Id is required!</Typography> : ''}
-          </FormControl>
-        </Grid>
-
 
         <Grid item sm={12}>
           <FormControl margin="dense" fullWidth={true} variant="outlined">

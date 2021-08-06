@@ -72,6 +72,7 @@ export default function AddProductInwardView() {
 
   useEffect(() => {
     getRelations();
+    getProducts();
   }, []);
 
   const getRelations = () => {
@@ -79,6 +80,13 @@ export default function AddProductInwardView() {
       .then(res => {
         setProducts(res.data.relations.products)
         setWarehouses(res.data.relations.warehouses)
+      });
+  };
+
+  const getProducts = () => {
+    axios.get(getURL('/inward/listing'))
+      .then(res => {
+        console.log("effef", res)
       });
   };
 
