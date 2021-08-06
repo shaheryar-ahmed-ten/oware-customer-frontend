@@ -11,68 +11,74 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  makeStyles,
   Box
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import { Alert } from '@material-ui/lab';
 import { isRequired } from '../../../utils/validators';
 import { Autocomplete } from '@material-ui/lab';
 import axios from 'axios';
 import { checkForMatchInArray, getURL } from '../../../utils/common';
-import { useLocation, useNavigate } from 'react-router';
 import MessageSnackbar from '../../../components/MessageSnackBar';
+import { useLocation, useNavigate } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
-      fontWeight: "600"
-  }, 
-  parentContainer: {
-    boxSizing: 'border-box'
-  },
-  gridContainer: {
-      boxSizing: 'border-box',
-      [theme.breakpoints.up('lg')]: {
-          paddingRight: 30,
-          paddingTop: 30,
-          paddingBottom: 30
-      },
-  },
-  tableContainer: {
+    fontWeight: "600"
+    }, 
+    parentContainer: {
+    boxSizing: 'border-box',
+    padding: "30px 30px"
+    },
+    gridContainer: {
+    boxSizing: 'border-box',
+    [theme.breakpoints.up('lg')]: {
+    paddingRight: 30,
+    paddingTop: 30,
+    paddingBottom: 30
+    },
+    },
+    tableContainer: {
     backgroundColor: 'white' ,
     padding : "30px" 
-},
-shadedTableHeader: {
-  backgroundColor: 'rgba(202,201,201,0.3)'
-},
-tableHeadText: {
-  background: 'transparent', fontWeight: 'bolder', fontSize: '12px'
-}
-
+    },
+    shadedTableHeader: {
+    backgroundColor: 'rgba(202,201,201,0.3)'
+    },
+    tableHeadText: {
+    background: 'transparent', fontWeight: 'bolder', fontSize: '12px'
+    }
 }));
-
 export default function AddProductInwardView() {
   const classes = useStyles();
+  const { state } = useLocation();
   const navigate = useNavigate();
 
-  const 
-  [referenceId, setReferenceId] = useState(''),
-  [warehouseId, setWarehouseId] = useState(''),
-  [productId, setProductId] = useState(''),
-  [quantity, setQuantity] = useState(0),
-  [productGroups, setProductGroups] = useState([]),
-  [products, setProducts] = useState([]),
-  [newProducts, setNewProducts] = useState([]),
-  [warehouses, setWarehouses] = useState([]),
-  [formErrors, setFormErrors] = useState([]),
-  [internalIdForBusiness, setInternalIdForBusiness] = useState(''),
-  [showMessage, setShowMessage] = useState(null),
-  [messageType, setMessageType] = useState(null),
-  [validation, setValidation] = useState({});
+  const { viewOnly } = state || '';
+  const [selectedProductInward, setSelectedProductInward] = useState(state ? state.selectedProductInward : null);
+
+  const [validation, setValidation] = useState({});
+  const [uom, setUom] = useState('');
+  const [warehouseId, setWarehouseId] = useState('');
+  const [referenceId, setReferenceId] = useState('');
+
+  const [productId, setProductId] = useState('');
+  const [quantity, setQuantity] = useState(0);
+
+  const [productGroups, setProductGroups] = useState([]);
+
+  const [products, setProducts] = useState([]);;
+  const [warehouses, setWarehouses] = useState([]);
+  const [formErrors, setFormErrors] = useState([]);
+
+  const [internalIdForBusiness, setInternalIdForBusiness] = useState('');
+
+  const [showMessage, setShowMessage] = useState(null);
+  const [messageType, setMessageType] = useState(null);
 
   useEffect(() => {
     getRelations();
-    getProducts();
   }, []);
 
   const getRelations = () => {
@@ -82,27 +88,21 @@ export default function AddProductInwardView() {
         setWarehouses(res.data.relations.warehouses)
       });
   };
-
-  const getProducts = () => {
-    axios.get(getURL('/inward/listing'))
-      .then(res => {
-        console.log("effef", res)
-      });
-  };
-
   const selectProduct = value => {
     setProductId(value);
   }
 
   useEffect(() => {
+    if (!!selectedProductInward) {
       setQuantity(0);
       selectProduct('');
-      setWarehouseId(warehouseId || '');
-      setReferenceId(referenceId || '');
+      setWarehouseId(selectedProductInward.Warehouse.id || '');
+      setReferenceId(selectedProductInward.referenceId || '');
       if (products.length > 0 && productGroups.length == 0) {
-        productGroups.forEach(product => {
+        selectedProductInward.Products.forEach(product => {
           //correct way of updating states.
           setProductGroups((prevState) => ([
+            ...prevState,
             {
               product: products.find(_product => _product.id == product.id),
               id: product.id,
@@ -111,12 +111,16 @@ export default function AddProductInwardView() {
           ]))
         });
       }
-    } 
-  , [products, warehouses]);
-
+    } else {
+      setQuantity('');
+      selectProduct('');
+      setWarehouseId('');
+    }
+  }, [selectedProductInward, products, warehouses]);
 
   useEffect(() => {
   }, [productGroups]);
+
 
   const updateProductsTable = () => {
     if (isRequired(quantity) &&
@@ -149,7 +153,8 @@ export default function AddProductInwardView() {
 
   const addProductInward = data => {
     let apiPromise = null;
-    apiPromise = axios.post(getURL('/inward'), data);
+    if (!selectedProductInward) apiPromise = axios.post(getURL('/inward'), data);
+    else apiPromise = axios.put(getURL(`product-inward/${selectedProductInward.id}`), data);
     apiPromise.then(res => {
       if (!res.data.success) {
         setFormErrors(<Alert elevation={6} variant="filled" severity="error" onClose={() => setFormErrors('')}>{res.data.message}</Alert>);
@@ -175,6 +180,7 @@ export default function AddProductInwardView() {
       warehouseId,
       referenceId,
       products: productGroups,
+      internalIdForBusiness
     }
 
     setValidation({
@@ -186,24 +192,27 @@ export default function AddProductInwardView() {
       isRequired(productId) &&
       isRequired(warehouseId)) {
       addProductInward(newProductInward);
+      console.log(" c sc cc", newProductInward)
     }
   }
 
   return (
     <>
       {formErrors}
-        <Grid container spacing={2} className={classes.gridContainer}>
-                <Grid item xs={12}>
-                    <Typography variant="h3">
-                        <Box className={classes.heading}>Add Inwards</Box>
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <TableContainer className={classes.tableContainer}>
-                     <Grid item sm={12}>
+      <Grid container spacing={3} className={classes.parentContainer}>
+<Grid item xs={12}>
+<Typography variant="h3">
+<Box className={classes.heading}>Add Inward</Box>
+</Typography>
+</Grid>
+<Grid item xs={12}>
+<TableContainer className={classes.tableContainer}>
+
+        <Grid item sm={12}>
           <FormControl margin="dense" fullWidth={true} variant="outlined">
             <Autocomplete
               id="warehouse"
+              defaultValue={selectedProductInward ? { name: selectedProductInward.Warehouse.name, id: selectedProductInward.Warehouse.id } : ''}
               options={warehouses}
               getOptionLabel={(warehouse) => warehouse.name}
               onChange={(event, newValue) => {
@@ -212,47 +221,45 @@ export default function AddProductInwardView() {
                   setInternalIdForBusiness(`PI-${newValue.businessWarehouseCode}-`);
                 }
               }}
-              onBlur={e => setValidation({ ...validation, warehouseId: true })}
               renderInput={(params) => <TextField {...params} label="Warehouse" variant="outlined" />}
+              onBlur={e => setValidation({ ...validation, warehouseId: true })}
             />
             {validation.warehouseId && !isRequired(warehouseId) ? <Typography color="error">Warehouse is required!</Typography> : ''}
           </FormControl>
         </Grid>
-        
         <Grid item sm={12}>
-                       <TextField
-                          fullWidth={true}
-                          margin="dense"
-                           id="referenceId"
-                           label="Reference Id"
-                           type="text"
-                           value={referenceId}
-                           onChange={e => setReferenceId(e.target.value)}
-                           variant="outlined"
-                              inputProps={{ maxLength: 30 }}
-                              onBlur={e => setValidation({ ...validation, referenceId: true })}
-                           />
-                      {validation.referenceId && !isRequired(referenceId) ? <Typography color="error">ReferenceId is required!</Typography> : ''}
-                       </Grid>
+          <TextField
+            fullWidth={true}
+            margin="dense"
+            id="referenceId"
+            label="Reference Id"
+            type="text"
+            variant="outlined"
+            value={referenceId}
+            disabled={viewOnly}
+            onChange={e => setReferenceId(e.target.value)}
+            inputProps={{ maxLength: 30 }}
+            onBlur={e => setValidation({ ...validation, referenceId: true })}
+          />
+          {validation.referenceId && !isRequired(referenceId) ? <Typography color="error">ReferenceId is required!</Typography> : ''}
+        </Grid>
 
-                       <Grid style = {{marginTop : "20px"}} item xs={12}>
-                           <Typography variant="h4" className={classes.heading}>Product Details</Typography>
-                       </Grid>
-
-                       <Grid container alignItems="center" spacing={2}>
-                         <Grid item xs={6}>
+        <Grid item xs={12}>
+          <Typography variant="h4" className={classes.heading}>Product Details</Typography>
+        </Grid>
+        <Grid container alignItems="center" spacing={2}>
+          <Grid item xs={6}>
             <FormControl margin="dense" fullWidth={true} variant="outlined">
               <Autocomplete
                 id="Product"
-                margin="dense"
                 options={products}
                 getOptionLabel={(product) => product.name}
                 onChange={(event, newValue) => {
                   if (newValue)
                     selectProduct(newValue.id)
                 }}
-                onBlur={e => setValidation({ ...validation, productId: true })}
                 renderInput={(params) => <TextField {...params} label="Product" variant="outlined" />}
+                onBlur={e => setValidation({ ...validation, productId: true })}
               />
               {validation.productId && !isRequired(productId) ? <Typography color="error">Product is required!</Typography> : ''}
             </FormControl>
@@ -266,20 +273,20 @@ export default function AddProductInwardView() {
               type="number"
               variant="outlined"
               value={quantity}
+              disabled={viewOnly}
               onChange={e => setQuantity(e.target.value)}
               onBlur={e => setValidation({ ...validation, quantity: true })}
             />
-           {validation.quantity && !isRequired(quantity) ? <Typography color="error">Quantity is required!</Typography> : ''} 
+            {validation.quantity && !isRequired(quantity) ? <Typography color="error">Quantity is required!</Typography> : ''}
           </Grid>
-        <Grid item xs={2} className={classes.parentContainer}>
+          <Grid item xs={2} className={classes.parentContainer}>
             <FormControl margin="dense" fullWidth={true} variant="outlined">
-              <Button onClick = {() => updateProductsTable()} color="primary" variant="contained">Add Product</Button>
+              <Button variant="contained" onClick={updateProductsTable} color="primary" variant="contained">Add Product</Button>
             </FormControl>
           </Grid>
-      </Grid>
+        </Grid>
 
-
-     <TableContainer style = {{marginTop : "20px"}} className={classes.parentContainer}>
+        <TableContainer className={classes.parentContainer}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow className={classes.shadedTableHeader}>
@@ -291,11 +298,13 @@ export default function AddProductInwardView() {
                 className={classes.tableHeadText}>
                 Quantity
               </TableCell>
-              <TableCell className={classes.tableHeadText}>Actions</TableCell>
+              <TableCell>
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-          {productGroups.map((productGroup, idx) => {
+            {productGroups.map((productGroup, idx) => {
               return (
                 <TableRow hover role="checkbox">
                   <TableCell>
@@ -316,23 +325,26 @@ export default function AddProductInwardView() {
         </Table>
       </TableContainer>
 
+      {
+        productGroups.length > 0 ?
           <Grid container className={classes.parentContainer} xs={12} spacing={3}>
             <Grid item xs={3}>
               <FormControl margin="dense" fullWidth={true} variant="outlined">
-                <Button style = {{textAlign: "right"}} onClick={handleSubmit} color="primary" variant="contained">
-                   Save
+                <Button onClick={handleSubmit} color="primary" variant="contained">
+                  {!selectedProductInward ? 'Save' : 'Update'}
                 </Button>
               </FormControl>
             </Grid>
           </Grid>
+          :
+          ''}
 
-         <MessageSnackbar showMessage={showMessage} type={messageType} />
-      </TableContainer>
-                
-      </Grid>
-           
-   </Grid>
-        
+       
+     <MessageSnackbar showMessage={showMessage} type={messageType} />
+</TableContainer>
+</Grid>
+</Grid>
+     
     </>
   );
 }
