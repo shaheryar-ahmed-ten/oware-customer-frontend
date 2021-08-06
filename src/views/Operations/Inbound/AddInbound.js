@@ -201,10 +201,6 @@ export default function AddProductInwardView() {
 </Grid>
 <Grid item xs={12}>
 <TableContainer className={classes.tableContainer}>
-<Grid container className={classes.parentContainer} spacing={3}>
-<Grid item xs={12}>
-  <Typography variant="h3" className={classes.heading}>Add Product Inward</Typography>
-</Grid>
 
 <Grid item sm={12}>
   <FormControl margin="dense" fullWidth={true} variant="outlined">
@@ -243,7 +239,7 @@ export default function AddProductInwardView() {
 </Grid>
 
 <Grid item xs={12}>
-  <Typography variant="h4" className={classes.heading}>Product Details</Typography>
+  <Typography style ={{marginTop : "20px"}}  variant="h4" className={classes.heading}>Product Details</Typography>
 </Grid>
 <Grid container alignItems="center" spacing={2}>
   <Grid item xs={6}>
@@ -284,7 +280,7 @@ export default function AddProductInwardView() {
   </Grid>
 </Grid>
 
-</Grid>
+
 
 <TableContainer className={classes.parentContainer}>
 <Table stickyHeader aria-label="sticky table">
