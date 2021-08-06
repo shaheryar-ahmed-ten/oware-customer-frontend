@@ -215,14 +215,14 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
                                                 )
                                             })
                                         }
-                                        <PrintOutlinedIcon onClick = {() => window.print()} />
+                                       
                                     </TableBody>
                                 </Table>
                             </TableContainer>
                         
                         </DialogContent>
                         <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
-                           
+                            <PrintOutlinedIcon onClick = {() => window.print()} />
                             <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
                                 Close
                             </Button>

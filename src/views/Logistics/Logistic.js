@@ -121,7 +121,7 @@ function Logistics() {
             label: 'PICKUP AREA',
             minWidth: 'auto',
             className: classes.orderIdStyle,
-            format: (value, entity) => entity.PickupArea.name,
+            format: (value, entity) => entity.PickupArea ? entity.PickupArea.name : null,
         },
         {
             id: 'pickupAddress',
@@ -135,7 +135,7 @@ function Logistics() {
             label: 'DROPOFF AREA',
             minWidth: 'auto',
             className: classes.orderIdStyle,
-            format: (value, entity) => entity.DropoffArea.name,
+            format: (value, entity) => entity.DropoffArea ? entity.DropoffArea.name : null,
         },
         {
             id: 'dropoffDate',
