@@ -68,21 +68,21 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             label: 'DRIVER',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.Vehicle.Driver.name,
+            format: (value, entity) => entity.Vehicle.Driver ? entity.Vehicle.Driver.name : null,
         },
         {
             id: "Vehicle.Vendor.name",
             label: 'VENDOR',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.Vehicle.Vendor.name,
+            format: (value, entity) => entity.Vehicle.Vendor ? entity.Vehicle.Vendor.name : null,
         },
         {
             id: "PickupArea.name",
             label: 'PICKUP AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.PickupArea.name,
+            format: (value, entity) => entity.PickupArea ? entity.PickupArea.name : null,
         },
         {
             id: "pickupDate",
@@ -96,7 +96,7 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             label: 'DROP OFF AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.DropoffArea.name,
+            format: (value, entity) => entity.DropoffArea ? entity.DropoffArea .name : null,
         },
         {
             id: "dropoffDate",
