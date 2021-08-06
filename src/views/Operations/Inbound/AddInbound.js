@@ -3,7 +3,14 @@ import {
   Grid,
   Button,
   TextField,
+  Select,
   FormControl,
+  InputLabel,
+  MenuItem,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Typography,
   TableContainer,
   Table,
@@ -11,44 +18,38 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  makeStyles,
-  Box
+  makeStyles
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import { Alert } from '@material-ui/lab';
 import { isRequired } from '../../../utils/validators';
+import { useReactToPrint } from 'react-to-print';
 import { Autocomplete } from '@material-ui/lab';
 import axios from 'axios';
 import { checkForMatchInArray, getURL } from '../../../utils/common';
-import MessageSnackbar from '../../../components/MessageSnackBar';
+import MessageSnackbar from '../../../components/MessageSnackbar';
 import { useLocation, useNavigate } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
+  parentContainer: {
+    boxSizing: 'border-box',
+    padding: "30px 30px",
+  },
+  pageHeading: {
+    fontWeight: 600
+  },
+  pageSubHeading: {
+    fontWeight: 300
+  },
   heading: {
-    fontWeight: "600"
-    }, 
-    parentContainer: {
-    boxSizing: 'border-box',
-    padding: "30px 30px"
-    },
-    gridContainer: {
-    boxSizing: 'border-box',
-    [theme.breakpoints.up('lg')]: {
-    paddingRight: 30,
-    paddingTop: 30,
-    paddingBottom: 30
-    },
-    },
-    tableContainer: {
-    backgroundColor: 'white' ,
-    padding : "30px" 
-    },
-    shadedTableHeader: {
+    fontWeight: 'bolder'
+  },
+  shadedTableHeader: {
     backgroundColor: 'rgba(202,201,201,0.3)'
-    },
-    tableHeadText: {
+  },
+  tableHeadText: {
     background: 'transparent', fontWeight: 'bolder', fontSize: '12px'
-    }
+  }
 }));
 export default function AddProductInwardView() {
   const classes = useStyles();
@@ -56,45 +57,43 @@ export default function AddProductInwardView() {
   const navigate = useNavigate();
 
   const { viewOnly } = state || '';
-  const [selectedProductInward, setSelectedProductInward] = useState(state ? state.selectedProductInward : null);
-
-  const [validation, setValidation] = useState({});
-  const [uom, setUom] = useState('');
-  const [warehouseId, setWarehouseId] = useState('');
-  const [referenceId, setReferenceId] = useState('');
-
-  const [productId, setProductId] = useState('');
-  const [quantity, setQuantity] = useState(0);
-
-  const [productGroups, setProductGroups] = useState([]);
-
-  const [products, setProducts] = useState([]);;
-  const [warehouses, setWarehouses] = useState([]);
-  const [formErrors, setFormErrors] = useState([]);
-
-  const [internalIdForBusiness, setInternalIdForBusiness] = useState('');
-
-  const [showMessage, setShowMessage] = useState(null);
-  const [messageType, setMessageType] = useState(null);
+  const 
+  [selectedProductInward, setSelectedProductInward] = useState(state ? state.selectedProductInward : null),
+  [validation, setValidation] = useState({}),
+  [uom, setUom] = useState(''),
+  [warehouseId, setWarehouseId] = useState(''),
+  [referenceId, setReferenceId] = useState(''),
+  [productId, setProductId] = useState(''),
+  [quantity, setQuantity] = useState(0),
+  [productGroups, setProductGroups] = useState([]),
+  [products, setProducts] = useState([]),
+  [warehouses, setWarehouses] = useState([]),
+  [formErrors, setFormErrors] = useState([]),
+  [internalIdForBusiness, setInternalIdForBusiness] = useState(''),
+  [showMessage, setShowMessage] = useState(null),
+  [messageType, setMessageType] = useState(null);
 
   useEffect(() => {
     getRelations();
   }, []);
 
   const getRelations = () => {
-    axios.get(getURL('/inward/relations'))
+    axios.get(getURL('inward/relations'))
       .then(res => {
-        setProducts(res.data.relations.products)
-        setWarehouses(res.data.relations.warehouses)
+        setProducts(res.data.products)
+        setWarehouses(res.data.warehouses)
       });
   };
   const selectProduct = value => {
     setProductId(value);
+    if (value) setUom(products.find(product => product.id == value).UOM.name);
+    else setUom('');
   }
 
   useEffect(() => {
     if (!!selectedProductInward) {
       setQuantity(0);
+      setCustomerId(selectedProductInward.customerId || '');
       selectProduct('');
       setWarehouseId(selectedProductInward.Warehouse.id || '');
       setReferenceId(selectedProductInward.referenceId || '');
@@ -106,17 +105,19 @@ export default function AddProductInwardView() {
             {
               product: products.find(_product => _product.id == product.id),
               id: product.id,
-              quantity: quantity
+              quantity: product.InwardGroup.quantity
             }
           ]))
         });
       }
     } else {
       setQuantity('');
+      setCustomerId('');
       selectProduct('');
+      setUom('');
       setWarehouseId('');
     }
-  }, [selectedProductInward, products, warehouses]);
+  }, [selectedProductInward, products, warehouses, customers]);
 
   useEffect(() => {
   }, [productGroups]);
@@ -124,6 +125,7 @@ export default function AddProductInwardView() {
 
   const updateProductsTable = () => {
     if (isRequired(quantity) &&
+      isRequired(customerId) &&
       isRequired(productId) &&
       isRequired(warehouseId)) {
       // checking if particular product is already added once
@@ -144,6 +146,7 @@ export default function AddProductInwardView() {
     else {
       setValidation({
         quantity: true,
+        customerId: true,
         referenceId: true,
         productId: true,
         warehouseId: true
@@ -175,6 +178,7 @@ export default function AddProductInwardView() {
   const handleSubmit = e => {
     setMessageType('green')
     const newProductInward = {
+      customerId,
       productId,
       quantity,
       warehouseId,
@@ -185,30 +189,43 @@ export default function AddProductInwardView() {
 
     setValidation({
       quantity: true,
+      customerId: true,
       productId: true,
       warehouseId: true
     });
     if (isRequired(quantity) &&
+      isRequired(customerId) &&
       isRequired(productId) &&
       isRequired(warehouseId)) {
       addProductInward(newProductInward);
-      console.log(" c sc cc", newProductInward)
     }
   }
 
   return (
     <>
       {formErrors}
-      <Grid container spacing={3} className={classes.parentContainer}>
-<Grid item xs={12}>
-<Typography variant="h3">
-<Box className={classes.heading}>Add Inward</Box>
-</Typography>
-</Grid>
-<Grid item xs={12}>
-<TableContainer className={classes.tableContainer}>
-
-        <Grid item sm={12}>
+      <Grid container className={classes.parentContainer} spacing={3}>
+        <Grid item xs={12}>
+          <Typography variant="h3" className={classes.heading}>Add Product Inward</Typography>
+        </Grid>
+        <Grid item sm={6}>
+          <FormControl margin="dense" fullWidth={true} variant="outlined">
+            <Autocomplete
+              id="customer"
+              defaultValue={selectedProductInward ? { name: selectedProductInward.Company.name, id: selectedProductInward.Company.id } : ''}
+              options={customers}
+              getOptionLabel={(customer) => customer.name}
+              onChange={(event, newValue) => {
+                if (newValue)
+                  setCustomerId(newValue.id)
+              }}
+              renderInput={(params) => <TextField {...params} label="Customer" variant="outlined" />}
+              onBlur={e => setValidation({ ...validation, customerId: true })}
+            />
+            {validation.customerId && !isRequired(customerId) ? <Typography color="error">Customer is required!</Typography> : ''}
+          </FormControl>
+        </Grid>
+        <Grid item sm={6}>
           <FormControl margin="dense" fullWidth={true} variant="outlined">
             <Autocomplete
               id="warehouse"
@@ -279,6 +296,18 @@ export default function AddProductInwardView() {
             />
             {validation.quantity && !isRequired(quantity) ? <Typography color="error">Quantity is required!</Typography> : ''}
           </Grid>
+          <Grid item xs={2}>
+            <TextField
+              fullWidth={true}
+              margin="dense"
+              id="uom"
+              label="UOM"
+              type="text"
+              variant="filled"
+              value={uom}
+              disabled
+            />
+          </Grid>
           <Grid item xs={2} className={classes.parentContainer}>
             <FormControl margin="dense" fullWidth={true} variant="outlined">
               <Button variant="contained" onClick={updateProductsTable} color="primary" variant="contained">Add Product</Button>
@@ -286,7 +315,9 @@ export default function AddProductInwardView() {
           </Grid>
         </Grid>
 
-        <TableContainer className={classes.parentContainer}>
+      </Grid>
+
+      <TableContainer className={classes.parentContainer}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow className={classes.shadedTableHeader}>
@@ -296,11 +327,13 @@ export default function AddProductInwardView() {
               </TableCell>
               <TableCell
                 className={classes.tableHeadText}>
+                UoM
+              </TableCell>
+              <TableCell
+                className={classes.tableHeadText}>
                 Quantity
               </TableCell>
-              <TableCell>
-                Actions
-              </TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -309,6 +342,9 @@ export default function AddProductInwardView() {
                 <TableRow hover role="checkbox">
                   <TableCell>
                     {productGroup.product.name}
+                  </TableCell>
+                  <TableCell>
+                    {productGroup.product.UOM.name}
                   </TableCell>
                   <TableCell>
                     {productGroup.quantity}
@@ -331,7 +367,7 @@ export default function AddProductInwardView() {
             <Grid item xs={3}>
               <FormControl margin="dense" fullWidth={true} variant="outlined">
                 <Button onClick={handleSubmit} color="primary" variant="contained">
-                  {!selectedProductInward ? 'Save' : 'Update'}
+                  {!selectedProductInward ? 'Add Products' : 'Update Product'}
                 </Button>
               </FormControl>
             </Grid>
@@ -339,12 +375,7 @@ export default function AddProductInwardView() {
           :
           ''}
 
-       
-     <MessageSnackbar showMessage={showMessage} type={messageType} />
-</TableContainer>
-</Grid>
-</Grid>
-     
+      <MessageSnackbar showMessage={showMessage} type={messageType} />
     </>
   );
 }

@@ -58,25 +58,24 @@ export default function AddProductOutwardView({ }) {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const [selectedProductOutward, setSelectedProductOutward] = useState(state ? state.selectedProductOutward : null);
-
-  const [validation, setValidation] = useState({});
-  const [shipmentDate, setShipmentDate] = useState(0);
-  const [receiverName, setReceiverName] = useState('');
-  const [receiverPhone, setReceiverPhone] = useState('');
-  const [warehouse, setWarehouse] = useState('');
-  const [customer, setCustomer] = useState('');
-  const [dispatchOrderId, setDispatchOrderId] = useState('');
-  const [referenceId, setReferenceId] = useState('');
-  const [vehicleId, setVehicleId] = useState('');
-  const [internalIdForBusiness, setInternalIdForBusiness] = useState('');
-
-  const [formErrors, setFormErrors] = useState([]);
-  const [dispatchOrders, setDispatchOrders] = useState([]);
-  const [inventoryQuantities, setInventoryQuantities] = useState([]);
-  const [vehicles, setVehicles] = useState([]); // will be used instead vehicle types, numbers etc
-  const [selectedDispatchOrder, setSelectedDispatchOrder] = useState(null); // used in details table, selected from dropdown
-  const [showMessage, setShowMessage] = useState(null);
+  const 
+  [selectedProductOutward, setSelectedProductOutward] = useState(state ? state.selectedProductOutward : null),
+  [validation, setValidation] = useState({}),
+  [shipmentDate, setShipmentDate] = useState(0),
+  [receiverName, setReceiverName] = useState(''),
+  [receiverPhone, setReceiverPhone] = useState(''),
+  [warehouse, setWarehouse] = useState(''),
+  [customer, setCustomer] = useState(''),
+  [dispatchOrderId, setDispatchOrderId] = useState(''),
+  [referenceId, setReferenceId] = useState(''),
+  [vehicleId, setVehicleId] = useState(''),
+  [internalIdForBusiness, setInternalIdForBusiness] = useState(''),
+  [formErrors, setFormErrors] = useState([]),
+  [dispatchOrders, setDispatchOrders] = useState([]),
+  [inventoryQuantities, setInventoryQuantities] = useState([]),
+  [vehicles, setVehicles] = useState([]), // will be used instead vehicle types, numbers etc
+  [selectedDispatchOrder, setSelectedDispatchOrder] = useState(null), // used in details table, selected from dropdown
+  [showMessage, setShowMessage] = useState(null);
 
   useEffect(() => {
     getRelations();
