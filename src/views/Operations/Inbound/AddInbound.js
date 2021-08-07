@@ -169,12 +169,14 @@ export default function AddProductInwardView() {
   const handleSubmit = e => {
     setMessageType('green')
     const newProductInward = {
+      customerId : 0,
       productId,
       quantity,
       warehouseId,
       referenceId,
-      products: productGroups,
-      internalIdForBusiness
+      products: Object.values(productGroups),
+      internalIdForBusiness,
+      totalInwardQuantity : 0
     }
 
     setValidation({
@@ -251,6 +253,7 @@ export default function AddProductInwardView() {
         onChange={(event, newValue) => {
           if (newValue)
             selectProduct(newValue.id)
+            setProductId(newValue.id)
         }}
         renderInput={(params) => <TextField {...params} label="Product" variant="outlined" />}
         onBlur={e => setValidation({ ...validation, productId: true })}

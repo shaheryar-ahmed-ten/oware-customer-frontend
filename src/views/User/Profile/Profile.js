@@ -2,7 +2,7 @@ import { Box, Button, Grid, makeStyles, TextField, Typography } from '@material-
 import { Alert } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useContext, useState } from 'react'
-import { setUser } from '../../../utils/auth';
+import { setUser, user } from '../../../utils/auth';
 import { getURL, SharedContext } from '../../../utils/common';
 
 const useStyles = makeStyles((theme) => ({
@@ -92,6 +92,8 @@ function Profile() {
                     setFormErrors(err.message);
                 })
         }
+
+      
 
     };
     return (

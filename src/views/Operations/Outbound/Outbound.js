@@ -276,7 +276,7 @@ function Outbound() {
                         color="primary"
                         size="small"
                         style = {{ float : "right"}}
-                        onClick={() => navigate('/outward/add')}>ADD Outward</Button>
+                        onClick={() => navigate('/outward/add')}>ADD ORDER</Button>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>

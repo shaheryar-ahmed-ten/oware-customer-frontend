@@ -180,7 +180,7 @@ function Logistics() {
         axios.get(getURL(`/ride`), {
             params: {
                 page,
-                search: searchKeyword,
+                search : searchKeyword,
                 product: selectedProductForDropdown,
             }
         })
