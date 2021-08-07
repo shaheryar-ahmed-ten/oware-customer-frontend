@@ -169,7 +169,6 @@ export default function AddProductInwardView() {
   const handleSubmit = e => {
     setMessageType('green')
     const newProductInward = {
-      customerId : 0,
       productId,
       quantity,
       warehouseId,
