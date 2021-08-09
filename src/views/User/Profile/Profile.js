@@ -61,7 +61,6 @@ function Profile() {
         lastName: currentUser ? currentUser.lastName : ''
     })
     const newUser =  currentUser ? currentUser.id : "";
-    localStorage.setItem("currentUser", newUser)
     const [formErrors, setFormErrors] = useState(null);
     const [formSuccess, setFormSuccess] = useState(null);
     const updateUser = data => {

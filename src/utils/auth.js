@@ -6,6 +6,8 @@ export const getUserToken = () => {
 
 export const getUser = () => {
   let user = localStorage.getItem('user');
+  const test =  JSON.parse(user)
+  localStorage.setItem("currentUser", test ? test.companyId : 0)
   return user && JSON.parse(user);
 }
 
@@ -24,6 +26,7 @@ export const removeUserToken = () => {
 export const removeUser = () => {
   localStorage.removeItem('user');
 }
+
 
 export const removeUserId = () => {
   localStorage.removeItem('currentUser');
