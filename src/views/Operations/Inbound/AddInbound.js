@@ -93,14 +93,14 @@ export default function AddProductInwardView() {
       setWarehouseId(selectedProductInward.Warehouse.id || '');
       setReferenceId(selectedProductInward.referenceId || '');
       if (products.length > 0 && productGroups.length == 0) {
-        selectedProductInward.Products.forEach(product => {
+        productGroups.forEach(product => {
           //correct way of updating states.
           setProductGroups((prevState) => ([
             ...prevState,
             {
               product: products.find(_product => _product.id == product.id),
-              id: product.id,
-              quantity: product.InwardGroup.quantity
+              id: productId,
+              quantity: quantity
             }
           ]))
         });
@@ -169,6 +169,7 @@ export default function AddProductInwardView() {
   const handleSubmit = e => {
     setMessageType('green')
     const newProductInward = {
+      customerId : parseInt(localStorage.getItem("currentUser")),
       productId,
       quantity,
       warehouseId,
@@ -177,6 +178,8 @@ export default function AddProductInwardView() {
       internalIdForBusiness,
       totalInwardQuantity : 0
     }
+
+    console.log("new product", newProductInward)
 
     setValidation({
       quantity: true,

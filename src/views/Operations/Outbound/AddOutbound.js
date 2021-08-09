@@ -183,7 +183,6 @@ export default function AddProductOutwardView({ }) {
       && isRequired(vehicleId)
       && isNotEmptyArray(Object.values(inventoryQuantities))) {
       addProductOutward(newProductOutward);
-      console.log(newProductOutward)
     }
   }
 
