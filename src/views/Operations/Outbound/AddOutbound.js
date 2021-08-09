@@ -85,8 +85,8 @@ export default function AddProductOutwardView({ }) {
   const getRelations = () => {
     axios.get(getURL('/inward/relations'))
       .then(res => {
-        setVehicles(res.data.relations.vehicles);
-        setDispatchOrders(res.data.relations.dispatchOrders);
+        setVehicles(res.data.relations.vehicles ? res.data.relations.vehicles : []);
+        setDispatchOrders(res.data.relations.dispatchOrders ? res.data.relations.dispatchOrders : []);
       });
   };
 
@@ -123,6 +123,7 @@ export default function AddProductOutwardView({ }) {
       let dispatchOrder = dispatchOrders.find(dispatchOrder => dispatchOrder.id == value);
       setSelectedDispatchOrder(dispatchOrder)
       console.log(dispatchOrder)
+      console.log("cndndnvdnv", selectedDispatchOrder)
       setWarehouse(dispatchOrder.Inventory.Warehouse.name);
       setCustomer(dispatchOrder.Inventory.Company.name);
       setShipmentDate(dispatchOrder.shipmentDate || '');

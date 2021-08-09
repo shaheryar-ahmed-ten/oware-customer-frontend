@@ -6,8 +6,6 @@ export const getUserToken = () => {
 
 export const getUser = () => {
   let user = localStorage.getItem('user');
-  localStorage.setItem('userid', JSON.stringify(user));
-  console.log('id', localStorage.getItem("userid"))
   return user && JSON.parse(user);
 }
 

@@ -22,6 +22,7 @@ import axios from 'axios';
 import { checkForMatchInArray, getURL } from '../../../utils/common';
 import MessageSnackbar from '../../../components/MessageSnackBar';
 import { useLocation, useNavigate } from 'react-router';
+import { ContactsOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -71,6 +72,8 @@ export default function AddProductInwardView() {
   [showMessage, setShowMessage] = useState(null),
   [messageType, setMessageType] = useState(null);
 
+  console.log("selected product inward", selectedProductInward)
+
   useEffect(() => {
     getRelations();
   }, []);
@@ -78,8 +81,8 @@ export default function AddProductInwardView() {
   const getRelations = () => {
     axios.get(getURL('/inward/relations'))
       .then(res => {
-        setProducts(res.data.relations.products)
-        setWarehouses(res.data.relations.warehouses)
+        setProducts(res.data.relations.products ? res.data.relations.products : [])
+        setWarehouses(res.data.relations.warehouses ? res.data.relations.warehouses : [])
       });
   };
   const selectProduct = value => {
