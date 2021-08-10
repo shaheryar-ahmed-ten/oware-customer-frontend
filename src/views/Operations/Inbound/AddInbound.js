@@ -72,8 +72,6 @@ export default function AddProductInwardView() {
   [showMessage, setShowMessage] = useState(null),
   [messageType, setMessageType] = useState(null);
 
-  console.log("selected product inward", selectedProductInward)
-
   useEffect(() => {
     getRelations();
   }, []);
@@ -181,8 +179,6 @@ export default function AddProductInwardView() {
       internalIdForBusiness,
       totalInwardQuantity : 0
     }
-
-    console.log("new product", newProductInward)
 
     setValidation({
       quantity: true,

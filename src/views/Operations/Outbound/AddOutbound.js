@@ -122,8 +122,6 @@ export default function AddProductOutwardView({ }) {
     if (value && dispatchOrders.length > 0) {
       let dispatchOrder = dispatchOrders.find(dispatchOrder => dispatchOrder.id == value);
       setSelectedDispatchOrder(dispatchOrder)
-      console.log(dispatchOrder)
-      console.log("cndndnvdnv", selectedDispatchOrder)
       setWarehouse(dispatchOrder.Inventory.Warehouse.name);
       setCustomer(dispatchOrder.Inventory.Company.name);
       setShipmentDate(dispatchOrder.shipmentDate || '');
