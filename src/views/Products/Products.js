@@ -32,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
     },
     productNameStyle: {
         color: '#1C7DFE',
-        textDecoration: 'underline'
+        textDecoration: 'underline',
+        cursor : 'pointer'
     },
     statusButtons: {
         fontSize: 12,
