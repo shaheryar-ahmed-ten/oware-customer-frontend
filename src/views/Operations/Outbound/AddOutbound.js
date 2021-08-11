@@ -127,7 +127,10 @@ export default function AddDispatchOrderView() {
 
       getWarehouses({ customerId })
         .then(warehouses => {
-          return setWarehouses(warehouses)
+          if (warehouses) {
+          setWarehouses(warehouses)
+          setInternalIdForBusiness(`DO-${warehouses.businessWarehouseCode }-`);
+          }
         });
     }
   }, [customerId]);
@@ -136,12 +139,11 @@ export default function AddDispatchOrderView() {
     setProducts([]);
     setProductId('');
     if (!customerId && !warehouseId) return;
-      // const warehouse = warehouses.find(element => warehouseId == element.id);
-      // setInternalIdForBusiness(`DO-${warehouse.businessWarehouseCode ? warehouse.businessWarehouseCode : 0}-`);
       getProducts({ customerId, warehouseId })
         .then(products => {
           return setProducts(products)
-        }); // INPROGRESS: products with 0 available qty are also comming.
+        }); 
+        // INPROGRESS: products with 0 available qty are also comming.
     
   }, [warehouseId])
 
@@ -252,8 +254,6 @@ export default function AddDispatchOrderView() {
       internalIdForBusiness
     }
 
-    console.log("dddvdvdv", newDispatchOrder)
-    
     setValidation({
       quantity: true,
       inventoryId: true,
@@ -382,19 +382,21 @@ export default function AddDispatchOrderView() {
           </Grid>
           <Grid item sm={2}>
           <TextField
-            fullWidth={true}
-            margin="dense"
-            id="quantity"
-            label="Quantity"
-            type="number"
-            variant="outlined"
-            value={quantity}
-            onChange={e => setQuantity(e.target.value)}
-            onBlur={e => setValidation({ ...validation, quantity: true })}
-           />
+              fullWidth={true}
+              margin="dense"
+              InputProps={{ inputProps: { min: 0, max: availableQuantity } }}
+              id="quantity"
+              label="Quantity"
+              type="number"
+              variant="outlined"
+              value={quantity}
+              disabled={!!selectedDispatchOrder}
+              onChange={e => e.target.value < availableQuantity ? setQuantity(e.target.value) : setQuantity(availableQuantity)}
+              onBlur={e => setValidation({ ...validation, quantity: true })}
+            />
             {validation.quantity && !isRequired(quantity) ? <Typography color="error">Quantity is required!</Typography> : ''}
           </Grid>
-          {/* <Grid item sm={2}>
+          <Grid item sm={2}>
             <TextField
               fullWidth={true}
               margin="dense"
@@ -405,7 +407,7 @@ export default function AddDispatchOrderView() {
               value={availableQuantity}
               disabled
             />
-          </Grid> */}
+          </Grid> 
           <Grid item sm={2}>
             <TextField
               fullWidth={true}
@@ -437,10 +439,10 @@ export default function AddDispatchOrderView() {
                 style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
                 Quantity
               </TableCell>
-              {/* <TableCell
+              <TableCell
                 style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
                 Available Quantity
-              </TableCell>  */}
+              </TableCell>
               <TableCell
                 style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
                 UoM
@@ -459,6 +461,9 @@ export default function AddDispatchOrderView() {
                   </TableCell>
                   <TableCell>
                     {dispatchGroup.product.UOM.name}
+                  </TableCell> 
+                  <TableCell>
+                    {availableQuantity}
                   </TableCell> 
                   <TableCell>
                     {dispatchGroup.quantity}
