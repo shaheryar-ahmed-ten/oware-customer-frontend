@@ -128,9 +128,12 @@ export default function AddDispatchOrderView() {
       getWarehouses({ customerId })
         .then(warehouses => {
           if (warehouses) {
+            console.log("eedcdscdfdsfsdfsfsffsffdf", warehouses)
+            console.log("buuxuuduud", warehouses)
           setWarehouses(warehouses)
-          setInternalIdForBusiness(`DO-${warehouses.businessWarehouseCode }-`);
+          setInternalIdForBusiness(`DO-${warehouses ? warehouses.map((code) => {return code.businessWarehouseCode}) : []}-`);
           }
+          console.log("ddsdssd", internalIdForBusiness)
         });
     }
   }, [customerId]);
