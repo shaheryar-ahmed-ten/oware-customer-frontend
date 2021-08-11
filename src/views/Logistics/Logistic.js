@@ -88,7 +88,8 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '12px',
         color: '#A9AEAF',
         borderBottom: 'none',
-        paddingBottom: '0'
+        paddingBottom: '0',
+        margin : "20px"
     }
 }));
 function Logistics() {
@@ -116,11 +117,11 @@ function Logistics() {
             format: dateFormat,
         },
         {
-            id: 'pickupAddress',
+            id: 'PickupArea.name',
             label: 'PICKUP AREA',
             minWidth: 'auto',
             className: classes.orderIdStyle,
-            format: (value, entity) => entity.pickupAddress,
+            format: (value, entity) => entity.PickupArea ? entity.PickupArea.name : null,
         },
         {
             id: 'pickupAddress',
@@ -130,11 +131,11 @@ function Logistics() {
             format: (value, entity) => entity.pickupAddress,
         },
         {
-            id: 'dropoffAreaId',
+            id: 'DropoffArea.name',
             label: 'DROPOFF AREA',
             minWidth: 'auto',
             className: classes.orderIdStyle,
-            format: (value, entity) => entity.dropoffAddress,
+            format: (value, entity) => entity.DropoffArea ? entity.DropoffArea.name : null,
         },
         {
             id: 'dropoffDate',
@@ -179,7 +180,7 @@ function Logistics() {
         axios.get(getURL(`/ride`), {
             params: {
                 page,
-                search: searchKeyword,
+                search : searchKeyword,
                 product: selectedProductForDropdown,
             }
         })

@@ -6,6 +6,8 @@ export const getUserToken = () => {
 
 export const getUser = () => {
   let user = localStorage.getItem('user');
+  const test =  JSON.parse(user)
+  localStorage.setItem("currentUser", test ? test.companyId : 0)
   return user && JSON.parse(user);
 }
 
@@ -25,9 +27,15 @@ export const removeUser = () => {
   localStorage.removeItem('user');
 }
 
+
+export const removeUserId = () => {
+  localStorage.removeItem('currentUser');
+}
+
 export const removeAuth = () => {
   removeUserToken();
   removeUser();
+  removeUserId();
 }
 
 export const checkPermission = (user, permission) => {

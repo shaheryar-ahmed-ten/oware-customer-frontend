@@ -78,8 +78,8 @@ export default function AddProductInwardView() {
   const getRelations = () => {
     axios.get(getURL('/inward/relations'))
       .then(res => {
-        setProducts(res.data.relations.products)
-        setWarehouses(res.data.relations.warehouses)
+        setProducts(res.data.relations.products ? res.data.relations.products : [])
+        setWarehouses(res.data.relations.warehouses ? res.data.relations.warehouses : [])
       });
   };
   const selectProduct = value => {
@@ -93,14 +93,14 @@ export default function AddProductInwardView() {
       setWarehouseId(selectedProductInward.Warehouse.id || '');
       setReferenceId(selectedProductInward.referenceId || '');
       if (products.length > 0 && productGroups.length == 0) {
-        selectedProductInward.Products.forEach(product => {
+        productGroups.forEach(product => {
           //correct way of updating states.
           setProductGroups((prevState) => ([
             ...prevState,
             {
               product: products.find(_product => _product.id == product.id),
-              id: product.id,
-              quantity: product.InwardGroup.quantity
+              id: productId,
+              quantity: quantity
             }
           ]))
         });
@@ -169,12 +169,14 @@ export default function AddProductInwardView() {
   const handleSubmit = e => {
     setMessageType('green')
     const newProductInward = {
+      customerId : parseInt(localStorage.getItem("currentUser")),
       productId,
       quantity,
       warehouseId,
       referenceId,
-      products: productGroups,
-      internalIdForBusiness
+      products: Object.values(productGroups),
+      internalIdForBusiness,
+      totalInwardQuantity : 0
     }
 
     setValidation({
@@ -201,10 +203,6 @@ export default function AddProductInwardView() {
 </Grid>
 <Grid item xs={12}>
 <TableContainer className={classes.tableContainer}>
-<Grid container className={classes.parentContainer} spacing={3}>
-<Grid item xs={12}>
-  <Typography variant="h3" className={classes.heading}>Add Product Inward</Typography>
-</Grid>
 
 <Grid item sm={12}>
   <FormControl margin="dense" fullWidth={true} variant="outlined">
@@ -243,7 +241,7 @@ export default function AddProductInwardView() {
 </Grid>
 
 <Grid item xs={12}>
-  <Typography variant="h4" className={classes.heading}>Product Details</Typography>
+  <Typography style ={{marginTop : "20px"}}  variant="h4" className={classes.heading}>Product Details</Typography>
 </Grid>
 <Grid container alignItems="center" spacing={2}>
   <Grid item xs={6}>
@@ -255,6 +253,7 @@ export default function AddProductInwardView() {
         onChange={(event, newValue) => {
           if (newValue)
             selectProduct(newValue.id)
+            setProductId(newValue.id)
         }}
         renderInput={(params) => <TextField {...params} label="Product" variant="outlined" />}
         onBlur={e => setValidation({ ...validation, productId: true })}
@@ -284,7 +283,7 @@ export default function AddProductInwardView() {
   </Grid>
 </Grid>
 
-</Grid>
+
 
 <TableContainer className={classes.parentContainer}>
 <Table stickyHeader aria-label="sticky table">
