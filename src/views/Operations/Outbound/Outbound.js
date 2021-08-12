@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
     },
     orderIdStyle: {
         color: '#1C7DFE',
-        textDecoration: 'underline'
+        textDecoration: 'underline',
+        cursor : "pointer"
     },
     statusButtons: {
         fontSize: 12,
@@ -100,7 +101,7 @@ function Outbound() {
     
     const columns = [
         {
-            id: 'internalIdForBusiness',
+            id: 'dispatchOrderId',
             label: 'ORDER ID',
             minWidth: 'auto',
             className: classes.orderIdStyle,

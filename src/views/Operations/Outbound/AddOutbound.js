@@ -144,7 +144,7 @@ export default function AddDispatchOrderView() {
     if (!customerId && !warehouseId) return;
       getProducts({ customerId, warehouseId })
         .then(products => {
-          return setProducts(products)
+          return setProducts(products ? products : [])
         }); 
         // INPROGRESS: products with 0 available qty are also comming.
     
@@ -280,7 +280,7 @@ export default function AddDispatchOrderView() {
       <Grid container spacing={3} className={classes.parentContainer}>
           <Grid item xs={12}>
              <Typography variant="h3">
-                <Box className={classes.heading}>Add Outwards</Box>
+                <Box className={classes.heading}>Add Orders</Box>
              </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -338,7 +338,7 @@ export default function AddDispatchOrderView() {
           fullWidth={true}
           margin="normal"
           inputVariant = "outlined"
-          format="MM/dd/yyyy"
+          format="yyyy-MM-dd"
           margin="normal"
           id="shipmentDate"
           label="Shipment Date"
