@@ -95,6 +95,13 @@ function Products() {
     const classes = useStyles()
     const columns = [
         {
+            id: 'id',
+            label: 'PRODUCT ID',
+            minWidth: 'auto',
+            className: classes.productNameStyle,
+            format: (value, entity) => entity.id,
+        },
+        {
             id: 'Product.name',
             label: 'PRODUCT NAME',
             minWidth: 'auto',

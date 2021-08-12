@@ -77,6 +77,12 @@ function Inbound() {
 
     const columns = [
         {
+            id: 'id',
+            label: 'INWARD ID',
+            minWidth: 'auto',
+            format: (value, entity) => entity.id,
+        },
+        {
             id: 'createdAt',
             label: 'DATE OF INWARD',
             minWidth: 'auto',

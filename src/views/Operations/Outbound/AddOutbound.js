@@ -152,12 +152,12 @@ export default function AddDispatchOrderView() {
     setProducts([]);
     setProductId('');
     if (!customerId && !warehouseId) return;
-    getProducts({ customerId, warehouseId })
-      .then(products => {
-        return setProducts(products)
-      });
-    // INPROGRESS: products with 0 available qty are also comming.
-
+      getProducts({ customerId, warehouseId })
+        .then(products => {
+          return setProducts(products ? products : [])
+        }); 
+        // INPROGRESS: products with 0 available qty are also comming.
+    
   }, [warehouseId])
 
   useEffect(() => {
