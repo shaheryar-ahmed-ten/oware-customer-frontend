@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
 function Outbound() {
     const classes = useStyles();
     const navigate = useNavigate();
-    
+
     const columns = [
         {
             id: 'internalIdForBusiness',
@@ -271,12 +271,12 @@ function Outbound() {
                     <Typography variant="h3">
                         <Box className={classes.heading}>Outwards</Box>
                         <Button
-                        key={2}
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        style = {{ float : "right"}}
-                        onClick={() => navigate('/outward/add')}>ADD ORDER</Button>
+                            key={2}
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            style={{ float: "right" }}
+                            onClick={() => navigate('/outward/add')}>ADD ORDER</Button>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -285,16 +285,18 @@ function Outbound() {
                         <Divider />
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
-                                {columns.map((column, index) => (
-                                    <TableCell
-                                        key={index}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                        className={classes.tableHeaderItem}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
+                                <TableRow>
+                                    {columns.map((column, index) => (
+                                        <TableCell
+                                            key={index}
+                                            align={column.align}
+                                            style={{ minWidth: column.minWidth }}
+                                            className={classes.tableHeaderItem}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
                             </TableHead>
                             <TableBody>
                                 {outwardOrders.map((outwardOrder, index) => {
@@ -326,7 +328,7 @@ function Outbound() {
                             />
                         </Grid>
                         <Grid item>
-                            <Typography variant="body">Showing {outwardOrders.length} out of {numberOfTotalRecords} records.</Typography>
+                            <Typography variant="body1">Showing {outwardOrders.length} out of {numberOfTotalRecords} records.</Typography>
                         </Grid>
                     </Grid>
                 </Grid>

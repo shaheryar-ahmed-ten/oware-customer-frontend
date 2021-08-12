@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     productNameStyle: {
         color: '#1C7DFE',
         textDecoration: 'underline',
-        cursor : 'pointer'
+        cursor: 'pointer'
     },
     statusButtons: {
         fontSize: 12,
@@ -236,16 +236,18 @@ function Products() {
                         <Divider />
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
-                                {columns.map((column, index) => (
-                                    <TableCell
-                                        key={index}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                        className={classes.tableHeaderItem}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
+                                <TableRow>
+                                    {columns.map((column, index) => (
+                                        <TableCell
+                                            key={index}
+                                            align={column.align}
+                                            style={{ minWidth: column.minWidth }}
+                                            className={classes.tableHeaderItem}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
                             </TableHead>
                             <TableBody>
                                 {products.map((product, index) => {
@@ -277,7 +279,7 @@ function Products() {
                             />
                         </Grid>
                         <Grid item>
-                            <Typography variant="body">Showing {products.length} out of {numberOfTotalRecords} records.</Typography>
+                            <Typography variant="body1">Showing {products.length} out of {numberOfTotalRecords} records.</Typography>
                         </Grid>
                     </Grid>
                 </Grid>

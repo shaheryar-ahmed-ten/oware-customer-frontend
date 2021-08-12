@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography , Button } from '@material-ui/core';
+import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Button } from '@material-ui/core';
 import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
 import { dateFormat, getURL } from '../../utils/common'
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     productNameStyle: {
         color: '#1C7DFE',
         textDecoration: 'underline',
-        cursor : 'pointer'
+        cursor: 'pointer'
     },
     statusButtons: {
         fontSize: 12,
@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
         color: '#A9AEAF',
         borderBottom: 'none',
         paddingBottom: '0',
-        margin : "20px"
+        margin: "20px"
     }
 }));
 function Logistics() {
@@ -150,14 +150,14 @@ function Logistics() {
             minWidth: 'auto',
             className: classes.orderIdStyle,
             format: (value, entity) => entity.status === "ASSIGNED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
-            ASSIGNED
-        </Button> : entity.status === "PENDING" ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
-            PENDING
-        </Button> : entity.status === "UNASSIGNED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+                ASSIGNED
+            </Button> : entity.status === "PENDING" ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
+                PENDING
+            </Button> : entity.status === "UNASSIGNED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
                 UNASSIGNED
             </Button> : entity.status === "INPROGRESS" ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
                 IN-PROGRESS
-            </Button>  : entity.status === "COMPLETED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.completedStatusButtonStyling)}>
+            </Button> : entity.status === "COMPLETED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.completedStatusButtonStyling)}>
                 COMPLETED
             </Button> : entity.status === "CANCELLED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
                 CANCELLED
@@ -180,7 +180,7 @@ function Logistics() {
         axios.get(getURL(`/ride`), {
             params: {
                 page,
-                search : searchKeyword,
+                search: searchKeyword,
                 product: selectedProductForDropdown,
             }
         })
@@ -231,7 +231,7 @@ function Logistics() {
     }
     const productDetailsView = <LogisticDetails open={logisticDetailsViewOpen} handleClose={closeLogisticDetailsView} selectedProduct={selectedProduct} />
 
-    const headerButtons = [ productDetailsView]
+    const headerButtons = [productDetailsView]
 
     return (
         <>
@@ -247,16 +247,18 @@ function Logistics() {
                         <Divider />
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
-                                {columns.map((column, index) => (
-                                    <TableCell
-                                        key={index}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                        className={classes.tableHeaderItem}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
+                                <TableRow>
+                                    {columns.map((column, index) => (
+                                        <TableCell
+                                            key={index}
+                                            align={column.align}
+                                            style={{ minWidth: column.minWidth }}
+                                            className={classes.tableHeaderItem}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
                             </TableHead>
                             <TableBody>
                                 {logistics.map((logistic, index) => {
@@ -288,7 +290,7 @@ function Logistics() {
                             />
                         </Grid>
                         <Grid item>
-                            <Typography variant="body">Showing {logistics.length} out of {numberOfTotalRecords} records.</Typography>
+                            <Typography variant="body1">Showing {logistics.length} out of {numberOfTotalRecords} records.</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
