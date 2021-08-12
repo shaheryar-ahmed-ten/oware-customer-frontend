@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import moment from 'moment';
 
-export const apiBaseURL = (process.env.NODE_ENV === 'development' ? 'http://192.168.18.5:8000' : '') + '/api/v1';
+export const apiBaseURL = (process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : '') + '/api/v1';
 
 export const getURL = uri => {
   return `${apiBaseURL}${uri}`;
