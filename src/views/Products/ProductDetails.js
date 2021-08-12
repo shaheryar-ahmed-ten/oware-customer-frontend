@@ -1,7 +1,9 @@
-import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { getURL } from '../../utils/common';
+import owareLogo from '../../assets/logo/owareLogo.png';
+import PrintOutlinedIcon from '@material-ui/icons/PrintOutlined';
 
 const useStyles = makeStyles({
     tableContainerTop: {
@@ -27,6 +29,12 @@ const useStyles = makeStyles({
     },
     topTableItem: {
         fontWeight: '600'
+    },
+    icon: {
+        position: "relative",
+        marginTop : "10px",
+        marginLeft : "5px",
+        cursor : "pointer"
     }
 });
 function ProductDetails({ open, handleClose, selectedProduct }) {
@@ -104,6 +112,12 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                 <form>
                     <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
                         <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: '80vh' }}>
+                        <img style = {{width : "10%", margin : "20px"}} src={owareLogo} />
+                        <Typography style = {{marginLeft : "10px", marginBottom : "10px", marginTop : "10px"}} variant="h3">
+                               Product Details
+                               <PrintOutlinedIcon className = {classes.icon} onClick = {() => window.print()} />
+                           </Typography>
+
                             <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>

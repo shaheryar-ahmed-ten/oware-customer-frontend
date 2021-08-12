@@ -22,7 +22,6 @@ import axios from 'axios';
 import { checkForMatchInArray, getURL } from '../../../utils/common';
 import MessageSnackbar from '../../../components/MessageSnackBar';
 import { useLocation, useNavigate } from 'react-router';
-import { ContactsOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   heading: {

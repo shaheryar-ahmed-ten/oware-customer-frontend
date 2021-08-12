@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
     },
     orderIdStyle: {
         color: '#1C7DFE',
-        textDecoration: 'underline'
+        textDecoration: 'underline',
+        cursor: "pointer"
     },
     statusButtons: {
         fontSize: 12,
@@ -97,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
 function Outbound() {
     const classes = useStyles();
     const navigate = useNavigate();
-    
+
     const columns = [
         {
             id: 'internalIdForBusiness',
@@ -117,6 +118,7 @@ function Outbound() {
             label: 'WAREHOUSE',
             minWidth: 'auto',
             className: classes.tableCellStyle,
+            format: (value, entity) => entity.Inventory.Warehouse.name
         },
         // {
         //     id: 'product',
@@ -125,7 +127,7 @@ function Outbound() {
         //     className: classes.tableCellStyle,
         // },
         {
-            id: 'dispatchOrderQuantity',
+            id: 'quantity',
             label: 'QUANTITY ORDERD',
             minWidth: 'auto',
             className: classes.tableCellStyle,
@@ -141,19 +143,38 @@ function Outbound() {
             label: 'QUANTITY SHIPPED',
             minWidth: 'auto',
             className: classes.tableCellStyle,
+            format: (value, entity) => {
+                let totalDispatched = 0
+                entity.ProductOutwards.forEach(po => {
+                    po.OutwardGroups.forEach(outGroup => {
+                        totalDispatched += outGroup.quantity
+                    });
+                });
+                return totalDispatched
+            }
         },
         {
             id: 'Status',
             label: 'STATUS',
             minWidth: 'auto',
             className: classes.tableCellStyle,
-            format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
-                Pending
-            </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
-                Partially fulfilled
-            </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
-                Fulfilled
-            </Button> : ''
+            format: (value, entity) => {
+                let totalDispatched = 0
+                entity.ProductOutwards.forEach(po => {
+                    po.OutwardGroups.forEach(outGroup => {
+                        totalDispatched += outGroup.quantity
+                    });
+                });
+                return (
+                    totalDispatched === 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
+                        Pending
+                    </Button> : totalDispatched > 0 && totalDispatched < entity.quantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+                        Partially fulfilled
+                    </Button> : entity.quantity === totalDispatched ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
+                        Fulfilled
+                    </Button> : ''
+                )
+            }
         },
     ]
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -271,12 +292,12 @@ function Outbound() {
                     <Typography variant="h3">
                         <Box className={classes.heading}>Outwards</Box>
                         <Button
-                        key={2}
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        style = {{ float : "right"}}
-                        onClick={() => navigate('/outward/add')}>ADD ORDER</Button>
+                            key={2}
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            style={{ float: "right" }}
+                            onClick={() => navigate('/outward/add')}>ADD ORDER</Button>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -285,16 +306,18 @@ function Outbound() {
                         <Divider />
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
-                                {columns.map((column, index) => (
-                                    <TableCell
-                                        key={index}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                        className={classes.tableHeaderItem}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
+                                <TableRow>
+                                    {columns.map((column, index) => (
+                                        <TableCell
+                                            key={index}
+                                            align={column.align}
+                                            style={{ minWidth: column.minWidth }}
+                                            className={classes.tableHeaderItem}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
                             </TableHead>
                             <TableBody>
                                 {outwardOrders.map((outwardOrder, index) => {
@@ -326,7 +349,7 @@ function Outbound() {
                             />
                         </Grid>
                         <Grid item>
-                            <Typography variant="body">Showing {outwardOrders.length} out of {numberOfTotalRecords} records.</Typography>
+                            <Typography variant="body1">Showing {outwardOrders.length} out of {numberOfTotalRecords} records.</Typography>
                         </Grid>
                     </Grid>
                 </Grid>

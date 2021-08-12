@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     heading: {
         fontWeight: "600",
         margin : "10px",
-        textAlign : "center"
+        textAlign : "left"
     },
     tableContainerTop: {
         backgroundColor: '#F8F8F8'
@@ -35,6 +35,12 @@ const useStyles = makeStyles({
     },
     topTableItem: {
         fontWeight: '600'
+    },
+    icon: {
+        position: "relative",
+        marginTop : "10px",
+        marginLeft : "5px",
+        cursor : "pointer"
     }
 });
 function LogisticDetails({ open, handleClose, selectedProduct }) {
@@ -68,21 +74,21 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             label: 'DRIVER',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.Vehicle.Driver ? entity.Vehicle.Driver.name : null,
+            format: (value, entity) => entity.Vehicle.Driver ? entity.Vehicle.Driver.name : "-",
         },
         {
             id: "Vehicle.Vendor.name",
             label: 'VENDOR',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.Vehicle.Vendor ? entity.Vehicle.Vendor.name : null,
+            format: (value, entity) => entity.Vehicle.Vendor ? entity.Vehicle.Vendor.name : "-",
         },
         {
             id: "PickupArea.name",
             label: 'PICKUP AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.PickupArea ? entity.PickupArea.name : null,
+            format: (value, entity) => entity.PickupArea ? entity.PickupArea.name : "-",
         },
         {
             id: "pickupDate",
@@ -96,7 +102,7 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             label: 'DROP OFF AREA',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.DropoffArea ? entity.DropoffArea .name : null,
+            format: (value, entity) => entity.DropoffArea ? entity.DropoffArea.name : "-",
         },
         {
             id: "dropoffDate",
@@ -149,10 +155,12 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
                 <form>
                     <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title"> 
                         <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: '80vh' }}>
-                          <Typography variant="h3">
                             <img style = {{width : "10%", margin : "20px"}} src={owareLogo} />
-                            <Box className={classes.heading}>Delivery Details</Box>
-                          </Typography>
+                            <Typography style = {{marginLeft : "10px", marginBottom : "10px"}} variant="h3">
+                               Delivery Details
+                               <PrintOutlinedIcon className = {classes.icon} onClick = {() => window.print()} />
+                           </Typography>
+                        
                              <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
@@ -222,7 +230,6 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
                         
                         </DialogContent>
                         <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
-                            <PrintOutlinedIcon onClick = {() => window.print()} />
                             <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
                                 Close
                             </Button>

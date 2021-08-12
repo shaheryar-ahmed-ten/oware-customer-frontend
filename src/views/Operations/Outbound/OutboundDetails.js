@@ -1,9 +1,10 @@
-import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core'
 import { Alert, AlertTitle } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { dateFormat, getURL } from '../../../utils/common';
-
+import owareLogo from '../../../assets/logo/owareLogo.png';
+import PrintOutlinedIcon from '@material-ui/icons/PrintOutlined';
 
 const useStyles = makeStyles({
     tableContainerTop: {
@@ -26,6 +27,12 @@ const useStyles = makeStyles({
     },
     topTableItem: {
         fontWeight: '600'
+    },
+    icon: {
+        position: "relative",
+        marginTop: "10px",
+        marginLeft: "5px",
+        cursor: "pointer"
     }
 });
 function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
@@ -49,6 +56,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             label: 'WAREHOUSE',
             minWidth: 'auto',
             className: classes.topTableItem,
+            format: (value, entity) => entity.Inventory.Warehouse.name
         },
         // {
         //     id: 'product',
@@ -57,7 +65,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         //     className: classes.topTableItem,
         // },
         {
-            id: 'dispatchOrderQuantity',
+            id: 'quantity',
             label: 'QUANTITY ORDERD',
             minWidth: 'auto',
             className: classes.topTableItem,
@@ -73,6 +81,15 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             label: 'QTY SHIPPED',
             minWidth: 'auto',
             className: classes.topTableItem,
+            format: (value, entity) => {
+                let totalDispatched = 0
+                entity.ProductOutwards.forEach(po => {
+                    po.OutwardGroups.forEach(outGroup => {
+                        totalDispatched += outGroup.quantity
+                    });
+                });
+                return totalDispatched
+            }
         },
     ]
     const columns = [
@@ -137,9 +154,8 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
 
     useEffect(() => {
         if (selectedOutboundOrder)
-            axios.get(getURL(`/order/${selectedOutboundOrder.dispatchOrderId}`))
+            axios.get(getURL(`/order/${selectedOutboundOrder.id}`))
                 .then((response) => {
-                    console.log(response.data.data)
                     if (response.data.success) {
                         setSelectedProductOutwardDetails(response.data.data)
                         setProductOutwardsLength(response.data.count)
@@ -157,6 +173,11 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                 <form>
                     <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
                         <DialogContent style={{ padding: 0, minHeight: '80vh' }}>
+                            <img style={{ width: "10%", margin: "20px" }} src={owareLogo} />
+                            <Typography style={{ marginLeft: "10px", marginBottom: "10px" }} variant="h3">
+                                Order Details
+                                <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
+                            </Typography>
                             <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
