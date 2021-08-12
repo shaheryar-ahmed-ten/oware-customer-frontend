@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     orderIdStyle: {
         color: '#1C7DFE',
         textDecoration: 'underline',
-        cursor : "pointer"
+        cursor: "pointer"
     },
     statusButtons: {
         fontSize: 12,
@@ -101,7 +101,7 @@ function Outbound() {
 
     const columns = [
         {
-            id: 'dispatchOrderId',
+            id: 'internalIdForBusiness',
             label: 'ORDER ID',
             minWidth: 'auto',
             className: classes.orderIdStyle,
@@ -118,6 +118,7 @@ function Outbound() {
             label: 'WAREHOUSE',
             minWidth: 'auto',
             className: classes.tableCellStyle,
+            format: (value, entity) => entity.Inventory.Warehouse.name
         },
         // {
         //     id: 'product',
@@ -126,7 +127,7 @@ function Outbound() {
         //     className: classes.tableCellStyle,
         // },
         {
-            id: 'dispatchOrderQuantity',
+            id: 'quantity',
             label: 'QUANTITY ORDERD',
             minWidth: 'auto',
             className: classes.tableCellStyle,
@@ -142,19 +143,38 @@ function Outbound() {
             label: 'QUANTITY SHIPPED',
             minWidth: 'auto',
             className: classes.tableCellStyle,
+            format: (value, entity) => {
+                let totalDispatched = 0
+                entity.ProductOutwards.forEach(po => {
+                    po.OutwardGroups.forEach(outGroup => {
+                        totalDispatched += outGroup.quantity
+                    });
+                });
+                return totalDispatched
+            }
         },
         {
             id: 'Status',
             label: 'STATUS',
             minWidth: 'auto',
             className: classes.tableCellStyle,
-            format: (value, entity) => +entity.outwardQuantity === 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
-                Pending
-            </Button> : +entity.outwardQuantity > 0 && +entity.outwardQuantity < entity.dispatchOrderQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
-                Partially fulfilled
-            </Button> : entity.dispatchOrderQuantity === +entity.outwardQuantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
-                Fulfilled
-            </Button> : ''
+            format: (value, entity) => {
+                let totalDispatched = 0
+                entity.ProductOutwards.forEach(po => {
+                    po.OutwardGroups.forEach(outGroup => {
+                        totalDispatched += outGroup.quantity
+                    });
+                });
+                return (
+                    totalDispatched === 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
+                        Pending
+                    </Button> : totalDispatched > 0 && totalDispatched < entity.quantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+                        Partially fulfilled
+                    </Button> : entity.quantity === totalDispatched ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
+                        Fulfilled
+                    </Button> : ''
+                )
+            }
         },
     ]
     const [searchKeyword, setSearchKeyword] = useState('');
