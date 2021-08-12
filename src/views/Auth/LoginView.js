@@ -102,7 +102,7 @@ export default function LoginView() {
             <Button type="submit" color="primary" variant="contained" fullWidth>Login</Button>
           </Box>
           <Box mt={2}>
-            <Typography className={classes.fopBtn} variant="body" color="primary" onClick={() => { navigate('/forgot-password') }}>Forgot Your Password ?</Typography>
+            <Typography className={classes.fopBtn} variant="body1" color="primary" onClick={() => { navigate('/forgot-password') }}>Forgot Your Password ?</Typography>
           </Box>
         </Paper>
       </Grid>
