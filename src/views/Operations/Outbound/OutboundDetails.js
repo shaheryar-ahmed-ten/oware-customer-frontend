@@ -64,33 +64,33 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         //     minWidth: 'auto',
         //     className: classes.topTableItem,
         // },
-        {
-            id: 'quantity',
-            label: 'QUANTITY ORDERD',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-        },
+        // {
+        //     id: 'quantity',
+        //     label: 'QUANTITY ORDERD',
+        //     minWidth: 'auto',
+        //     className: classes.topTableItem,
+        // },
         {
             id: 'referenceId',
             label: 'REFERENCE ID',
             minWidth: 'auto',
             className: classes.topTableItem,
         },
-        {
-            id: 'outwardQuantity',
-            label: 'QTY SHIPPED',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-            format: (value, entity) => {
-                let totalDispatched = 0
-                entity.ProductOutwards.forEach(po => {
-                    po.OutwardGroups.forEach(outGroup => {
-                        totalDispatched += outGroup.quantity
-                    });
-                });
-                return totalDispatched
-            }
-        },
+        // {
+        //     id: 'outwardQuantity',
+        //     label: 'QTY SHIPPED',
+        //     minWidth: 'auto',
+        //     className: classes.topTableItem,
+        //     format: (value, entity) => {
+        //         let totalDispatched = 0
+        //         entity.ProductOutwards.forEach(po => {
+        //             po.OutwardGroups.forEach(outGroup => {
+        //                 totalDispatched += outGroup.quantity
+        //             });
+        //         });
+        //         return totalDispatched
+        //     }
+        // },
     ]
     const columns = [
         {
@@ -99,6 +99,13 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             minWidth: 'auto',
             className: '',
             format: dateFormat
+        },
+        {
+            id: 'internalIdForBusiness',
+            label: 'OUTWARD ID',
+            minWidth: 'auto',
+            className: '',
+            format: (value, po, outwardOrder, inventori) => po.internalIdForBusiness
         },
         {
             id: 'product',
