@@ -138,8 +138,6 @@ export default function AddDispatchOrderView() {
       getWarehouses({ customerId })
         .then(warehouses => {
           if (warehouses) {
-            console.log("eedcdscdfdsfsdfsfsffsffdf", warehouses)
-            console.log("buuxuuduud", warehouses)
             setWarehouses(warehouses)
             setInternalIdForBusiness(`DO-${warehouses ? warehouses.map((code) => { return code.businessWarehouseCode }) : []}-`);
           }
@@ -435,7 +433,7 @@ export default function AddDispatchOrderView() {
               </Grid>
 
               <Grid item sm={2}>
-                <Button variant="contained" onClick={updateDispatchOrdersTable} color="primary" fullWidth className={classes.addBtnStyles}>Add Dispatch</Button>
+                <Button variant="contained" onClick={updateDispatchOrdersTable} color="primary" fullWidth className={classes.addBtnStyles}>Add</Button>
               </Grid>
             </Grid>
 
@@ -499,7 +497,7 @@ export default function AddDispatchOrderView() {
                   <Grid item xs={3}>
                     <FormControl margin="dense" fullWidth={true} variant="outlined">
                       <Button onClick={handleSubmit} color="primary" variant="contained">
-                        {!selectedDispatchOrder ? 'Save' : 'Update'}
+                        {!selectedDispatchOrder ? 'Create Dispatch' : 'Update'}
                       </Button>
                     </FormControl>
                   </Grid>
