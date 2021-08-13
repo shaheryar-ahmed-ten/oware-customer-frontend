@@ -290,7 +290,7 @@ export default function AddDispatchOrderView() {
       <Grid container spacing={3} className={classes.parentContainer}>
         <Grid item xs={12}>
           <Typography variant="h3">
-            <Box className={classes.heading}>Add Outwards</Box>
+            <Box className={classes.heading}>Add Orders</Box>
           </Typography>
         </Grid>
         <Grid item xs={12}>
