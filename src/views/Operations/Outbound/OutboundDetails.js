@@ -158,7 +158,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                 .then((response) => {
                     if (response.data.success) {
                         setSelectedProductOutwardDetails(response.data.data)
-                        setProductOutwardsLength(response.data.count)
+                        setProductOutwardsLength(response.data.data[0].ProductOutwards.length)
                     }
                 })
                 .catch((err) => {
