@@ -84,6 +84,13 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             format: (value, entity) => entity.Vehicle.Vendor ? entity.Vehicle.Vendor.name : "-",
         },
         {
+            id: "Vehicle.registrationNumber",
+            label: 'VEHICLE',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: (value, entity) => entity.Vehicle ? entity.Vehicle.registrationNumber : "-",
+        },
+        {
             id: "PickupArea.name",
             label: 'PICKUP AREA',
             minWidth: 'auto',
