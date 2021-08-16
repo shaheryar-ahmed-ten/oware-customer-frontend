@@ -75,6 +75,18 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             className: classes.topTableItem,
             format: (value, entity) => entity.Inventory.Warehouse.name
         },
+        // {
+        //     id: 'product',
+        //     label: 'PRODUCT',
+        //     minWidth: 'auto',
+        //     className: classes.topTableItem,
+        // },
+        // {
+        //     id: 'quantity',
+        //     label: 'QUANTITY ORDERD',
+        //     minWidth: 'auto',
+        //     className: classes.topTableItem,
+        // },
         {
             id: 'referenceId',
             label: 'REFERENCE ID',
@@ -96,6 +108,13 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             minWidth: 'auto',
             className: '',
             format: (value, po, outwardOrder, inventory) => dateFormat(inventory.OutwardGroup.createdAt)
+        },
+        {
+            id: 'internalIdForBusiness',
+            label: 'OUTWARD ID',
+            minWidth: 'auto',
+            className: '',
+            format: (value, po, outwardOrder, inventori) => po.internalIdForBusiness
         },
         {
             id: 'product',
