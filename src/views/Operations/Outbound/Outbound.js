@@ -258,6 +258,7 @@ function Outbound() {
         key={1}
         placeholder="Warehouse / Product / Reference No."
         onChange={e => {
+            setPage(1);
             resetFilters();
             setSearchKeyword(e.target.value)
         }}
@@ -280,7 +281,7 @@ function Outbound() {
 
     const outboundDetailsView = <OutboundDetails open={outboundDetailViewOpen} handleClose={closeOutboundDetailsView} selectedOutboundOrder={selectedOutboundOrder} />
 
-    const headerButtons = [warehouseSelect, productSelect, daysSelect, statusSelect, outboundDetailsView]
+    const headerButtons = [daysSelect, statusSelect, outboundDetailsView]
     const openViewDetails = productInward => {
         setSelectedOutboundOrder(productInward);
         setOutboundDetailViewOpen(true)
