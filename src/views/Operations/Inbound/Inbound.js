@@ -80,7 +80,7 @@ function Inbound() {
             id: 'id',
             label: 'INWARD ID',
             minWidth: 'auto',
-            format: (value, entity) => entity.id,
+            format: (value, entity) => entity.internalIdForBusiness || entity.id,
         },
         {
             id: 'createdAt',
