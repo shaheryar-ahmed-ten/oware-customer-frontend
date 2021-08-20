@@ -126,33 +126,33 @@ function Outbound() {
         //     minWidth: 'auto',
         //     className: classes.tableCellStyle,
         // },
-        {
-            id: 'quantity',
-            label: 'QUANTITY ORDERD',
-            minWidth: 'auto',
-            className: classes.tableCellStyle,
-        },
+        // {
+        //     id: 'quantity',
+        //     label: 'QUANTITY ORDERD',
+        //     minWidth: 'auto',
+        //     className: classes.tableCellStyle,
+        // },
         {
             id: 'referenceId',
             label: 'REFERENCE NUMBER',
             minWidth: 'auto',
             className: classes.tableCellStyle,
         },
-        {
-            id: 'outwardQuantity',
-            label: 'QUANTITY SHIPPED',
-            minWidth: 'auto',
-            className: classes.tableCellStyle,
-            format: (value, entity) => {
-                let totalDispatched = 0
-                entity.ProductOutwards.forEach(po => {
-                    po.OutwardGroups.forEach(outGroup => {
-                        totalDispatched += outGroup.quantity
-                    });
-                });
-                return totalDispatched
-            }
-        },
+        // {
+        //     id: 'outwardQuantity',
+        //     label: 'QUANTITY SHIPPED',
+        //     minWidth: 'auto',
+        //     className: classes.tableCellStyle,
+        //     format: (value, entity) => {
+        //         let totalDispatched = 0
+        //         entity.ProductOutwards.forEach(po => {
+        //             po.OutwardGroups.forEach(outGroup => {
+        //                 totalDispatched += outGroup.quantity
+        //             });
+        //         });
+        //         return totalDispatched
+        //     }
+        // },
         {
             id: 'Status',
             label: 'STATUS',
