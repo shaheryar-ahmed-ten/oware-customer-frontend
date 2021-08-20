@@ -95,13 +95,13 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         }
     ]
     const columns = [
-        {
-            id: 'outwardId',
-            label: 'OUTWARD ID',
-            minWidth: 'auto',
-            className: '',
-            format: (value, po, outwardOrder, inventory) => inventory.OutwardGroup.outwardId
-        },
+        // {
+        //     id: 'outwardId',
+        //     label: 'OUTWARD ID',
+        //     minWidth: 'auto',
+        //     className: '',
+        //     format: (value, po, outwardOrder, inventory) => inventory.OutwardGroup.outwardId
+        // },
         {
             id: 'createdAt',
             label: 'OUTWARD DATE',
@@ -139,6 +139,18 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                 const DistpatchInventory = outwardOrder.Inventories.find((doInventory) => doInventory.OrderGroup.inventoryId === inventory.OutwardGroup.inventoryId)
                 return (
                     DistpatchInventory.OrderGroup.quantity
+                )
+            }
+        },
+        {
+            id: 'availablequantity',
+            label: 'AVAILABLE REQUESTED',
+            minWidth: 'auto',
+            className: '',
+            format: (value, po, outwardOrder, inventory) => {
+                const DistpatchInventory = outwardOrder.Inventories.find((doInventory) => doInventory.OrderGroup.inventoryId === inventory.OutwardGroup.inventoryId)
+                return (
+                    inventory.OutwardGroup.availableQuantity || 'Not available'
                 )
             }
         },
