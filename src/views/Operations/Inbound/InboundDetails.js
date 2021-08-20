@@ -112,7 +112,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
             format: (value, entity) => entity.InwardGroup.quantity,
         },
     ]
-    console.log(selectedInbound)
+
     return (
         selectedInbound ?
             <div style={{ display: "inline" }}>
