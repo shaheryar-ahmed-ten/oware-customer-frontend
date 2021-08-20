@@ -395,14 +395,14 @@ export default function AddDispatchOrderView() {
                 <TextField
                   fullWidth={true}
                   margin="normal"
-                  InputProps={{ inputProps: { min: 0, max: availableQuantity } }}
+                  InputProps={{ inputProps: { min: 0, max: availableQuantity,  type: 'number' } }}
                   id="quantity"
                   label="Quantity"
                   type="number"
                   variant="outlined"
                   value={quantity}
                   disabled={!!selectedDispatchOrder}
-                  onChange={e => e.target.value < availableQuantity ? setQuantity(e.target.value) : setQuantity(availableQuantity)}
+                  onChange={e => e.target.value < 0 ? e.target.value == 0 :  e.target.value < availableQuantity ? setQuantity(e.target.value) : setQuantity(availableQuantity)}
                   onBlur={e => setValidation({ ...validation, quantity: true })}
                 />
                 {validation.quantity && !isRequired(quantity) ? <Typography color="error">Quantity is required!</Typography> : ''}
@@ -448,7 +448,7 @@ export default function AddDispatchOrderView() {
                     </TableCell>
                     <TableCell
                       style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
-                      Quantity
+                      UOM
                     </TableCell>
                     <TableCell
                       style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
@@ -456,7 +456,7 @@ export default function AddDispatchOrderView() {
                     </TableCell>
                     <TableCell
                       style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
-                      UoM
+                      Quantity
                     </TableCell>
                     <TableCell>
                       Actions
