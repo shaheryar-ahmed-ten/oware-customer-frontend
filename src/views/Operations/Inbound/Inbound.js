@@ -69,7 +69,12 @@ const useStyles = makeStyles((theme) => ({
         color: '#A9AEAF',
         borderBottom: 'none',
         paddingBottom: '0'
-    }
+    },
+    orderIdStyle: {
+        color: '#1C7DFE',
+        textDecoration: 'underline',
+        cursor: "pointer"
+    },
 }));
 
 function Inbound() {
@@ -81,6 +86,7 @@ function Inbound() {
             id: 'id',
             label: 'INWARD ID',
             minWidth: 'auto',
+            className: classes.orderIdStyle,
             format: (value, entity) => entity.internalIdForBusiness || entity.id,
         },
         {

@@ -121,7 +121,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                         <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: '80vh' }}>
                             <img style={{ width: "10%", margin: "20px" }} src={owareLogo} />
                             <Typography style={{ marginLeft: "10px", marginBottom: "10px", marginTop: "10px" }} variant="h3">
-                                Product Details
+                                Inward Details
                                 <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
                             </Typography>
 
@@ -191,6 +191,11 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                                 </Table>
                             </TableContainer>
                         </DialogContent>
+                        <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
+                            <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
+                                Close
+                            </Button>
+                        </DialogActions>
                     </Dialog>
                 </form>
             </div>
