@@ -13,7 +13,7 @@ import {
   Box
 } from '@material-ui/core'
 import { isRequired, isPhone } from '../../../utils/validators';
-import { checkForMatchInArray, dateToPickerFormat, getURL } from '../../../utils/common';
+import { checkForMatchInArray, dateFormat, dateToPickerFormat, getURL } from '../../../utils/common';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import axios from 'axios';
 import { TableContainer } from '@material-ui/core';
@@ -23,7 +23,8 @@ import MessageSnackbar from '../../../components/MessageSnackBar';
 import { useLocation, useNavigate } from 'react-router';
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker,
+  DateTimePicker,
+  KeyboardDateTimePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -342,16 +343,17 @@ export default function AddDispatchOrderView() {
             </Grid>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid item sm={12}>
-                <KeyboardDatePicker
+                <KeyboardDateTimePicker
                   fullWidth={true}
                   margin="normal"
                   inputVariant="outlined"
-                  format="MM/dd/yyyy"
+                  format="dd/MM/yyyy hh:mm a"
+                  disablePast
                   margin="normal"
                   id="shipmentDate"
                   label="Shipment Date"
                   value={shipmentDate}
-                  onChange={e => setShipmentDate(dateToPickerFormat(e))}
+                  onChange={e => setShipmentDate(e)}
                   onBlur={e => setValidation({ ...validation, shipmentDate: true })}
                 />
                 {validation.shipmentDate && !isRequired(shipmentDate) ? <Typography color="error">Shipment date is required!</Typography> : ''}
