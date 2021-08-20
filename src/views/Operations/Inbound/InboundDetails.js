@@ -79,6 +79,12 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
 
     const columns = [
         {
+            id: 'id',
+            label: 'PRODUCT ID',
+            minWidth: 'auto',
+            className: '',
+        },
+        {
             id: 'name',
             label: 'PRODUCT',
             minWidth: 'auto',
