@@ -12,6 +12,7 @@ import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { debounce } from 'lodash';
 import { DEBOUNCE_TIME } from '../../../config';
 import { useNavigate } from 'react-router';
+import InboundDetails from './InboundDetails';
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -96,20 +97,20 @@ function Inbound() {
             className: classes.tableCellStyle,
             format: (value, entity) => entity.Warehouse.name,
         },
-        {
-            id: 'Product.name',
-            label: 'PRODUCT',
-            minWidth: 'auto',
-            className: classes.tableCellStyle,
-            format: (value, entity, product) => product.name,
-        },
-        {
-            id: 'quantity',
-            label: 'QUANTITY',
-            minWidth: 'auto',
-            className: classes.tableCellStyle,
-            format: (value, entity, product) => product.InwardGroup.quantity,
-        },
+        // {
+        //     id: 'Product.name',
+        //     label: 'PRODUCT',
+        //     minWidth: 'auto',
+        //     className: classes.tableCellStyle,
+        //     format: (value, entity, product) => product.name,
+        // },
+        // {
+        //     id: 'quantity',
+        //     label: 'QUANTITY',
+        //     minWidth: 'auto',
+        //     className: classes.tableCellStyle,
+        //     format: (value, entity, product) => product.InwardGroup.quantity,
+        // },
         {
             id: 'referenceId',
             label: 'REFERENCE NUMBER',
@@ -141,6 +142,9 @@ function Inbound() {
     const [selectedDay, setSelectedDay] = useState(null)
     const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
 
+    const [selectedInbound, setSelectedInbound] = useState(null)
+    const [inboundDetailsViewOpen, setInboundDetailsViewOpen] = useState(false)
+
     const _getInwardProducts = (page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay) => {
         axios.get(getURL('/inward'), { params: { page, search: searchKeyword, warehouse: selectedWarehouse, product: selectedProduct, days: selectedDay } })
             .then(res => {
@@ -169,6 +173,16 @@ function Inbound() {
                 console.log(err)
             })
     };
+
+    const openViewDetails = inbound => {
+        setSelectedInbound(inbound);
+        setInboundDetailsViewOpen(true)
+    }
+    const closeInboundDetailsView = () => {
+        setInboundDetailsViewOpen(false)
+        setSelectedInbound(null)
+    }
+
     const searchInput = <InputBase
         className={classes.searchInput}
         id="search"
@@ -188,6 +202,8 @@ function Inbound() {
             </InputAdornment>
         }
     />;
+
+
     const resetFilters = () => {
         setSelectedWarehouse(null)
         setSelectedProduct(null)
@@ -196,7 +212,11 @@ function Inbound() {
     const warehouseSelect = <SelectDropdown icon={<HomeOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ name: 'All', }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} />
     const productSelect = <SelectDropdown icon={<ClassOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All', }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} />
     const daysSelect = <SelectDropdown icon={<CalendarTodayOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Days" name="Select Days" list={[{ name: 'All', }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} />
-    const headerButtons = [warehouseSelect, productSelect, daysSelect]
+
+    const InboundDetailsView = <InboundDetails open={inboundDetailsViewOpen} handleClose={closeInboundDetailsView} selectedInbound={selectedInbound} />
+
+
+    const headerButtons = [warehouseSelect, productSelect, daysSelect, InboundDetailsView]
 
     return (
         <>
@@ -232,23 +252,19 @@ function Inbound() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {productInwards.map((productInward, index) => {
+                                {productInwards.map((productInward, idx) => {
                                     return (
-                                        productInward.Products.map((product, idx) => {
-                                            return (
-                                                <TableRow key={idx} hover role="checkbox" tabIndex={-1}>
-                                                    {columns.map((column) => {
-                                                        const value = productInward[column.id];
-                                                        return (
-                                                            <TableCell key={column.id} align={column.align}
-                                                                className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                                {column.format ? column.format(value, productInward, product) : (value || '')}
-                                                            </TableCell>
-                                                        );
-                                                    })}
-                                                </TableRow>
-                                            )
-                                        })
+                                        <TableRow key={idx} hover role="checkbox" tabIndex={-1} onClick={() => openViewDetails(productInward)}>
+                                            {columns.map((column) => {
+                                                const value = productInward[column.id];
+                                                return (
+                                                    <TableCell key={column.id} align={column.align}
+                                                        className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+                                                        {column.format ? column.format(value, productInward) : (value || '')}
+                                                    </TableCell>
+                                                );
+                                            })}
+                                        </TableRow>
                                     );
                                 })}
                             </TableBody>
