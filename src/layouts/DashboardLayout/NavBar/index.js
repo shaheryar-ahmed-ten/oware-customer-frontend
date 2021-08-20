@@ -223,9 +223,9 @@ function Navbar(props) {
         [classes.appBarShift]: open,
       })}>
         <Toolbar className={classes.toolBar}>
-          <img src={owareLogo} alt='' className={clsx({
+        <a href = "/dashboard" ><img src={owareLogo} alt='' className={clsx({
             [classes.hide]: open,
-          })} />
+          })} /></a>
           <Box display="flex" alignItems="center" textAlign="right">
             <Box>
               <Typography className={classes.userName}>{currentUser ? currentUser.firstName + ' ' + currentUser.lastName : ''}</Typography>
@@ -285,7 +285,7 @@ function Navbar(props) {
         }}
       >
         <div className={classes.toolbar}>
-          <img src={owareLogo} alt='' />
+        <a href = "/dashboard" ><img src={owareLogo} alt='' /></a>
         </div>
         <Divider />
         <List>
