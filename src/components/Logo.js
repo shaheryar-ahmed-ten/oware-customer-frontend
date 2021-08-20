@@ -1,6 +1,6 @@
 import owareLogo from '../assets/logo/owareLogo.png'
 export default function Logo({ variant }) {
   return (
-    <img src={owareLogo} alt="oware logo" />
+    <a href = "/dashboard" ><img src={owareLogo} alt="oware logo" /></a>
   );
 };
