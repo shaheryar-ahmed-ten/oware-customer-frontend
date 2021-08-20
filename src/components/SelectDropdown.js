@@ -30,10 +30,11 @@ const useStyles = makeStyles((theme) => ({
         }
     }
 }));
-function SelectDropdown({ name, list, selectedType, setSelectedType, icon, resetFilters }) {
+function SelectDropdown({ name, list, selectedType, setSelectedType, icon, resetFilters, setPage }) {
     const classes = useStyles();
 
     const handleChange = (event) => {
+        setPage(1)
         resetFilters()
         setSelectedType(event.target.value);
     };
