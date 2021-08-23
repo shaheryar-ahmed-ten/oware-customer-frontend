@@ -142,7 +142,6 @@ export default function AddDispatchOrderView() {
             setWarehouses(warehouses)
             setInternalIdForBusiness(`DO-${warehouses ? warehouses.map((code) => { return code.businessWarehouseCode }) : []}-`);
           }
-          console.log("ddsdssd", internalIdForBusiness)
         });
     }
   }, [customerId]);
@@ -151,12 +150,12 @@ export default function AddDispatchOrderView() {
     setProducts([]);
     setProductId('');
     if (!customerId && !warehouseId) return;
-      getProducts({ customerId, warehouseId })
-        .then(products => {
-          return setProducts(products ? products : [])
-        }); 
-        // INPROGRESS: products with 0 available qty are also comming.
-    
+    getProducts({ customerId, warehouseId })
+      .then(products => {
+        return setProducts(products ? products : [])
+      });
+    // INPROGRESS: products with 0 available qty are also comming.
+
   }, [warehouseId])
 
   useEffect(() => {
@@ -330,13 +329,22 @@ export default function AddDispatchOrderView() {
               <TextField
                 fullWidth={true}
                 margin="normal"
+                // InputProps={{ inputProps: { min: 0, disableUnderline: true, type: 'number' } }}
+                inputProps={{
+                  maxLength: 11
+                }}
                 id="receiverPhone"
                 label="Receiver Phone"
-                type="text"
+                // type="number"
                 variant="outlined"
                 value={receiverPhone}
                 placeholder="0346xxxxxx8"
-                onChange={e => setReceiverPhone(e.target.value)}
+                onChange={e => {
+                  if (!isNaN(e.target.value))
+                    setReceiverPhone(e.target.value)
+                  else
+                    setReceiverPhone('')
+                }}
                 onBlur={e => setValidation({ ...validation, receiverPhone: true })}
               />
               {validation.receiverPhone && !isRequired(receiverPhone) ? <Typography color="error">Receiver phone is required!</Typography> : ''}
@@ -398,14 +406,14 @@ export default function AddDispatchOrderView() {
                 <TextField
                   fullWidth={true}
                   margin="normal"
-                  InputProps={{ inputProps: { min: 0, max: availableQuantity,  type: 'number' } }}
+                  InputProps={{ inputProps: { min: 0, max: availableQuantity, type: 'number' } }}
                   id="quantity"
                   label="Quantity"
                   type="number"
                   variant="outlined"
                   value={quantity}
                   disabled={!!selectedDispatchOrder}
-                  onChange={e => e.target.value < 0 ? e.target.value == 0 :  e.target.value < availableQuantity ? setQuantity(e.target.value) : setQuantity(availableQuantity)}
+                  onChange={e => e.target.value < 0 ? e.target.value == 0 : e.target.value < availableQuantity ? setQuantity(e.target.value) : setQuantity(availableQuantity)}
                   onBlur={e => setValidation({ ...validation, quantity: true })}
                 />
                 {validation.quantity && !isRequired(quantity) ? <Typography color="error">Quantity is required!</Typography> : ''}
@@ -462,7 +470,7 @@ export default function AddDispatchOrderView() {
                       UOM
                     </TableCell>
                     <TableCell
-                    style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
+                      style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
                       Actions
                     </TableCell>
                   </TableRow>
