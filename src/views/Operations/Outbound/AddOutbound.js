@@ -12,7 +12,7 @@ import {
   TableCell,
   Box
 } from '@material-ui/core'
-import { isRequired, isPhone } from '../../../utils/validators';
+import { isRequired, isPhone, isChar } from '../../../utils/validators';
 import { checkForMatchInArray, dateFormat, dateToPickerFormat, getURL } from '../../../utils/common';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import axios from 'axios';
@@ -324,6 +324,7 @@ export default function AddDispatchOrderView() {
                 onBlur={e => setValidation({ ...validation, receiverName: true })}
               />
               {validation.receiverName && !isRequired(receiverName) ? <Typography color="error">Receiver name is required!</Typography> : ''}
+              {validation.receiverName && !isChar(receiverName) ? <Typography color="error">Receiver name is only string!</Typography> : ''}
             </Grid>
             <Grid item sm={12}>
               <TextField
@@ -450,7 +451,7 @@ export default function AddDispatchOrderView() {
                     </TableCell>
                     <TableCell
                       style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
-                      UOM
+                      Requested Quantity
                     </TableCell>
                     <TableCell
                       style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
@@ -458,9 +459,10 @@ export default function AddDispatchOrderView() {
                     </TableCell>
                     <TableCell
                       style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
-                      Quantity
+                      UOM
                     </TableCell>
-                    <TableCell>
+                    <TableCell
+                    style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
                       Actions
                     </TableCell>
                   </TableRow>
@@ -473,13 +475,13 @@ export default function AddDispatchOrderView() {
                           {dispatchGroup.product.name}
                         </TableCell>
                         <TableCell>
-                          {dispatchGroup.product.UOM.name}
+                          {dispatchGroup.quantity}
                         </TableCell>
                         <TableCell>
                           {availableQuantity}
                         </TableCell>
                         <TableCell>
-                          {dispatchGroup.quantity}
+                          {dispatchGroup.product.UOM.name}
                         </TableCell>
                         <TableCell>
                           <DeleteIcon color="error" key="delete" onClick={() =>
