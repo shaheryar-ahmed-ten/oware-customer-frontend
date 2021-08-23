@@ -84,7 +84,7 @@ function SecondaryWidget({ icon, name, value, totalQuantity, totalVolume, type }
                         Total Volume
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
-                        {totalVolume} cm3
+                        {Math.round(totalVolume)} cm3
                     </Typography>
                 </div>
 
