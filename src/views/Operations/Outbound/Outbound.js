@@ -281,7 +281,7 @@ function Outbound() {
 
     const outboundDetailsView = <OutboundDetails open={outboundDetailViewOpen} handleClose={closeOutboundDetailsView} selectedOutboundOrder={selectedOutboundOrder} />
 
-    const headerButtons = [daysSelect, statusSelect, outboundDetailsView]
+    const headerButtons = [warehouseSelect, daysSelect, statusSelect, outboundDetailsView]
     const openViewDetails = productInward => {
         setSelectedOutboundOrder(productInward);
         setOutboundDetailViewOpen(true)
