@@ -35,7 +35,7 @@ function SelectDropdown({ name, list, selectedType, setSelectedType, icon, reset
 
     const handleChange = (event) => {
         setPage(1)
-        resetFilters()
+        // resetFilters()
         setSelectedType(event.target.value);
     };
     return (
