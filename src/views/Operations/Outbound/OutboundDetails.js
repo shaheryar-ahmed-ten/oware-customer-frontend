@@ -75,24 +75,26 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             className: classes.topTableItem,
             format: (value, entity) => entity.Inventory.Warehouse.name
         },
-        // {
-        //     id: 'product',
-        //     label: 'PRODUCT',
-        //     minWidth: 'auto',
-        //     className: classes.topTableItem,
-        // },
-        // {
-        //     id: 'quantity',
-        //     label: 'QUANTITY ORDERD',
-        //     minWidth: 'auto',
-        //     className: classes.topTableItem,
-        // },
         {
             id: 'referenceId',
             label: 'REFERENCE ID',
             minWidth: 'auto',
             className: classes.topTableItem,
-        }
+        },
+        {
+            id: 'recieverName',
+            label: 'Reciever Name',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: (value, entity) => entity.receiverName
+        },
+        {
+            id: 'recieverPhone',
+            label: 'RECIEVER PHONE',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: (value, entity) => entity.receiverPhone
+        },
     ]
     const columns = [
         // {
@@ -196,7 +198,14 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             label: 'REQUSTED QUANTITY',
             minWidth: 'auto',
             className: '',
-            format: (value, inventory) => inventory.OrderGroup.quantity + ' Kg' || ''
+            format: (value, inventory) => inventory.OrderGroup.quantity || ''
+        },
+        {
+            id: 'quantity',
+            label: 'TOTAL QUANTITY',
+            minWidth: 'auto',
+            className: '',
+            format: (value, inventory) => inventory.totalInwardQuantity
         },
     ]
 
@@ -384,6 +393,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                                     <TableCell>UOM</TableCell>
                                                     <TableCell align="right">WEIGHT</TableCell>
                                                     <TableCell align="right">REQUESTED QUANTITY</TableCell>
+                                                    <TableCell align="right">TOTAL QUANTITY</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableRow role="checkbox" tabIndex={-1} key={selectedOutboundOrder.id}>
