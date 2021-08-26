@@ -199,14 +199,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             minWidth: 'auto',
             className: '',
             format: (value, inventory) => inventory.OrderGroup.quantity || ''
-        },
-        {
-            id: 'quantity',
-            label: 'TOTAL QUANTITY',
-            minWidth: 'auto',
-            className: '',
-            format: (value, inventory) => inventory.totalInwardQuantity
-        },
+        }
     ]
 
     const [selectedProductOutwardDetails, setSelectedProductOutwardDetails] = useState([])
