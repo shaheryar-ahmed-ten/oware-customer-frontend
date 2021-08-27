@@ -27,6 +27,7 @@ import {
   KeyboardDateTimePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -118,7 +119,7 @@ export default function AddDispatchOrderView() {
       setQuantity('');
       setWarehouseId('');
       setProductId('');
-      setShipmentDate(dateToPickerFormat(new Date()));
+      setShipmentDate('');
       setReceiverName('');
       setReceiverPhone();
       setReferenceId('');
@@ -329,13 +330,11 @@ export default function AddDispatchOrderView() {
               <TextField
                 fullWidth={true}
                 margin="normal"
-                // InputProps={{ inputProps: { min: 0, disableUnderline: true, type: 'number' } }}
                 inputProps={{
                   maxLength: 11
                 }}
                 id="receiverPhone"
                 label="Receiver Phone"
-                // type="number"
                 variant="outlined"
                 value={receiverPhone}
                 placeholder="0346xxxxxx8"
@@ -350,24 +349,24 @@ export default function AddDispatchOrderView() {
               {validation.receiverPhone && !isRequired(receiverPhone) ? <Typography color="error">Receiver phone is required!</Typography> : ''}
               {validation.receiverPhone && !isPhone(receiverPhone) ? <Typography color="error">Incorrect phone number!</Typography> : ''}
             </Grid>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid item sm={12}>
-                <KeyboardDateTimePicker
-                  fullWidth={true}
-                  margin="normal"
-                  inputVariant="outlined"
-                  format="dd/MM/yyyy hh:mm a"
-                  disablePast
-                  margin="normal"
-                  id="shipmentDate"
-                  label="Shipment Date"
-                  value={shipmentDate}
-                  onChange={e => setShipmentDate(e)}
-                  onBlur={e => setValidation({ ...validation, shipmentDate: true })}
-                />
+              <TextField
+            fullWidth={true}
+            margin="dense"
+            id="shipmentDate"
+            label="Shipment Date"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="Shipment Date"
+            type="datetime-local"
+            variant="outlined"
+            value={shipmentDate}
+            onChange={e => setShipmentDate(dateToPickerFormat(e.target.value))}
+            onBlur={e => setValidation({ ...validation, shipmentDate: true })}
+          />
                 {validation.shipmentDate && !isRequired(shipmentDate) ? <Typography color="error">Shipment date is required!</Typography> : ''}
               </Grid>
-            </MuiPickersUtilsProvider>
             <Grid item sm={12}>
               <TextField
                 fullWidth={true}

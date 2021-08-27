@@ -386,7 +386,6 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                                     <TableCell>UOM</TableCell>
                                                     <TableCell align="right">WEIGHT</TableCell>
                                                     <TableCell align="right">REQUESTED QUANTITY</TableCell>
-                                                    <TableCell align="right">TOTAL QUANTITY</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableRow role="checkbox" tabIndex={-1} key={selectedOutboundOrder.id}>
