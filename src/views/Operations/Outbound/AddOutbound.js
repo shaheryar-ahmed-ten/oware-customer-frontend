@@ -21,13 +21,7 @@ import { TableBody } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import MessageSnackbar from '../../../components/MessageSnackBar';
 import { useLocation, useNavigate } from 'react-router';
-import {
-  MuiPickersUtilsProvider,
-  DateTimePicker,
-  KeyboardDateTimePicker,
-} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import moment from "moment";
+import MaskedInput from "react-text-mask";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -253,6 +247,8 @@ export default function AddDispatchOrderView() {
   // Done: uncomment dispatch orderId when DO is created
   const handleSubmit = e => {
     setMessageType('green')
+    let strRecieverPhone = receiverPhone
+    let strRecPhone = strRecieverPhone.replace(/-/g, '');
     const newDispatchOrder = {
       quantity,
       inventories,
@@ -261,7 +257,7 @@ export default function AddDispatchOrderView() {
       productId,
       shipmentDate,
       receiverName,
-      receiverPhone,
+      receiverPhone : strRecPhone,
       referenceId,
       internalIdForBusiness
     }
@@ -282,6 +278,21 @@ export default function AddDispatchOrderView() {
       addDispatchOrder(newDispatchOrder);
     }
   }
+
+  const phoneNumberMask = [
+    /[0-9]/,
+    /\d/,
+    /\d/,
+    /\d/,
+    "-",
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/
+  ];
 
   return (
     <>
@@ -327,27 +338,23 @@ export default function AddDispatchOrderView() {
               {validation.receiverName && !isChar(receiverName) ? <Typography color="error">Receiver name is only string!</Typography> : ''}
             </Grid>
             <Grid item sm={12}>
-              <TextField
-                fullWidth={true}
-                margin="normal"
-                inputProps={{
-                  maxLength: 11
-                }}
-                id="receiverPhone"
-                label="Receiver Phone"
-                variant="outlined"
-                value={receiverPhone}
-                placeholder="0346xxxxxx8"
-                onChange={e => {
-                  if (!isNaN(e.target.value))
-                    setReceiverPhone(e.target.value)
-                  else
-                    setReceiverPhone('')
-                }}
-                onBlur={e => setValidation({ ...validation, receiverPhone: true })}
-              />
+              <MaskedInput
+                  className = "mask-text"
+                  margin="normal"
+                  variant="outlined"
+                  name="phone"
+                  mask={phoneNumberMask}
+                  label="Receiver Phone"
+                  id="receiverPhone"
+                  type="text"
+                  value={receiverPhone}
+                  placeholder="Reciever Phone"
+                  onChange={e => {
+                      setReceiverPhone(e.target.value)
+                  }}
+                  onBlur={e => setValidation({ ...validation, receiverPhone: true })}
+            />
               {validation.receiverPhone && !isRequired(receiverPhone) ? <Typography color="error">Receiver phone is required!</Typography> : ''}
-              {validation.receiverPhone && !isPhone(receiverPhone) ? <Typography color="error">Incorrect phone number!</Typography> : ''}
             </Grid>
               <Grid item sm={12}>
               <TextField
@@ -355,6 +362,7 @@ export default function AddDispatchOrderView() {
             margin="dense"
             id="shipmentDate"
             label="Shipment Date"
+            inputProps = {{min: new Date().toISOString().slice(0, 16)}}
             InputLabelProps={{
               shrink: true,
             }}

@@ -10,6 +10,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import "./OutboundDetail.css"
+import clsx from 'clsx';
 
 const useStyles = makeStyles({
     tableContainerTop: {
@@ -43,6 +44,19 @@ const useStyles = makeStyles({
         '& > *': {
             borderBottom: 'unset',
         },
+    },
+    pendingStatusButtonStyling: {
+        backgroundColor: '#FFEEDB',
+        color: '#F69148'
+    },
+    partialStatusButtonStyling: {
+        backgroundColor: '#F0F0F0',
+        color: '#7D7D7D',
+        width: 150,
+    },
+    fullfilledStatusButtonStyling: {
+        backgroundColor: '#EAF7D5',
+        color: '#69A022'
     },
 });
 function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
@@ -94,6 +108,29 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             minWidth: 'auto',
             className: classes.topTableItem,
             format: (value, entity) => entity.receiverPhone
+        },
+        {
+            id: 'Status',
+            label: 'STATUS',
+            minWidth: 'auto',
+            className: classes.tableCellStyle,
+            format: (value, entity) => {
+                let totalDispatched = 0
+                entity.ProductOutwards.forEach(po => {
+                    po.OutwardGroups.forEach(outGroup => {
+                        totalDispatched += outGroup.quantity
+                    });
+                });
+                return (
+                    totalDispatched === 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
+                        Pending
+                    </Button> : totalDispatched > 0 && totalDispatched < entity.quantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+                        Partially fulfilled
+                    </Button> : entity.quantity === totalDispatched ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
+                        Fulfilled
+                    </Button> : ''
+                )
+            }
         },
     ]
     const columns = [
