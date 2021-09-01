@@ -227,7 +227,9 @@ function Products() {
 
     const productDetailsView = <ProductDetails open={productDetailsViewOpen} handleClose={closeOutboundDetailsView} selectedProduct={selectedProduct} />
 
-    const headerButtons = [productSelect, productDetailsView]
+    const headerButtons = [
+        // productSelect, 
+        productDetailsView]
 
     return (
         <>
