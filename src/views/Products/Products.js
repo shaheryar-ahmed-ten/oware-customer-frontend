@@ -116,6 +116,13 @@ function Products() {
             format: (value, entity) => entity.Product.Category.name,
         },
         {
+            id: 'warehouse',
+            label: 'WAREHOUSE',
+            minWidth: 'auto',
+            className: classes.orderIdStyle,
+            format: (value, entity) => entity.Warehouse.name,
+        },
+        {
             id: 'brand',
             label: 'BRAND',
             minWidth: 'auto',
@@ -138,6 +145,12 @@ function Products() {
         {
             id: 'committedQuantity',
             label: 'QTY COMMITED',
+            minWidth: 'auto',
+            className: classes.orderIdStyle,
+        },
+        {
+            id: 'dispatchedQuantity',
+            label: 'QTY DISPATCHED',
             minWidth: 'auto',
             className: classes.orderIdStyle,
         },
