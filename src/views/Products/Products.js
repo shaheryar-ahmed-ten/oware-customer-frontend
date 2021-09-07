@@ -115,13 +115,13 @@ function Products() {
             className: classes.orderIdStyle,
             format: (value, entity) => entity.Product.Category.name,
         },
-        {
-            id: 'warehouse',
-            label: 'WAREHOUSE',
-            minWidth: 'auto',
-            className: classes.orderIdStyle,
-            format: (value, entity) => entity.Warehouse.name,
-        },
+        // {
+        //     id: 'warehouse',
+        //     label: 'WAREHOUSE',
+        //     minWidth: 'auto',
+        //     className: classes.orderIdStyle,
+        //     format: (value, entity) => entity.Warehouse.name,
+        // },
         {
             id: 'brand',
             label: 'BRAND',
@@ -148,12 +148,12 @@ function Products() {
             minWidth: 'auto',
             className: classes.orderIdStyle,
         },
-        {
-            id: 'dispatchedQuantity',
-            label: 'QTY DISPATCHED',
-            minWidth: 'auto',
-            className: classes.orderIdStyle,
-        },
+        // {
+        //     id: 'dispatchedQuantity',
+        //     label: 'QTY DISPATCHED',
+        //     minWidth: 'auto',
+        //     className: classes.orderIdStyle,
+        // },
     ]
     const [products, setProducts] = useState([]);
     const [pageCount, setPageCount] = useState(1);
