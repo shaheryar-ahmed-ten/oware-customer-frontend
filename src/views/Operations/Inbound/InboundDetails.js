@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Button, Box, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import React from 'react'
 import { dateFormat } from '../../../utils/common';
 import owareLogo from '../../../assets/logo/owareLogo.png';
@@ -122,7 +122,9 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                             <img style={{ width: "10%", margin: "20px" }} src={owareLogo} />
                             <Typography style={{ marginLeft: "10px", marginBottom: "10px", marginTop: "10px" }} variant="h3">
                                 Inward Details
-                                <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
+                                <Box display="inline" displayPrint="none">
+                                    <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
+                                </Box>
                             </Typography>
 
                             <TableContainer className={classes.tableContainerTop}>
@@ -191,11 +193,13 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                                 </Table>
                             </TableContainer>
                         </DialogContent>
-                        <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
-                            <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
-                                Close
-                            </Button>
-                        </DialogActions>
+                        <Box display="inline" displayPrint="none">
+                            <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
+                                <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
+                                    Close
+                                </Button>
+                            </DialogActions>
+                        </Box>
                     </Dialog>
                 </form>
             </div>
