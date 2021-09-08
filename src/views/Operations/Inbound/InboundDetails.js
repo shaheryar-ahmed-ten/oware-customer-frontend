@@ -106,7 +106,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
         },
         {
             id: 'qunaityt',
-            label: 'QUNTITY',
+            label: 'QUANTITY',
             minWidth: 'auto',
             className: '',
             format: (value, entity) => entity.InwardGroup.quantity,
