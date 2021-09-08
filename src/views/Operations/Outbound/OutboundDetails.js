@@ -361,7 +361,9 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                             <img style={{ width: "10%", margin: "20px" }} src={owareLogo} />
                             <Typography style={{ marginLeft: "10px", marginBottom: "10px" }} variant="h3">
                                 Order Details
-                                <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
+                                <Box display="inline" displayPrint="none">
+                                    <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
+                                </Box>
                             </Typography>
                             <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
@@ -425,33 +427,38 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                                     <TableCell align="right">REQUESTED QUANTITY</TableCell>
                                                 </TableRow>
                                             </TableHead>
-                                            <TableRow role="checkbox" tabIndex={-1} key={selectedOutboundOrder.id}>
+                                            <TableBody role="checkbox" tabIndex={-1} key={selectedOutboundOrder.id}>
                                                 {
                                                     selectedOutboundOrder.Inventories.map((inventory) => {
                                                         return (
-                                                            pendingColumns.map((column) => {
-                                                                const value = inventory[column.id];
-                                                                return (
-                                                                    <TableCell key={column.id} align={column.align}
-                                                                        className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                                        {column.format ? column.format(value, inventory) : (value || '')}
-                                                                    </TableCell>
-                                                                );
-                                                            })
+                                                            <TableRow hover role="checkbox" tabIndex={-1} key={inventory.id}>
+                                                                {pendingColumns.map((column) => {
+                                                                    const value = inventory[column.id];
+                                                                    return (
+                                                                        <TableCell key={column.id} align={column.align}
+                                                                            className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
+                                                                            {column.format ? column.format(value, inventory) : (value || '')}
+                                                                        </TableCell>
+                                                                    );
+                                                                })}
+                                                            </TableRow>
+
                                                         )
                                                     })
                                                 }
-                                            </TableRow>
+                                            </TableBody>
                                         </Table>
                                     </TableContainer>
                             }
 
                         </DialogContent>
-                        <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
-                            <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
-                                Close
-                            </Button>
-                        </DialogActions>
+                        <Box display="block" displayPrint="none">
+                            <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
+                                <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
+                                    Close
+                                </Button>
+                            </DialogActions>
+                        </Box>
                     </Dialog>
                 </form>
             </div >
