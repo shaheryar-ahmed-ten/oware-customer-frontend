@@ -13,7 +13,7 @@ import {
   Box
 } from '@material-ui/core'
 import { isRequired, isPhone, isChar } from '../../../utils/validators';
-import { checkForMatchInArray, dateFormat, dateToPickerFormat, getURL } from '../../../utils/common';
+import { checkForMatchInArray, dateFormat, dateTimeLocal, dateToPickerFormat, getURL } from '../../../utils/common';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import axios from 'axios';
 import { TableContainer } from '@material-ui/core';
@@ -72,7 +72,7 @@ export default function AddDispatchOrderView() {
     [products, setProducts] = useState([]),
     [validation, setValidation] = useState({}),
     [quantity, setQuantity] = useState(0),
-    [shipmentDate, setShipmentDate] = useState(''),
+    [shipmentDate, setShipmentDate] = useState(dateTimeLocal(Date.now())),
     [receiverName, setReceiverName] = useState(''),
     [receiverPhone, setReceiverPhone] = useState(''),
     [availableQuantity, setAvailableQuantity] = useState(0),
@@ -113,7 +113,7 @@ export default function AddDispatchOrderView() {
       setQuantity('');
       setWarehouseId('');
       setProductId('');
-      setShipmentDate('');
+      setShipmentDate(dateTimeLocal(Date.now()));
       setReceiverName('');
       setReceiverPhone();
       setReferenceId('');
@@ -257,7 +257,7 @@ export default function AddDispatchOrderView() {
       productId,
       shipmentDate,
       receiverName,
-      receiverPhone : strRecPhone,
+      receiverPhone: strRecPhone,
       referenceId,
       internalIdForBusiness
     }
@@ -339,42 +339,42 @@ export default function AddDispatchOrderView() {
             </Grid>
             <Grid item sm={12}>
               <MaskedInput
-                  className = "mask-text"
-                  margin="normal"
-                  variant="outlined"
-                  name="phone"
-                  mask={phoneNumberMask}
-                  label="Receiver Phone"
-                  id="receiverPhone"
-                  type="text"
-                  value={receiverPhone}
-                  placeholder="Reciever Phone"
-                  onChange={e => {
-                      setReceiverPhone(e.target.value)
-                  }}
-                  onBlur={e => setValidation({ ...validation, receiverPhone: true })}
-            />
+                className="mask-text"
+                margin="normal"
+                variant="outlined"
+                name="phone"
+                mask={phoneNumberMask}
+                label="Receiver Phone"
+                id="receiverPhone"
+                type="text"
+                value={receiverPhone}
+                placeholder="Reciever Phone"
+                onChange={e => {
+                  setReceiverPhone(e.target.value)
+                }}
+                onBlur={e => setValidation({ ...validation, receiverPhone: true })}
+              />
               {validation.receiverPhone && !isRequired(receiverPhone) ? <Typography color="error">Receiver phone is required!</Typography> : ''}
             </Grid>
-              <Grid item sm={12}>
+            <Grid item sm={12}>
               <TextField
-            fullWidth={true}
-            margin="dense"
-            id="shipmentDate"
-            label="Shipment Date"
-            inputProps = {{min: new Date().toISOString().slice(0, 16)}}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder="Shipment Date"
-            type="datetime-local"
-            variant="outlined"
-            value={shipmentDate}
-            onChange={e => setShipmentDate(dateToPickerFormat(e.target.value))}
-            onBlur={e => setValidation({ ...validation, shipmentDate: true })}
-          />
-                {validation.shipmentDate && !isRequired(shipmentDate) ? <Typography color="error">Shipment date is required!</Typography> : ''}
-              </Grid>
+                fullWidth={true}
+                margin="dense"
+                id="shipmentDate"
+                label="Shipment Date"
+                inputProps={{ min: new Date().toISOString().slice(0, 16) }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                placeholder="Shipment Date"
+                type="datetime-local"
+                variant="outlined"
+                value={shipmentDate}
+                onChange={e => setShipmentDate(dateToPickerFormat(e.target.value))}
+                onBlur={e => setValidation({ ...validation, shipmentDate: true })}
+              />
+              {validation.shipmentDate && !isRequired(shipmentDate) ? <Typography color="error">Shipment date is required!</Typography> : ''}
+            </Grid>
             <Grid item sm={12}>
               <TextField
                 fullWidth={true}

@@ -16,6 +16,8 @@ export const digitize = (value, places) => {
 // export const dateFormat = value => value ?  moment(value).utcOffset(value).format('DD-MM-yyyy hh:mm A') : "-";
 export const dateFormat = value => value ? moment(value).format('DD-MM-yyyy hh:mm A') : "-";
 
+export const dateTimeLocal = value => value ? moment(value).format('yyyy-MM-DDTHH:mm') : '-';
+
 export const dateToPickerFormat = value => value ? moment(value).format('yyyy-MM-DDTHH:mm') : "";
 
 export const dateFormatWithoutTime = value => moment(value).format('yyyy-MM-DD')
