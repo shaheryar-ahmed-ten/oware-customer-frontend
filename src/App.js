@@ -9,6 +9,7 @@ import { setRequestInterceptor, setResponseInterceptor, ejectRequestInterceptor,
 import { getUser, getUserToken } from './utils/auth';
 
 function App() {
+  const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [authToken, setAuthToken] = useState(getUserToken());
@@ -26,7 +27,7 @@ function App() {
       setIsLoading(false);
       if (error.response && error.response.status === 401) {
         if (location.pathname.split('/').pop() !== 'login') {
-          // navigate('/login');
+          navigate('/login');
         }
       }
       return Promise.reject(error)
@@ -35,11 +36,11 @@ function App() {
   };
   updateInterceptors();
 
-  useEffect(async () => {
-    const { requestInterceptor, responseInterceptor } = await updateInterceptors();
+  useEffect(() => {
+    const { requestInterceptor, responseInterceptor } = updateInterceptors();
     return async () => {
-      await ejectRequestInterceptor(requestInterceptor || 0);
-      await ejectResponseInterceptor(responseInterceptor || 0);
+      ejectRequestInterceptor(requestInterceptor || 0);
+      ejectResponseInterceptor(responseInterceptor || 0);
     };
   }, [authToken]);
 

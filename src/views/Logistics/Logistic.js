@@ -1,16 +1,14 @@
-import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Button } from '@material-ui/core';
 import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
-import { getURL } from '../../utils/common'
+import { dateFormat, getURL } from '../../utils/common'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
-import SelectDropdown from '../../components/SelectDropdown';
 import TableHeader from '../../components/TableHeader';
 import { Pagination } from '@material-ui/lab';
-import ProductDetails from './ProductDetails';
-import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import { debounce } from 'lodash';
 import { DEBOUNCE_TIME } from '../../config';
-
+import LogisticDetails from './LogisticDetails';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -22,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.6,
         marginRight: 7,
         height: 30,
-        // width: 400,
         width: '100%',
         boxSizing: "border-box",
         padding: "15px 15px"
@@ -71,11 +68,14 @@ const useStyles = makeStyles((theme) => ({
     },
     partialStatusButtonStyling: {
         backgroundColor: '#F0F0F0',
-        color: '#7D7D7D',
-        width: 150,
+        color: '#7D7D7D'
     },
     fullfilledStatusButtonStyling: {
         backgroundColor: '#EAF7D5',
+        color: '#69A022'
+    },
+    completedStatusButtonStyling: {
+        backgroundColor: '#32CD32',
         color: '#69A022'
     },
     tableCellStyle: {
@@ -88,91 +88,96 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '12px',
         color: '#A9AEAF',
         borderBottom: 'none',
-        paddingBottom: '0'
+        paddingBottom: '0',
+        margin: "20px"
     }
 }));
-function Products() {
+function Logistics() {
     const classes = useStyles()
     const columns = [
         {
             id: 'id',
-            label: 'PRODUCT ID',
+            label: 'RIDE ID',
             minWidth: 'auto',
             className: classes.productNameStyle,
             format: (value, entity) => entity.id,
         },
         {
-            id: 'Product.name',
-            label: 'PRODUCT NAME',
-            minWidth: 'auto',
-            className: classes.productNameStyle,
-            format: (value, entity) => entity.Product.name,
-        },
-        {
-            id: 'category',
-            label: 'CATEGORY',
+            id: 'price',
+            label: 'PRICE',
             minWidth: 'auto',
             className: classes.orderIdStyle,
-            format: (value, entity) => entity.Product.Category.name,
-        },
-        // {
-        //     id: 'warehouse',
-        //     label: 'WAREHOUSE',
-        //     minWidth: 'auto',
-        //     className: classes.orderIdStyle,
-        //     format: (value, entity) => entity.Warehouse.name,
-        // },
-        {
-            id: 'brand',
-            label: 'BRAND',
-            minWidth: 'auto',
-            className: classes.orderIdStyle,
-            format: (value, entity) => entity.Product.Brand.name,
+            format: (value, entity) => `RS. ${entity.price ? entity.price : "-"}`,
         },
         {
-            id: 'uom',
-            label: 'UOM',
+            id: 'pickupDate',
+            label: 'PICKUP DATE/TIME',
             minWidth: 'auto',
             className: classes.orderIdStyle,
-            format: (value, entity) => entity.Product.UOM.name,
+            format: dateFormat,
         },
         {
-            id: 'availableQuantity',
-            label: 'QTY AVAILABLE',
+            id: 'PickupArea.name',
+            label: 'PICKUP AREA',
             minWidth: 'auto',
             className: classes.orderIdStyle,
+            format: (value, entity) => entity.PickupArea ? entity.PickupArea.name : null,
         },
         {
-            id: 'committedQuantity',
-            label: 'QTY COMMITED',
+            id: 'pickupAddress',
+            label: 'PICKUP ADDRESS',
             minWidth: 'auto',
             className: classes.orderIdStyle,
+            format: (value, entity) => entity.pickupAddress,
         },
-        // {
-        //     id: 'dispatchedQuantity',
-        //     label: 'QTY DISPATCHED',
-        //     minWidth: 'auto',
-        //     className: classes.orderIdStyle,
-        // },
+        {
+            id: 'DropoffArea.name',
+            label: 'DROPOFF AREA',
+            minWidth: 'auto',
+            className: classes.orderIdStyle,
+            format: (value, entity) => entity.DropoffArea ? entity.DropoffArea.name : null,
+        },
+        {
+            id: 'dropoffDate',
+            label: 'DROPOFF DATE/TIME',
+            minWidth: 'auto',
+            className: classes.orderIdStyle,
+            format: dateFormat,
+        },
+        {
+            id: 'status',
+            label: 'STATUS',
+            minWidth: 'auto',
+            className: classes.orderIdStyle,
+            format: (value, entity) => entity.status === "ASSIGNED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
+                ASSIGNED
+            </Button> : entity.status === "PENDING" ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
+                PENDING
+            </Button> : entity.status === "UNASSIGNED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+                UNASSIGNED
+            </Button> : entity.status === "INPROGRESS" ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+                IN-PROGRESS
+            </Button> : entity.status === "COMPLETED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.completedStatusButtonStyling)}>
+                COMPLETED
+            </Button> : entity.status === "CANCELLED" ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+                CANCELLED
+            </Button> : ""
+        },
     ]
-    const [products, setProducts] = useState([]);
+    const [logistics, setLogistics] = useState([]);
     const [pageCount, setPageCount] = useState(1);
     const [page, setPage] = useState(1);
     const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
     const [searchKeyword, setSearchKeyword] = useState('');
-    const [productDetailsViewOpen, setProductDetailsViewOpen] = useState(false);
+    const [logisticDetailsViewOpen, setLogisticDetailsViewOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedProductForDropdown, setSelectedProductForDropdown] = useState(null);
-    const [customerProducts, setCustomerProducts] = useState([])
 
     useEffect(() => {
-        getProducts(page, searchKeyword, selectedProductForDropdown)
+        getLogistics(page, searchKeyword, selectedProductForDropdown)
     }, [page, searchKeyword, selectedProductForDropdown])
-    useEffect(() => {
-        getRealtions()
-    }, [])
-    const _getProducts = (page, searchKeyword, selectedProductForDropdown) => {
-        axios.get(getURL(`/product`), {
+    const _getLogistics = (page, searchKeyword, selectedProductForDropdown) => {
+        axios.get(getURL(`/ride`), {
             params: {
                 page,
                 search: searchKeyword,
@@ -182,34 +187,23 @@ function Products() {
             .then((res) => {
                 setPage(res.data.pages === 1 ? 1 : page)
                 setPageCount(res.data.pages)
-                setProducts(res.data.data)
+                setLogistics(res.data.data)
                 setNumberOfTotalRecords(res.data.count)
             })
             .catch((err) => {
                 console.log(err)
             })
     }
-    const getProducts = useCallback(debounce((page, searchKeyword, selectedProductForDropdown) => {
-        _getProducts(page, searchKeyword, selectedProductForDropdown)
+    const getLogistics = useCallback(debounce((page, searchKeyword, selectedProductForDropdown) => {
+        _getLogistics(page, searchKeyword, selectedProductForDropdown)
     }, DEBOUNCE_TIME), [])
 
-    const getRealtions = () => {
-        axios.get(getURL('/product/relations'))
-            .then((res) => {
-                console.log(res)
-                setCustomerProducts(res.data.relations.products)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+    const openViewDetails = logistic => {
+        setSelectedProduct(logistic);
+        setLogisticDetailsViewOpen(true)
     }
-
-    const openViewDetails = product => {
-        setSelectedProduct(product);
-        setProductDetailsViewOpen(true)
-    }
-    const closeOutboundDetailsView = () => {
-        setProductDetailsViewOpen(false)
+    const closeLogisticDetailsView = () => {
+        setLogisticDetailsViewOpen(false)
         setSelectedProduct(null)
     }
 
@@ -221,7 +215,7 @@ function Products() {
         variant="outlined"
         value={searchKeyword}
         key={1}
-        placeholder="Product Name"
+        placeholder="Pickup Area/Dropoff Area"
         onChange={e => {
             resetFilters();
             setSearchKeyword(e.target.value)
@@ -235,21 +229,16 @@ function Products() {
     const resetFilters = () => {
         setSelectedProductForDropdown(null);
     }
-    const productSelect = <SelectDropdown icon={<ClassOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProductForDropdown} setSelectedType={setSelectedProductForDropdown} />
+    const productDetailsView = <LogisticDetails open={logisticDetailsViewOpen} handleClose={closeLogisticDetailsView} selectedProduct={selectedProduct} />
 
-
-    const productDetailsView = <ProductDetails open={productDetailsViewOpen} handleClose={closeOutboundDetailsView} selectedProduct={selectedProduct} />
-
-    const headerButtons = [
-        // productSelect, 
-        productDetailsView]
+    const headerButtons = [productDetailsView]
 
     return (
         <>
             <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
-                        <Box className={classes.heading}>Products</Box>
+                        <Box className={classes.heading}>Logistics</Box>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
@@ -272,15 +261,15 @@ function Products() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {products.map((product, index) => {
+                                {logistics.map((logistic, index) => {
                                     return (
-                                        <TableRow key={index} hover role="checkbox" tabIndex={-1} onClick={() => openViewDetails(product)}>
+                                        <TableRow key={index} hover role="checkbox" tabIndex={-1} onClick={() => openViewDetails(logistic)}>
                                             {columns.map((column) => {
-                                                const value = product[column.id];
+                                                const value = logistic[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
                                                         className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                        {column.format ? column.format(value, product) : (value || '')}
+                                                        {column.format ? column.format(value, logistic) : (value || '')}
                                                     </TableCell>
                                                 );
                                             })}
@@ -301,7 +290,7 @@ function Products() {
                             />
                         </Grid>
                         <Grid item>
-                            <Typography variant="body1">Showing {products.length} out of {numberOfTotalRecords} records.</Typography>
+                            <Typography variant="body1">Showing {logistics.length} out of {numberOfTotalRecords} records.</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -310,4 +299,4 @@ function Products() {
     )
 }
 
-export default Products
+export default Logistics

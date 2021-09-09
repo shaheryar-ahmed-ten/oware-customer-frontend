@@ -12,7 +12,8 @@ const useStyles = makeStyles({
         padding: "19px 19px",
         backgroundColor: "#FFFFFF",
         borderRadius: "4px",
-        border: "1px solid #F0F0F0"
+        border: "1px solid #F0F0F0",
+        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.05)"
     },
     title: {
         fontSize: 18,
@@ -71,19 +72,19 @@ function SecondaryWidget({ icon, name, value, totalQuantity, totalVolume, type }
                 <br />
                 <div className={classes.details}>
                     <Typography className={classes.detailsHead} gutterBottom>
-                        Total Quantity
+                        Total Weight
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
-                        {totalQuantity} kgs
+                        {Math.round(totalQuantity)} kgs
                     </Typography>
                 </div>
-                <br/>
+                <br />
                 <div className={classes.details}>
                     <Typography className={classes.detailsHead} gutterBottom>
                         Total Volume
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
-                        {totalVolume} cm3
+                        {Math.round(totalVolume)} cm3
                     </Typography>
                 </div>
 

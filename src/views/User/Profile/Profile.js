@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
     fieldGrid: {
         // width: 303,
-        paading: '19px 19px'
+        paading: '19px 19px',
     },
     saveBtn: {
         backgroundColor: '#01D2FF',
@@ -93,6 +93,8 @@ function Profile() {
                 })
         }
 
+
+
     };
     return (
         <>
@@ -103,18 +105,7 @@ function Profile() {
                     </Typography>
                 </Grid>
                 <Grid container item xs={12} className={classes.contentContainer}>
-                    <Grid item xs={4} className={classes.fieldGrid}>
-                        {
-                            formErrors ?
-                                <Alert severity="error">{formErrors}</Alert>
-                                : null
-                        }
-                        {
-                            formSuccess ?
-                                <Alert severity="success">{formSuccess}</Alert>
-                                :
-                                null
-                        }
+                    <Grid item xs={12} className={classes.fieldGrid}>
                         <Typography className={classes.customFieldLabel}>First Name</Typography>
                         <TextField
                             className={classes.customField}
@@ -143,6 +134,17 @@ function Profile() {
                             value={userFields.lastName}
                             onChange={(e) => { setUserFields((prevState) => ({ ...prevState, lastName: e.target.value })); setFormSuccess(null); setFormErrors(null) }}
                         />
+                        {
+                            formErrors ?
+                                <Alert fullWidth severity="error">{formErrors}</Alert>
+                                : null
+                        }
+                        {
+                            formSuccess ?
+                                <Alert fullWidth severity="success">{formSuccess}{formSuccess}{formSuccess}</Alert>
+                                :
+                                null
+                        }
                         <Button variant="contained" className={classes.saveBtn} onClick={() => { updateUser(userFields) }}>
                             Save
                         </Button>

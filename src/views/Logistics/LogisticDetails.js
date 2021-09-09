@@ -1,11 +1,16 @@
-import { Button, Box, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { getURL } from '../../utils/common';
+import { dateFormatWithoutTime, getURL } from '../../utils/common';
 import owareLogo from '../../assets/logo/owareLogo.png';
 import PrintOutlinedIcon from '@material-ui/icons/PrintOutlined';
 
 const useStyles = makeStyles({
+    heading: {
+        fontWeight: "600",
+        margin : "10px",
+        textAlign : "left"
+    },
     tableContainerTop: {
         backgroundColor: '#F8F8F8'
     },
@@ -25,7 +30,8 @@ const useStyles = makeStyles({
         fontWeight: '600',
         LineWeight: '15px',
         backgroundColor: '#F8F8F8',
-        borderBottom: "none"
+        borderBottom: "none",
+        padding : "10px"
     },
     topTableItem: {
         fontWeight: '600'
@@ -37,90 +43,132 @@ const useStyles = makeStyles({
         cursor : "pointer"
     }
 });
-function ProductDetails({ open, handleClose, selectedProduct }) {
-    const classes = useStyles()
+function LogisticDetails({ open, handleClose, selectedProduct }) {
+    const classes = useStyles();
+    const [logisticDetails, setLogisticDetails] = useState(null);
+
     const columnsTop = [
         {
-            id: 'Product.name',
-            label: 'PRODUCT NAME',
+            id: "rideId",
+            label: 'RIDEID',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.Product.name,
+            format: (value, entity) => entity.id,
         },
         {
-            id: 'category',
-            label: 'CATEGORY',
+            id: "status",
+            label: 'STATUS',
             minWidth: 'auto',
             className: classes.topTableItem,
-            format: (value, entity) => entity.Product.Category.name,
+            format: (value, entity) => entity.status,
         },
         {
-            id: 'brand',
-            label: 'BRAND',
+            id: 'price',
+            label: 'PRICE',
             minWidth: 'auto',
-            className: classes.topTableItem,
-            format: (value, entity) => entity.Product.Brand.name,
+            className: classes.orderIdStyle,
+            format: (value, entity) => `RS. ${entity.price ? entity.price : "-"}`,
         },
         {
-            id: 'availableQuantity',
-            label: 'QUANTITY AVAILABLE',
+            id: "Vehicle.Driver.name",
+            label: 'DRIVER',
             minWidth: 'auto',
             className: classes.topTableItem,
+            format: (value, entity) => entity.Vehicle.Driver ? entity.Vehicle.Driver.name : "-",
         },
         {
-            id: 'committedQuantity',
-            label: 'QUANTITY COMMITED',
+            id: "Vehicle.Vendor.name",
+            label: 'VENDOR',
             minWidth: 'auto',
             className: classes.topTableItem,
+            format: (value, entity) => entity.Vehicle.Vendor ? entity.Vehicle.Vendor.name : "-",
         },
+        {
+            id: "Vehicle.registrationNumber",
+            label: 'VEHICLE',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: (value, entity) => entity.Vehicle ? entity.Vehicle.registrationNumber : "-",
+        },
+        {
+            id: "PickupArea.name",
+            label: 'PICKUP AREA',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: (value, entity) => entity.PickupArea ? entity.PickupArea.name : "-",
+        },
+        {
+            id: "pickupDate",
+            label: 'PICKUP AREA DATE',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format : dateFormatWithoutTime
+        },
+        {
+            id: "DropoffArea.name",
+            label: 'DROP OFF AREA',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: (value, entity) => entity.DropoffArea ? entity.DropoffArea.name : "-",
+        },
+        {
+            id: "dropoffDate",
+            label: 'DROP OFF DATE',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format : dateFormatWithoutTime
+        }    
     ]
     const columns = [
         {
-            id: 'Warehouse.name',
-            label: 'WAREHOUSE',
+            id: 'Category.name',
+            label: 'PRODUCT CATEGORY',
             minWidth: 'auto',
             className: '',
-            format: (value, entity) => entity.Warehouse.name,
+            format: (value, entity) => entity.Category.name,
         },
         {
-            id: 'availableQuantity',
-            label: 'QUANTITY AVAILABLE',
+            id: 'name',
+            label: 'PRODUCT NAME',
             minWidth: 'auto',
             className: '',
         },
         {
-            id: 'committedQuantity',
-            label: 'QUANTITY COMMITED',
+            id: 'quantity',
+            label: 'QUANTITY',
             minWidth: 'auto',
             className: '',
         },
     ]
-    const [selectedProductDetails, setSelectedProductDetails] = useState([])
+    const 
+    [selectedProductDetails, setSelectedProductDetails] = useState([]);
+    
+
     useEffect(() => {
         if (selectedProduct)
-            axios.get(getURL(`/product/${selectedProduct.id}`))
+            axios.get(getURL(`/ride/${selectedProduct.id}`))
                 .then((response) => {
-                    setSelectedProductDetails(response.data.data)
+                    setSelectedProductDetails(response.data.data.RideProducts)
+                    setLogisticDetails(response.data.data)
                 })
                 .catch((err) => {
                     console.log(err)
                 })
-    }, [selectedProduct])
+     }, [selectedProduct])
+
     return (
         selectedProduct ?
             <div style={{ display: "inline" }}>
                 <form>
-                    <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
+                    <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title"> 
                         <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: '80vh' }}>
-                        <img style = {{width : "10%", margin : "20px"}} src={owareLogo} />
-                        <Typography style = {{marginLeft : "10px", marginBottom : "10px", marginTop : "10px"}} variant="h3">
-                               Product Details
-                               <Box display="inline" displayPrint="none">
-                                    <PrintOutlinedIcon className = {classes.icon} onClick = {() => window.print()} />
-                                </Box>
+                            <img style = {{width : "10%", margin : "20px"}} src={owareLogo} />
+                            <Typography style = {{marginLeft : "10px", marginBottom : "10px"}} variant="h3">
+                               Delivery Details
+                               <PrintOutlinedIcon className = {classes.icon} onClick = {() => window.print()} />
                            </Typography>
-
-                            <TableContainer className={classes.tableContainerTop}>
+                        
+                             <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
                                         {columnsTop.map((column, index) => (
@@ -135,7 +183,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                     </TableHead>
                                     <TableBody>
                                         <TableRow role="checkbox" tabIndex={-1} key={selectedProduct.id}>
-                                            {columnsTop.map((column) => {
+                                         {columnsTop.map((column) => {
                                                 const value = selectedProduct[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
@@ -144,12 +192,13 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                                         {column.format ? column.format(value, selectedProduct) : (value || '')}
                                                     </TableCell>
                                                 );
-                                            })}
+                                            })} 
                                         </TableRow>
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            <TableContainer className={classes.tableContainer}>
+                    
+                        <TableContainer className={classes.tableContainer}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
                                         {columns.map((column, index) => (
@@ -165,15 +214,15 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                     </TableHead>
                                     <TableBody>
                                         {
-                                            selectedProductDetails.map((productDetail, index) => {
+                                            selectedProductDetails.map((logisticDetail, index) => {
                                                 return (
                                                     <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                                                         {columns.map((column, index) => {
-                                                            const value = productDetail[column.id];
+                                                            const value = logisticDetail[column.id];
                                                             return (
                                                                 <TableCell key={index} align={column.align}
                                                                     className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                                    {column.format ? column.format(value, productDetail) : (value)}
+                                                                    {column.format ? column.format(value, logisticDetail) : (value)}
                                                                 </TableCell>
                                                             );
                                                         })}
@@ -181,17 +230,17 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                                 )
                                             })
                                         }
+                                       
                                     </TableBody>
                                 </Table>
                             </TableContainer>
+                        
                         </DialogContent>
-                        <Box display="block" displayPrint="none">
-                            <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
-                                <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
-                                    Close
-                                </Button>
-                            </DialogActions>
-                        </Box>
+                        <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
+                            <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
+                                Close
+                            </Button>
+                        </DialogActions>
                     </Dialog>
                 </form>
             </div>
@@ -200,4 +249,4 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
     )
 }
 
-export default ProductDetails
+export default LogisticDetails

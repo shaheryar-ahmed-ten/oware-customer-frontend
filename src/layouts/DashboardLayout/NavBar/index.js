@@ -16,13 +16,12 @@ import {
   Typography,
 } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-import GetAppOutlinedIcon from '@material-ui/icons/GetAppOutlined';
-import BorderClearOutlinedIcon from '@material-ui/icons/BorderClearOutlined';
 import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
+import LocalShippingOutlinedIcon from '@material-ui/icons/LocalShippingOutlined';
 import { useLocation, useNavigate } from 'react-router-dom';
 import owareLogo from '../../../assets/logo/owareLogo.png'
 import { SharedContext } from '../../../utils/common';
@@ -32,6 +31,8 @@ import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import HttpsOutlinedIcon from '@material-ui/icons/HttpsOutlined';
 import { checkPermission, removeAuth } from '../../../utils/auth';
 import { CP_DASHBOARD_FULL, CP_INWARD_FULL, CP_ORDER_FULL, CP_PRODUCT_FULL } from '../../../PermissionConstants';
+import EventNoteOutlinedIcon from '@material-ui/icons/EventNoteOutlined';
+import AssignmentReturnedOutlinedIcon from '@material-ui/icons/AssignmentReturnedOutlined';
 const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
@@ -133,6 +134,13 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'transparent',
     postion: 'absolute',
     bottom: '0',
+  },
+  menuDropdownStyle: {
+    transform: 'translateY(5%)',
+  },
+  menuItemStyle: {
+    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+    paddingRight: '100px'
   }
 }));
 function Navbar(props) {
@@ -144,36 +152,44 @@ function Navbar(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const navList = [{
     title: "Dashboard",
-    icon: <HomeOutlinedIcon />,
+    icon: <HomeOutlinedIcon fontSize="small" />,
     route: '/dashboard',
     color: currentLocation.includes('dashboard') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('dashboard') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
-    canActivate: checkPermission(currentUser,CP_DASHBOARD_FULL)
+    canActivate: checkPermission(currentUser, CP_DASHBOARD_FULL)
   },
   {
     title: "Inwards",
-    icon: <GetAppOutlinedIcon />,
+    icon: <AssignmentReturnedOutlinedIcon fontSize="small" />,
     route: '/operation-transactions/inwards',
     color: currentLocation.includes('inwards') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('inwards') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
-    canActivate: checkPermission(currentUser,CP_INWARD_FULL)
+    canActivate: checkPermission(currentUser, CP_INWARD_FULL)
   },
   {
     title: "Orders",
-    icon: <BorderClearOutlinedIcon />,
+    icon: <EventNoteOutlinedIcon fontSize="small" />,
     route: '/operation-transactions/orders',
     color: currentLocation.includes('orders') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('orders') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
-    canActivate: checkPermission(currentUser,CP_ORDER_FULL)
+    canActivate: checkPermission(currentUser, CP_ORDER_FULL)
   },
   {
     title: "Products",
-    icon: <ClassOutlinedIcon />,
+    icon: <ClassOutlinedIcon fontSize="small" />,
     route: '/products',
     color: currentLocation.includes('products') ? "#01D5FF" : '#383838',
     bgColor: currentLocation.includes('products') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
-    canActivate: checkPermission(currentUser,CP_PRODUCT_FULL)
+    canActivate: checkPermission(currentUser, CP_PRODUCT_FULL)
 
+  },
+  {
+    title: "Logistics",
+    icon: <LocalShippingOutlinedIcon fontSize="small" />,
+    route: '/logistics',
+    color: currentLocation.includes('logistics') ? "#01D5FF" : '#383838',
+    bgColor: currentLocation.includes('logistics') ? "rgba(48, 220, 255, 0.05)" : '#FFFFFF',
+    canActivate: checkPermission(currentUser, CP_PRODUCT_FULL)
   },
   ]
   const handleClick = (event) => {
@@ -207,20 +223,20 @@ function Navbar(props) {
         [classes.appBarShift]: open,
       })}>
         <Toolbar className={classes.toolBar}>
-          <img src={owareLogo} alt='' className={clsx({
+        <a href = "/dashboard" ><img src={owareLogo} alt='' className={clsx({
             [classes.hide]: open,
-          })} />
+          })} /></a>
           <Box display="flex" alignItems="center" textAlign="right">
             <Box>
-              <Typography className={classes.userName}>{currentUser ? currentUser.firstName+' '+currentUser.lastName : ''}</Typography>
+              <Typography className={classes.userName}>{currentUser ? currentUser.firstName + ' ' + currentUser.lastName : ''}</Typography>
               <Typography className={classes.userType}>{currentUser ? currentUser.username : ''}</Typography>
             </Box>
             <Box p={1}>
               <Avatar>
-                <PersonOutlineOutlinedIcon />
+                {currentUser.firstName.charAt(0)}
               </Avatar>
             </Box>
-            <Box p={1} style={{ position: 'relative' }}>
+            <Box p={1} >
               <KeyboardArrowDownOutlinedIcon onClick={handleClick} />
               <Menu
                 id="simple-menu"
@@ -228,9 +244,10 @@ function Navbar(props) {
                 keepMounted
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
-                style={{ transform: 'translateY(3%)' }}
+                className={classes.menuDropdownStyle}
               >
-                <MenuItem onClick={() => { navigate(`/profile`) }}>
+                <MenuItem onClick={() => { navigate(`/profile`) }}
+                >
                   <IconButton>
                     <PersonOutlineOutlinedIcon />
                   </IconButton>
@@ -242,8 +259,8 @@ function Navbar(props) {
                   </IconButton>
                   Security
                 </MenuItem>
-
-                <MenuItem onClick={handleLogout}>
+                <Divider />
+                <MenuItem className={classes.menuItemStyle} onClick={handleLogout}>
                   <IconButton>
                     <ExitToAppOutlinedIcon />
                   </IconButton>
@@ -268,18 +285,18 @@ function Navbar(props) {
         }}
       >
         <div className={classes.toolbar}>
-          <img src={owareLogo} alt='' />
+        <a href = "/dashboard" ><img src={owareLogo} alt='' /></a>
         </div>
         <Divider />
         <List>
           {navList.map((item, index) => (
             item.canActivate ?
-            <ListItem button key={index} onClick={() => { handleNavigation(item.route) }} style={{ backgroundColor: item.bgColor }}>
-              <ListItemIcon style={{ color: item.color }}>{item.icon}</ListItemIcon>
-              <ListItemText classes={{ primary: classes.listItemText }} style={{ color: item.color }} primary={item.title} />
-            </ListItem>
-            :
-            ''
+              <ListItem button key={index} onClick={() => { handleNavigation(item.route) }} style={{ backgroundColor: item.bgColor }}>
+                <ListItemIcon style={{ color: item.color }}>{item.icon}</ListItemIcon>
+                <ListItemText classes={{ primary: classes.listItemText }} style={{ color: item.color }} primary={item.title} />
+              </ListItem>
+              :
+              ''
           ))}
         </List>
         <IconButton style={{ backgroundColor: 'transparent', position: 'absolute', bottom: '0', right: '0' }} disableRipple disableFocusRipple onClick={!open ? handleDrawerOpen : handleDrawerClose}>

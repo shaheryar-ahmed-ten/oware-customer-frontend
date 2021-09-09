@@ -1,50 +1,71 @@
-import { FormControl, InputAdornment, ListItemIcon, ListItemText, makeStyles, MenuItem, MenuList, Select } from '@material-ui/core'
+import { FormControl, InputAdornment, makeStyles, MenuItem, Select } from '@material-ui/core'
 import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
-        minWidth: 120,
+        minWidth: 160,
+        boxSizing: 'border-box',
+        paddingLeft: '8px'
     },
     placeholderText: {
-        color: "#CAC9C9"
+        color: "#CAC9C9",
+        '& .MuiSelect-outlined': {
+            paddingTop: '7px',
+            paddingBottom: '6px',
+        },
     },
     dropdownListItem: {
-        '& .MuiListItemText-primary	': {
-            fontSize: 12,
+        fontSize: 12,
+    },
+    inputAdronmentStyle: {
+        '& .MuiInputAdornment-positionStart': {
+            margin: '0',
+            padding: '0',
+            backgroundColor: 'green'
+        },
+        '& .MuiInputAdornment-root': {
+            margin: '0',
+            padding: '0',
+            backgroundColor: 'green'
         }
     }
 }));
-function SelectDropdown({ name, list, selectedType, setSelectedType, icon, resetFilters }) {
+function SelectDropdown({ name, list, selectedType, setSelectedType, icon, resetFilters, setPage }) {
     const classes = useStyles();
 
     const handleChange = (event) => {
-        resetFilters()
+        setPage(1)
+        // resetFilters()
         setSelectedType(event.target.value);
     };
     return (
         <>
             <FormControl className={classes.formControl}>
                 <Select
-                    value={selectedType}
+                    value={selectedType}git
+                    variant="outlined"
                     onChange={handleChange}
                     displayEmpty
                     inputProps={{ 'aria-label': 'Without label' }}
                     className={classes.placeholderText}
                     startAdornment={
-                        <InputAdornment position="start">
+                        <InputAdornment position="start" classes={{ positionStart: classes.inputAdronmentStyle, root: classes.inputAdronmentStyle }}>
                             {icon}
                         </InputAdornment>
                     }
                 >
                     <MenuItem value={null} disabled>
-                        <ListItemText primary={name} classes={{ root: classes.dropdownListItem }} />
+                        <span className={classes.dropdownListItem}>{name}</span>
+                        {/* <ListItemText primary={name} classes={{ root: classes.dropdownListItem }} /> */}
                     </MenuItem>
 
                     {
                         list.map((item, index) => {
                             return (
                                 <MenuItem key={index} value={item.id}>
-                                    <ListItemText primary={item.name || ''} classes={{ root: classes.dropdownListItem }} />
+                                    <span className={classes.dropdownListItem}>{item.name || ''}</span>
+
+                                    {/* <ListItemText primary={item.name || ''} classes={{ root: classes.dropdownListItem }} /> */}
                                 </MenuItem>
                             )
                         })

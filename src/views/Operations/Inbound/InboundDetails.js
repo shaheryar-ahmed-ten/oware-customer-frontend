@@ -1,8 +1,7 @@
 import { Button, Box, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { getURL } from '../../utils/common';
-import owareLogo from '../../assets/logo/owareLogo.png';
+import React from 'react'
+import { dateFormat } from '../../../utils/common';
+import owareLogo from '../../../assets/logo/owareLogo.png';
 import PrintOutlinedIcon from '@material-ui/icons/PrintOutlined';
 
 const useStyles = makeStyles({
@@ -15,9 +14,6 @@ const useStyles = makeStyles({
     },
     closeButton: {
         backgroundColor: '#0DBDE0;'
-    },
-    dialogContent: {
-        padding: '0'
     },
     tableHeaderItem: {
         fontSize: 12,
@@ -32,93 +28,104 @@ const useStyles = makeStyles({
     },
     icon: {
         position: "relative",
-        marginTop : "10px",
-        marginLeft : "5px",
-        cursor : "pointer"
-    }
+        marginTop: "10px",
+        marginLeft: "5px",
+        cursor: "pointer"
+    },
+    root: {
+        '& > *': {
+            borderBottom: 'unset',
+        },
+    },
 });
-function ProductDetails({ open, handleClose, selectedProduct }) {
-    const classes = useStyles()
+
+function InboundDetails({ selectedInbound, open, handleClose }) {
+    const classes = useStyles();
     const columnsTop = [
         {
-            id: 'Product.name',
-            label: 'PRODUCT NAME',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-            format: (value, entity) => entity.Product.name,
-        },
-        {
-            id: 'category',
-            label: 'CATEGORY',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-            format: (value, entity) => entity.Product.Category.name,
-        },
-        {
-            id: 'brand',
-            label: 'BRAND',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-            format: (value, entity) => entity.Product.Brand.name,
-        },
-        {
-            id: 'availableQuantity',
-            label: 'QUANTITY AVAILABLE',
+            id: 'internalIdForBusiness',
+            label: 'INWARD ID',
             minWidth: 'auto',
             className: classes.topTableItem,
         },
         {
-            id: 'committedQuantity',
-            label: 'QUANTITY COMMITED',
-            minWidth: 'auto',
-            className: classes.topTableItem,
-        },
-    ]
-    const columns = [
-        {
-            id: 'Warehouse.name',
+            id: 'Warehouse',
             label: 'WAREHOUSE',
             minWidth: 'auto',
-            className: '',
+            className: classes.topTableItem,
             format: (value, entity) => entity.Warehouse.name,
         },
         {
-            id: 'availableQuantity',
-            label: 'QUANTITY AVAILABLE',
+            id: 'city',
+            label: 'CITY',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: (value, entity) => entity.Warehouse.city,
+        },
+        {
+            id: 'createdAt',
+            label: 'DATE OF INWARD',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: dateFormat
+        },
+        {
+            id: 'referenceId',
+            label: 'REFERENCE NUMBER',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+        },
+    ]
+
+    const columns = [
+        {
+            id: 'id',
+            label: 'PRODUCT ID',
             minWidth: 'auto',
             className: '',
         },
         {
-            id: 'committedQuantity',
-            label: 'QUANTITY COMMITED',
+            id: 'name',
+            label: 'PRODUCT',
             minWidth: 'auto',
             className: '',
         },
+        {
+            id: 'uom',
+            label: 'UOM',
+            minWidth: 'auto',
+            className: '',
+            format: (value, entity) => entity.UOM.name,
+        },
+        {
+            id: 'weight',
+            label: 'WEIGHT',
+            minWidth: 'auto',
+            className: '',
+            format: (value, entity) => entity.weight + ' Kg'
+        },
+        {
+            id: 'qunaityt',
+            label: 'QUANTITY',
+            minWidth: 'auto',
+            className: '',
+            format: (value, entity) => entity.InwardGroup.quantity,
+        },
     ]
-    const [selectedProductDetails, setSelectedProductDetails] = useState([])
-    useEffect(() => {
-        if (selectedProduct)
-            axios.get(getURL(`/product/${selectedProduct.id}`))
-                .then((response) => {
-                    setSelectedProductDetails(response.data.data)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-    }, [selectedProduct])
+
     return (
-        selectedProduct ?
+        selectedInbound ?
             <div style={{ display: "inline" }}>
                 <form>
                     <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
                         <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: '80vh' }}>
-                        <img style = {{width : "10%", margin : "20px"}} src={owareLogo} />
-                        <Typography style = {{marginLeft : "10px", marginBottom : "10px", marginTop : "10px"}} variant="h3">
-                               Product Details
-                               <Box display="inline" displayPrint="none">
-                                    <PrintOutlinedIcon className = {classes.icon} onClick = {() => window.print()} />
+                            <img style={{ width: "10%", margin: "20px" }} src={owareLogo} />
+                            <Typography style={{ marginLeft: "10px", marginBottom: "10px", marginTop: "10px" }} variant="h3">
+                                Inward Details
+                                <Box display="inline" displayPrint="none">
+                                    <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
                                 </Box>
-                           </Typography>
+                            </Typography>
 
                             <TableContainer className={classes.tableContainerTop}>
                                 <Table stickyHeader aria-label="sticky table">
@@ -134,14 +141,14 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                         ))}
                                     </TableHead>
                                     <TableBody>
-                                        <TableRow role="checkbox" tabIndex={-1} key={selectedProduct.id}>
+                                        <TableRow role="checkbox" tabIndex={-1} key={selectedInbound.id}>
                                             {columnsTop.map((column) => {
-                                                const value = selectedProduct[column.id];
+                                                const value = selectedInbound[column.id];
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
                                                         style={{ paddingTop: '0' }}
                                                         className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                        {column.format ? column.format(value, selectedProduct) : (value || '')}
+                                                        {column.format ? column.format(value, selectedInbound) : (value || '')}
                                                     </TableCell>
                                                 );
                                             })}
@@ -149,6 +156,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
+
                             <TableContainer className={classes.tableContainer}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
@@ -165,15 +173,15 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                     </TableHead>
                                     <TableBody>
                                         {
-                                            selectedProductDetails.map((productDetail, index) => {
+                                            selectedInbound.Products.map((product, index) => {
                                                 return (
                                                     <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                                                         {columns.map((column, index) => {
-                                                            const value = productDetail[column.id];
+                                                            const value = product[column.id];
                                                             return (
                                                                 <TableCell key={index} align={column.align}
                                                                     className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                                    {column.format ? column.format(value, productDetail) : (value)}
+                                                                    {column.format ? column.format(value, product) : (value)}
                                                                 </TableCell>
                                                             );
                                                         })}
@@ -185,7 +193,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                 </Table>
                             </TableContainer>
                         </DialogContent>
-                        <Box display="block" displayPrint="none">
+                        <Box display="inline" displayPrint="none">
                             <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
                                 <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
                                     Close
@@ -196,8 +204,8 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                 </form>
             </div>
             :
-            null
+            ''
     )
 }
 
-export default ProductDetails
+export default InboundDetails

@@ -26,11 +26,11 @@ const TableHeader = ({ searchInput, buttons, filterCount }) => {
     <React.Fragment>
       <Paper elevation={0} square className={classes.root}>
         <div className={classes.pageHeader}>
-          <Grid container justify="space-between" alignItems="center">
+          <Grid container justify="space-between" alignItems="center" spacing={1}>
             <Grid item xs={filterCount > 3 ? 4 : 5} >
               {searchInput}
             </Grid>
-            <Grid container item xs={filterCount > 3 ? 8 : 7} justify={filterCount > 1 ? 'center' : 'flex-end'} spacing={2}>
+            <Grid container item xs={filterCount > 3 ? 8 : 7} justify={filterCount > 1 ? 'center' : 'flex-end'}>
               {
                 buttons.map((button, index) => {
                   return (
