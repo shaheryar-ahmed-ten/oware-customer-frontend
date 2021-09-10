@@ -41,6 +41,13 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
     const classes = useStyles()
     const columnsTop = [
         {
+            id: 'id',
+            label: 'PRODUCT ID',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            // format: (value, entity) => entity.Product.id,
+        },
+        {
             id: 'Product.name',
             label: 'PRODUCT NAME',
             minWidth: 'auto',
@@ -53,6 +60,13 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
             minWidth: 'auto',
             className: classes.topTableItem,
             format: (value, entity) => entity.Product.Category.name,
+        },
+        {
+            id: 'Warehouse.name',
+            label: 'WAREHOUSE',
+            minWidth: 'auto',
+            className: classes.topTableItem,
+            format: (value, entity) => entity.Warehouse.name,
         },
         {
             id: 'brand',
@@ -73,33 +87,40 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
             minWidth: 'auto',
             className: classes.topTableItem,
         },
-    ]
-    const columns = [
         {
-            id: 'Warehouse.name',
-            label: 'WAREHOUSE',
+            id: 'dispatchedQuantity',
+            label: 'QUANTITY DISPATCHED',
             minWidth: 'auto',
-            className: '',
-            format: (value, entity) => entity.Warehouse.name,
-        },
-        {
-            id: 'availableQuantity',
-            label: 'QUANTITY AVAILABLE',
-            minWidth: 'auto',
-            className: '',
-        },
-        {
-            id: 'committedQuantity',
-            label: 'QUANTITY COMMITED',
-            minWidth: 'auto',
-            className: '',
+            className: classes.topTableItem,
         },
     ]
+    // const columns = [
+    //     {
+    //         id: 'Warehouse.name',
+    //         label: 'WAREHOUSE',
+    //         minWidth: 'auto',
+    //         className: '',
+    //         format: (value, entity) => entity.Warehouse.name,
+    //     },
+    //     {
+    //         id: 'availableQuantity',
+    //         label: 'QUANTITY AVAILABLE',
+    //         minWidth: 'auto',
+    //         className: '',
+    //     },
+    //     {
+    //         id: 'committedQuantity',
+    //         label: 'QUANTITY COMMITED',
+    //         minWidth: 'auto',
+    //         className: '',
+    //     },
+    // ]
     const [selectedProductDetails, setSelectedProductDetails] = useState([])
     useEffect(() => {
         if (selectedProduct)
             axios.get(getURL(`/product/${selectedProduct.id}`))
                 .then((response) => {
+                    // console.log(response.data.data)
                     setSelectedProductDetails(response.data.data)
                 })
                 .catch((err) => {
@@ -137,6 +158,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                         <TableRow role="checkbox" tabIndex={-1} key={selectedProduct.id}>
                                             {columnsTop.map((column) => {
                                                 const value = selectedProduct[column.id];
+                                                // console.log("value",selectedProduct)
                                                 return (
                                                     <TableCell key={column.id} align={column.align}
                                                         style={{ paddingTop: '0' }}
@@ -149,41 +171,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            <TableContainer className={classes.tableContainer}>
-                                <Table stickyHeader aria-label="sticky table">
-                                    <TableHead>
-                                        {columns.map((column, index) => (
-                                            <TableCell
-                                                key={index}
-                                                align={column.align}
-                                                className={classes.tableHeaderItem}
-                                                style={{ backgroundColor: 'white' }}
-                                            >
-                                                {column.label}
-                                            </TableCell>
-                                        ))}
-                                    </TableHead>
-                                    <TableBody>
-                                        {
-                                            selectedProductDetails.map((productDetail, index) => {
-                                                return (
-                                                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                                                        {columns.map((column, index) => {
-                                                            const value = productDetail[column.id];
-                                                            return (
-                                                                <TableCell key={index} align={column.align}
-                                                                    className={column.className && typeof column.className === 'function' ? column.className(value) : column.className}>
-                                                                    {column.format ? column.format(value, productDetail) : (value)}
-                                                                </TableCell>
-                                                            );
-                                                        })}
-                                                    </TableRow>
-                                                )
-                                            })
-                                        }
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                            
                         </DialogContent>
                         <Box display="block" displayPrint="none">
                             <DialogActions style={{ boxSizing: 'border-box', padding: '10px 19px' }}>
