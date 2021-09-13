@@ -7,7 +7,9 @@ import PrintOutlinedIcon from '@material-ui/icons/PrintOutlined';
 
 const useStyles = makeStyles({
     tableContainerTop: {
-        backgroundColor: '#F8F8F8'
+        backgroundColor: '#F8F8F8',
+        paddingLeft: 30,
+        paddingRight: 20
     },
     tableContainer: {
         backgroundColor: 'white',
@@ -133,8 +135,8 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                 <form>
                     <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
                         <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: '80vh' }}>
-                        <img style = {{width : "10%", margin : "20px"}} src={owareLogo} />
-                        <Typography style = {{marginLeft : "10px", marginBottom : "10px", marginTop : "10px"}} variant="h3">
+                        <img style = {{width : "10%", margin : "20px", marginLeft: "45px"}} src={owareLogo} />
+                        <Typography style = {{marginLeft : "40px", marginBottom : "10px", marginTop : "10px"}} variant="h3">
                                Product Details
                                <Box display="inline" displayPrint="none">
                                     <PrintOutlinedIcon className = {classes.icon} onClick = {() => window.print()} />
