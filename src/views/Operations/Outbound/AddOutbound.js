@@ -130,13 +130,13 @@ export default function AddDispatchOrderView() {
       setWarehouses([selectedDispatchOrder.Inventory.Warehouse]);
       setWarehouseId(selectedDispatchOrder.Inventory.warehouseId);
     } else {
-
       getWarehouses({ customerId })
         .then(warehouses => {
-          if (warehouses) {
-            setWarehouses(warehouses)
-            setInternalIdForBusiness(`DO-${warehouses ? warehouses.map((code) => { return code.businessWarehouseCode }) : []}-`);
-          }
+          return setWarehouses(warehouses)
+          // if (warehouses) {
+          //   setWarehouses(warehouses)
+          //   setInternalIdForBusiness(`DO-${warehouse ? warehouse.businessWarehouseCode : ''}-`);
+          // }
         });
     }
   }, [customerId]);
@@ -145,12 +145,21 @@ export default function AddDispatchOrderView() {
     setProducts([]);
     setProductId('');
     if (!customerId && !warehouseId) return;
-    getProducts({ customerId, warehouseId })
-      .then(products => {
-        return setProducts(products ? products : [])
-      });
+    if (!!selectedDispatchOrder) {
+      setProducts([selectedDispatchOrder.Inventory.Product]);
+      // setProductId(selectedDispatchOrder.Inventory.productId);
+    }
+    else {
+      const warehouse = warehouses.find(element => warehouseId == element.id);
+      if (warehouse) {
+        setInternalIdForBusiness(`DO-${warehouse.businessWarehouseCode}-`);
+        getProducts({ customerId, warehouseId })
+          .then(products => {
+            return setProducts(products ? products : [])
+          });
+      }
+    }
     // INPROGRESS: products with 0 available qty are also comming.
-
   }, [warehouseId])
 
   useEffect(() => {
@@ -340,7 +349,7 @@ export default function AddDispatchOrderView() {
             <Grid item sm={12}>
               <MaskedInput
                 className="mask-text"
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 name="phone"
                 mask={phoneNumberMask}
