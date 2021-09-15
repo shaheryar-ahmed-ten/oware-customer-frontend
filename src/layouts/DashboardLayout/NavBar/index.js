@@ -33,6 +33,7 @@ import { checkPermission, removeAuth } from '../../../utils/auth';
 import { CP_DASHBOARD_FULL, CP_INWARD_FULL, CP_ORDER_FULL, CP_PRODUCT_FULL } from '../../../PermissionConstants';
 import EventNoteOutlinedIcon from '@material-ui/icons/EventNoteOutlined';
 import AssignmentReturnedOutlinedIcon from '@material-ui/icons/AssignmentReturnedOutlined';
+import Logo from '../../../components/Logo';
 const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
@@ -223,9 +224,13 @@ function Navbar(props) {
         [classes.appBarShift]: open,
       })}>
         <Toolbar className={classes.toolBar}>
-        <a href = "/dashboard" ><img src={owareLogo} alt='' className={clsx({
+        {/* <a href = "/dashboard" ><img src={owareLogo} alt='' className={clsx({
             [classes.hide]: open,
-          })} /></a>
+          })} /></a> */}
+          {/* <Logo className={clsx({
+            [classes.hide]: open,
+          })}/> */}
+          <p> &nbsp; </p>
           <Box display="flex" alignItems="center" textAlign="right">
             <Box>
               <Typography className={classes.userName}>{currentUser ? currentUser.firstName + ' ' + currentUser.lastName : ''}</Typography>
@@ -285,7 +290,9 @@ function Navbar(props) {
         }}
       >
         <div className={classes.toolbar}>
-        <a href = "/dashboard" ><img src={owareLogo} alt='' /></a>
+        {/* <a href = "/dashboard" ><img src={owareLogo} alt='' /></a> */}
+        {/* Main Logo Of NavBar */}
+        <Logo/>
         </div>
         <Divider />
         <List>
