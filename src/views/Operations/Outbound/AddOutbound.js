@@ -224,7 +224,8 @@ export default function AddDispatchOrderView() {
       isRequired(receiverName) &&
       isRequired(receiverPhone) &&
       isRequired(productId) &&
-      isRequired(quantity)) {
+      isRequired(quantity) &&
+      isPhone(receiverPhone.replace(/-/g, ''))) {
       // checking if particular product is already added once
       // if yes
       if (checkForMatchInArray(inventories, "id", inventoryId)) {
@@ -361,9 +362,10 @@ export default function AddDispatchOrderView() {
                 onChange={e => {
                   setReceiverPhone(e.target.value)
                 }}
-                onBlur={e => setValidation({ ...validation, receiverPhone: true })}
+              // onBlur={e => setValidation({ ...validation, receiverPhone: true })}
               />
-              {validation.receiverPhone && !isRequired(receiverPhone) ? <Typography color="error">Receiver phone is required!</Typography> : ''}
+              {validation.receiverPhone && isRequired(receiverPhone) && !isPhone(receiverPhone.replace(/-/g, '')) ? <Typography color="error">Receiver phone is required!</Typography> : ''}
+              {validation.receiverPhone && !isRequired(receiverPhone) ? <Typography color="error">Receiver phone is required!</Typography> : <Typography color="error" style={{ visibility: 'hidden' }}>Dummy</Typography>}
             </Grid>
             <Grid item sm={12}>
               <TextField
