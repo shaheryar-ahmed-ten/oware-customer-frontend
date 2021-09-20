@@ -25,6 +25,6 @@ export default function Logo({ variant }) {
   const Logo = filelocation && getURL('preview',filelocation) ? getURL('preview',filelocation) : noImageFound;
   console.log("Logo",Logo)
   return (
-    <a href = "dashboard" ><img src={Logo} alt="oware logo" /></a>
+    <a href = "/dashboard" ><img src={Logo} alt="oware logo" /></a>
   );
 };
