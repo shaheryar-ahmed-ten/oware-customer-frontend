@@ -11,6 +11,8 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import "./OutboundDetail.css"
 import clsx from 'clsx';
+// import { createContext } from "react";
+import moment from 'moment';
 
 const useStyles = makeStyles({
     tableContainerTop: {
@@ -67,6 +69,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         [date, setDate] = useState(""),
         [receiverName, setRecieverName] = useState(""),
         [recieverPhone, setRecieverPhone] = useState("");
+        // console.log(date);
 
     const columnsTop = [
         {
@@ -247,9 +250,10 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             axios.get(getURL(`/order/${selectedOutboundOrder.id}`))
                 .then((response) => {
                     if (response.data.success) {
+                        // console.log(response.data.data)
                         setSelectedProductOutwardDetails(response.data.data)
                         setProductOutwardsLength(response.data.data[0].ProductOutwards.length)
-                        setDate(response.data.data ? response.data.data.map((date) => { return date.createdAt }) : [])
+                        setDate(moment(response?.data?.data[0]?.updatedAt))
                         setRecieverName(response.data.data ? response.data.data.map((name) => { return name.receiverName }) : [])
                         setRecieverPhone(response.data.data ? response.data.data.map((phone) => { return phone.receiverPhone }) : [])
                         setOrderId(response.data.data ? response.data.data.map((id) => { return id.internalIdForBusiness }) : [])
@@ -347,10 +351,12 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             </React.Fragment>
         );
     }
-
-    const rows = [
+// console.log("Before Row",date);
+// console.log('FORMATED: ', moment(date).format('DD-MM-yyyy hh:mm A'))
+const rows = [
         createData(orderId, dateFormat(date), receiverName, recieverPhone, referenceId),
     ];
+    // console.log(dateFormat(date));
 
     return (
         selectedOutboundOrder ?
