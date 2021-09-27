@@ -130,13 +130,13 @@ export default function AddDispatchOrderView() {
       setWarehouses([selectedDispatchOrder.Inventory.Warehouse]);
       setWarehouseId(selectedDispatchOrder.Inventory.warehouseId);
     } else {
-
       getWarehouses({ customerId })
         .then(warehouses => {
-          if (warehouses) {
-            setWarehouses(warehouses)
-            setInternalIdForBusiness(`DO-${warehouses ? warehouses.map((code) => { return code.businessWarehouseCode }) : []}-`);
-          }
+          return setWarehouses(warehouses)
+          // if (warehouses) {
+          //   setWarehouses(warehouses)
+          //   setInternalIdForBusiness(`DO-${warehouse ? warehouse.businessWarehouseCode : ''}-`);
+          // }
         });
     }
   }, [customerId]);
@@ -145,12 +145,21 @@ export default function AddDispatchOrderView() {
     setProducts([]);
     setProductId('');
     if (!customerId && !warehouseId) return;
-    getProducts({ customerId, warehouseId })
-      .then(products => {
-        return setProducts(products ? products : [])
-      });
+    if (!!selectedDispatchOrder) {
+      setProducts([selectedDispatchOrder.Inventory.Product]);
+      // setProductId(selectedDispatchOrder.Inventory.productId);
+    }
+    else {
+      const warehouse = warehouses.find(element => warehouseId == element.id);
+      if (warehouse) {
+        setInternalIdForBusiness(`DO-${warehouse.businessWarehouseCode}-`);
+        getProducts({ customerId, warehouseId })
+          .then(products => {
+            return setProducts(products ? products : [])
+          });
+      }
+    }
     // INPROGRESS: products with 0 available qty are also comming.
-
   }, [warehouseId])
 
   useEffect(() => {
@@ -215,7 +224,8 @@ export default function AddDispatchOrderView() {
       isRequired(receiverName) &&
       isRequired(receiverPhone) &&
       isRequired(productId) &&
-      isRequired(quantity)) {
+      isRequired(quantity) &&
+      isPhone(receiverPhone.replace(/-/g, ''))) {
       // checking if particular product is already added once
       // if yes
       if (checkForMatchInArray(inventories, "id", inventoryId)) {
@@ -340,7 +350,7 @@ export default function AddDispatchOrderView() {
             <Grid item sm={12}>
               <MaskedInput
                 className="mask-text"
-                margin="normal"
+                margin="dense"
                 variant="outlined"
                 name="phone"
                 mask={phoneNumberMask}
@@ -352,14 +362,15 @@ export default function AddDispatchOrderView() {
                 onChange={e => {
                   setReceiverPhone(e.target.value)
                 }}
-                onBlur={e => setValidation({ ...validation, receiverPhone: true })}
+              // onBlur={e => setValidation({ ...validation, receiverPhone: true })}
               />
-              {validation.receiverPhone && !isRequired(receiverPhone) ? <Typography color="error">Receiver phone is required!</Typography> : ''}
+              {validation.receiverPhone && isRequired(receiverPhone) && !isPhone(receiverPhone.replace(/-/g, '')) ? <Typography color="error">Receiver phone is required!</Typography> : ''}
+              {validation.receiverPhone && !isRequired(receiverPhone) ? <Typography color="error">Receiver phone is required!</Typography> : <Typography color="error" style={{ visibility: 'hidden' }}>Dummy</Typography>}
             </Grid>
             <Grid item sm={12}>
               <TextField
                 fullWidth={true}
-                margin="dense"
+                margin="normal"
                 id="shipmentDate"
                 label="Shipment Date"
                 inputProps={{ min: new Date().toISOString().slice(0, 16) }}
