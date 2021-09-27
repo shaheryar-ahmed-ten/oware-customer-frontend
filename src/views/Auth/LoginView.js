@@ -11,7 +11,7 @@ import { Alert } from '@material-ui/lab'
 import React, { useContext, useState } from 'react'
 import axios from 'axios';
 import { getURL, SharedContext } from '../../utils/common';
-import Logo from '../../components/Logo';
+import owareLogo from '../../assets/logo/owareLogo.png';
 import { useNavigate } from 'react-router-dom';
 import { setUser, setUserToken } from '../../utils/auth';
 
@@ -72,7 +72,7 @@ export default function LoginView() {
       <Grid>
         <Paper elevation={0} className={classes.paperStyle}>
           <Grid align="center">
-            <Logo variant="h1" />
+          <img src={owareLogo} />
           </Grid>
           {formErrors}
           <Box mt={4}>
