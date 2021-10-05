@@ -51,6 +51,10 @@ const useStyles = makeStyles({
         backgroundColor: '#FFEEDB',
         color: '#F69148'
     },
+    cancelStatusButtonStyling: {
+        backgroundColor: '#FFEEDB',
+        color: 'red'
+    },
     partialStatusButtonStyling: {
         backgroundColor: '#F0F0F0',
         color: '#7D7D7D',
@@ -69,7 +73,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         [date, setDate] = useState(""),
         [receiverName, setRecieverName] = useState(""),
         [recieverPhone, setRecieverPhone] = useState("");
-        // console.log(date);
+    // console.log(date);
 
     const columnsTop = [
         {
@@ -125,13 +129,19 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                     });
                 });
                 return (
-                    totalDispatched === 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
+                    entity.status == 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
                         Pending
-                    </Button> : totalDispatched > 0 && totalDispatched < entity.quantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+                    </Button> : entity.status == 1 ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
                         Partially fulfilled
-                    </Button> : entity.quantity === totalDispatched ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
+                    </Button> : entity.status == 2 ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
                         Fulfilled
-                    </Button> : ''
+                    </Button> : entity.status == 3 ? (
+                        <Button color="primary" className={clsx(classes.statusButtons, classes.cancelStatusButtonStyling)}>
+                            Canceled
+                        </Button>
+                    )
+                        :
+                        ''
                 )
             }
         },
@@ -351,9 +361,9 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             </React.Fragment>
         );
     }
-// console.log("Before Row",date);
-// console.log('FORMATED: ', moment(date).format('DD-MM-yyyy hh:mm A'))
-const rows = [
+    // console.log("Before Row",date);
+    // console.log('FORMATED: ', moment(date).format('DD-MM-yyyy hh:mm A'))
+    const rows = [
         createData(orderId, dateFormat(date), receiverName, recieverPhone, referenceId),
     ];
     // console.log(dateFormat(date));
