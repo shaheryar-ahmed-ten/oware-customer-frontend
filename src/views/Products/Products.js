@@ -196,7 +196,6 @@ function Products() {
     const getRealtions = () => {
         axios.get(getURL('/product/relations'))
             .then((res) => {
-                console.log(res)
                 setCustomerProducts(res.data.relations.products)
             })
             .catch((err) => {
