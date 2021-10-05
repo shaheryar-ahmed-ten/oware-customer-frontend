@@ -265,7 +265,7 @@ export default function AddDispatchOrderView() {
       inventoryId,
       warehouseId,
       productId,
-      shipmentDate,
+      shipmentDate: new Date(shipmentDate),
       receiverName,
       receiverPhone: strRecPhone,
       referenceId,
