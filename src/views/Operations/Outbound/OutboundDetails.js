@@ -184,18 +184,18 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                 )
             }
         },
-        {
-            id: 'availablequantity',
-            label: 'AVAILABLE REQUESTED',
-            minWidth: 'auto',
-            className: '',
-            format: (value, po, outwardOrder, inventory) => {
-                const DistpatchInventory = outwardOrder.Inventories.find((doInventory) => doInventory.OrderGroup.inventoryId === inventory.OutwardGroup.inventoryId)
-                return (
-                    inventory.OutwardGroup.availableQuantity || 'Not available'
-                )
-            }
-        },
+        // {
+        //     id: 'availablequantity',
+        //     label: 'AVAILABLE REQUESTED',
+        //     minWidth: 'auto',
+        //     className: '',
+        //     format: (value, po, outwardOrder, inventory) => {
+        //         const DistpatchInventory = outwardOrder.Inventories.find((doInventory) => doInventory.OrderGroup.inventoryId === inventory.OutwardGroup.inventoryId)
+        //         return (
+        //             inventory.OutwardGroup.availableQuantity || 'Not available'
+        //         )
+        //     }
+        // },
         {
             id: 'quantity',
             label: 'QUANTITY SHIPPED',
