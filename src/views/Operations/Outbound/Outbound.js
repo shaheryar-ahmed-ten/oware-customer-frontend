@@ -73,6 +73,10 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#FFEEDB',
         color: '#F69148'
     },
+    cancelStatusButtonStyling: {
+        backgroundColor: '#FFEEDB',
+        color: 'red'
+    },
     partialStatusButtonStyling: {
         backgroundColor: '#F0F0F0',
         color: '#7D7D7D',
@@ -166,13 +170,19 @@ function Outbound() {
                     });
                 });
                 return (
-                    totalDispatched === 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
+                    entity.status == 0 ? <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
                         Pending
-                    </Button> : totalDispatched > 0 && totalDispatched < entity.quantity ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+                    </Button> : entity.status == 1 ? <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
                         Partially fulfilled
-                    </Button> : entity.quantity === totalDispatched ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
+                    </Button> : entity.status == 2 ? <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
                         Fulfilled
-                    </Button> : ''
+                    </Button> : entity.status == 3 ? (
+                        <Button color="primary" className={clsx(classes.statusButtons, classes.cancelStatusButtonStyling)}>
+                            Canceled
+                        </Button>
+                    )
+                        :
+                        ''
                 )
             }
         },
