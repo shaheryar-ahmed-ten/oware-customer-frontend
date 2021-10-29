@@ -197,7 +197,7 @@ function Inbound() {
         variant="outlined"
         value={searchKeyword}
         key={1}
-        placeholder="Warehouse / Product / Reference No."
+        placeholder="Inward / Warehouse / Reference No."
         onChange={e => {
             resetFilters();
             setSearchKeyword(e.target.value)
