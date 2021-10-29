@@ -90,13 +90,13 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
       className: classes.topTableItem,
       format: (value, entity) => (entity.Vehicle.Driver ? entity.Vehicle.Driver.name : "-"),
     },
-    {
-      id: "Vehicle.Vendor.name",
-      label: "VENDOR",
-      minWidth: "auto",
-      className: classes.topTableItem,
-      format: (value, entity) => (entity.Vehicle.Vendor ? entity.Vehicle.Vendor.name : "-"),
-    },
+    // {
+    //   id: "Vehicle.Vendor.name",
+    //   label: "VENDOR",
+    //   minWidth: "auto",
+    //   className: classes.topTableItem,
+    //   format: (value, entity) => (entity.Vehicle.Vendor ? entity.Vehicle.Vendor.name : "-"),
+    // },
     {
       id: "Vehicle.registrationNumber",
       label: "VEHICLE",
