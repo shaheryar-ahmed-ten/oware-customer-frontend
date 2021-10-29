@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { dateFormatWithoutTime, getURL } from "../../utils/common";
+import { dateFormat, getURL } from "../../utils/common";
 import owareLogo from "../../assets/logo/owareLogo.png";
 import PrintOutlinedIcon from "@material-ui/icons/PrintOutlined";
 
@@ -80,7 +80,7 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
       id: "price",
       label: "PRICE",
       minWidth: "auto",
-      className: classes.orderIdStyle,
+      className: classes.topTableItem,
       format: (value, entity) => `RS. ${entity.price ? entity.price : "-"}`,
     },
     {
@@ -113,10 +113,10 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
     },
     {
       id: "pickupDate",
-      label: "PICKUP CITY DATE",
+      label: "PICKUP DATE",
       minWidth: "auto",
       className: classes.topTableItem,
-      format: dateFormatWithoutTime,
+      format: dateFormat,
     },
     {
       id: "dropoffCity.name",
@@ -130,7 +130,7 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
       label: "DROP OFF DATE",
       minWidth: "auto",
       className: classes.topTableItem,
-      format: dateFormatWithoutTime,
+      format: dateFormat,
     },
   ];
   const columns = [
