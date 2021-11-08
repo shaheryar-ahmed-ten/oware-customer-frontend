@@ -40,6 +40,7 @@ function DashboardTransactions() {
   useEffect(() => {
     axios.get(getURL(`/dashboard`))
       .then((response) => {
+        console.log(response.data)
         setInboundStats(response.data.inboundStats);
         setOutboundStats(response.data.outboundStats);
         setGeneralStats(response.data.generalStats);
@@ -54,14 +55,17 @@ function DashboardTransactions() {
           </Typography>
         </Grid>
         <Grid container item={12} spacing={3}>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <PrimaryWidget name="Pending Orders" value={generalStats ? generalStats.pendingOrders : 0} />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <PrimaryWidget name="Products Stored" value={generalStats ? generalStats.products : 0} />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <PrimaryWidget name="Warehouse Used" value={generalStats ? generalStats.warehouses : 0} />
+          </Grid>
+          <Grid item xs={3}>
+            <PrimaryWidget name="Pending Rides" value={generalStats ? generalStats.rides : 0} />
           </Grid>
         </Grid>
         <Grid item xs={12} className={classes.activityGrid}>
@@ -74,6 +78,17 @@ function DashboardTransactions() {
           <Grid item xs={6}>
             <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={(outboundStats && outboundStats.total)? outboundStats.total : 0} type="Transactions" totalQuantity={(outboundStats && outboundStats.weight)? outboundStats.weight : 0} totalVolume={(outboundStats && outboundStats.dimensionsCBM)? outboundStats.dimensionsCBM : 0} />
           </Grid>
+        </Grid>
+        <Grid item xs={12} className={classes.activityGrid}>
+          <Typography variant="h4">Last 7 days Ride Activity</Typography>
+        </Grid>
+        <Grid container spacing={2} item={12} justify="space-between">
+          <Grid item xs={12}>
+            <SecondaryWidget icon={<ArrowDownwardOutlinedIcon className={classes.successIcon} />} name="Inwards" value={(inboundStats && inboundStats.total)? inboundStats.total : 0} type="Transactions" totalQuantity={(inboundStats && inboundStats.weight)? inboundStats.weight : 0} totalVolume={(inboundStats && inboundStats.dimensionsCBM)? inboundStats.dimensionsCBM : 0} />
+          </Grid>
+          {/* <Grid item xs={6}>
+            <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={(outboundStats && outboundStats.total)? outboundStats.total : 0} type="Transactions" totalQuantity={(outboundStats && outboundStats.weight)? outboundStats.weight : 0} totalVolume={(outboundStats && outboundStats.dimensionsCBM)? outboundStats.dimensionsCBM : 0} />
+          </Grid> */}
         </Grid>
       </Grid>
     </>
