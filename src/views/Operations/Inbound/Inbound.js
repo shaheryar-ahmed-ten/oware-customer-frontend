@@ -245,16 +245,6 @@ function Inbound() {
 
     const InboundDetailsView = <InboundDetails open={inboundDetailsViewOpen} handleClose={closeInboundDetailsView} selectedInbound={selectedInbound} />
 
-    const exportButton = <Button
-        key={2}
-        variant="contained"
-        color="primary"
-        size="small"
-        className={classes.exportBtn}
-        onClick={() => exportToExcel()}
-    > EXPORT TO EXCEL</Button >;
-
-
     const headerButtons = [warehouseSelect, productSelect, daysSelect, InboundDetailsView]
 
     return (
