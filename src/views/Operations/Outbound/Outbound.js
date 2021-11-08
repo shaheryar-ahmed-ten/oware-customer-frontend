@@ -15,6 +15,8 @@ import ClassOutlinedIcon from '@material-ui/icons/ClassOutlined';
 import MoreHorizOutlinedIcon from '@material-ui/icons/MoreHorizOutlined';
 import { DEBOUNCE_TIME } from '../../../config';
 import { useNavigate } from 'react-router';
+import moment from 'moment-timezone';
+import FileDownload from 'js-file-download';
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -97,6 +99,10 @@ const useStyles = makeStyles((theme) => ({
         color: '#A9AEAF',
         borderBottom: 'none',
         paddingBottom: '0'
+    },
+    externalHeader: {
+        display: 'flex',
+        justifyContent: 'space-between'
     }
 }));
 function Outbound() {
@@ -233,6 +239,7 @@ function Outbound() {
                 console.log(err)
             })
     }
+
     const getOutwardOrders = useCallback(debounce((page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus) => {
         _getOutwardOrders(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus)
     }, DEBOUNCE_TIME), [])
@@ -240,9 +247,11 @@ function Outbound() {
     useEffect(() => {
         getRelations();
     }, []);
+
     useEffect(() => {
         getOutwardOrders(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus);
     }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus]);
+
     const getRelations = () => {
         axios.get(getURL(`/order/relations`))
             .then((res) => {
@@ -253,6 +262,7 @@ function Outbound() {
                 console.log(err)
             })
     };
+
     const closeOutboundDetailsView = () => {
         setOutboundDetailViewOpen(false)
         setSelectedOutboundOrder(null)
@@ -278,12 +288,27 @@ function Outbound() {
             </InputAdornment>
         }
     />;
+
     const resetFilters = () => {
         setSelectedWarehouse(null);
         setSelectedProduct(null);
         setSelectedDay(null);
         setSelectedStatus(null);
     }
+
+    const exportToExcel = () => {
+        axios.get(getURL('order/export'), {
+            responseType: 'blob',
+            params: {
+                page, search: searchKeyword
+                ,
+                client_Tz: moment.tz.guess()
+            },
+        }).then(response => {
+            FileDownload(response.data, `Orders ${moment().format('DD-MM-yyyy')}.xlsx`);
+        });
+    }
+
     const warehouseSelect = <SelectDropdown icon={<HomeOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ name: 'All' }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} setPage={setPage} />
     const productSelect = <SelectDropdown icon={<ClassOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} setPage={setPage} />
     const daysSelect = <SelectDropdown icon={<CalendarTodayOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Days" name="Select Days" list={[{ name: 'All' }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} setPage={setPage} />
@@ -299,17 +324,27 @@ function Outbound() {
     return (
         <>
             <Grid container spacing={2} className={classes.gridContainer}>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={classes.externalHeader}>
                     <Typography variant="h3">
                         <Box className={classes.heading}>Outwards</Box>
+                    </Typography>
+                    <Box>
                         <Button
                             key={2}
                             variant="contained"
                             color="primary"
                             size="small"
-                            style={{ float: "right" }}
+                            className={classes.exportBtn}
+                            onClick={() => exportToExcel()}
+                        > EXPORT TO EXCEL</Button >
+                        <Button
+                            key={2}
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            style={{ marginLeft: 5 }}
                             onClick={() => navigate('/outward/add')}>ADD ORDER</Button>
-                    </Typography>
+                    </Box>
                 </Grid>
                 <Grid item xs={12}>
                     <TableContainer className={classes.tableContainer}>

@@ -361,12 +361,10 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
             </React.Fragment>
         );
     }
-    // console.log("Before Row",date);
-    // console.log('FORMATED: ', moment(date).format('DD-MM-yyyy hh:mm A'))
+
     const rows = [
         createData(orderId, dateFormat(date), receiverName, recieverPhone, referenceId),
     ];
-    // console.log(dateFormat(date));
 
     return (
         selectedOutboundOrder ?
