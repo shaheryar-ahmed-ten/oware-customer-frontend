@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { dateFormatWithoutTime, getURL } from "../../utils/common";
+import { dateFormat, getURL } from "../../utils/common";
 import owareLogo from "../../assets/logo/owareLogo.png";
 import PrintOutlinedIcon from "@material-ui/icons/PrintOutlined";
 
@@ -80,7 +80,7 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
       id: "price",
       label: "PRICE",
       minWidth: "auto",
-      className: classes.orderIdStyle,
+      className: classes.topTableItem,
       format: (value, entity) => `RS. ${entity.price ? entity.price : "-"}`,
     },
     {
@@ -90,13 +90,13 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
       className: classes.topTableItem,
       format: (value, entity) => (entity.Vehicle.Driver ? entity.Vehicle.Driver.name : "-"),
     },
-    {
-      id: "Vehicle.Vendor.name",
-      label: "VENDOR",
-      minWidth: "auto",
-      className: classes.topTableItem,
-      format: (value, entity) => (entity.Vehicle.Vendor ? entity.Vehicle.Vendor.name : "-"),
-    },
+    // {
+    //   id: "Vehicle.Vendor.name",
+    //   label: "VENDOR",
+    //   minWidth: "auto",
+    //   className: classes.topTableItem,
+    //   format: (value, entity) => (entity.Vehicle.Vendor ? entity.Vehicle.Vendor.name : "-"),
+    // },
     {
       id: "Vehicle.registrationNumber",
       label: "VEHICLE",
@@ -113,10 +113,10 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
     },
     {
       id: "pickupDate",
-      label: "PICKUP CITY DATE",
+      label: "PICKUP DATE",
       minWidth: "auto",
       className: classes.topTableItem,
-      format: dateFormatWithoutTime,
+      format: dateFormat,
     },
     {
       id: "dropoffCity.name",
@@ -130,7 +130,7 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
       label: "DROP OFF DATE",
       minWidth: "auto",
       className: classes.topTableItem,
-      format: dateFormatWithoutTime,
+      format: dateFormat,
     },
   ];
   const columns = [
@@ -177,7 +177,9 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             <img style={{ width: "10%", margin: "20px" }} src={owareLogo} />
             <Typography style={{ marginLeft: "10px", marginBottom: "10px" }} variant="h3">
               Delivery Details
-              <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
+              <Box display="inline" displayPrint="none">
+                <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
+              </Box>
             </Typography>
 
             <TableContainer className={classes.tableContainerTop}>
@@ -254,11 +256,13 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
               </Table>
             </TableContainer>
           </DialogContent>
-          <DialogActions style={{ boxSizing: "border-box", padding: "10px 19px" }}>
-            <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
-              Close
-            </Button>
-          </DialogActions>
+          <Box display="inline" displayPrint="none">
+            <DialogActions style={{ boxSizing: "border-box", padding: "10px 19px" }}>
+                <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
+                  Close
+                </Button>
+            </DialogActions>
+          </Box>
         </Dialog>
       </form>
     </div>
