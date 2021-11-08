@@ -13,6 +13,8 @@ import { debounce } from 'lodash';
 import { DEBOUNCE_TIME } from '../../../config';
 import { useNavigate } from 'react-router';
 import InboundDetails from './InboundDetails';
+import moment from 'moment-timezone';
+import FileDownload from 'js-file-download';
 
 const useStyles = makeStyles((theme) => ({
     heading: {
@@ -75,6 +77,10 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'underline',
         cursor: "pointer"
     },
+    externalHeader: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    }
 }));
 
 function Inbound() {
@@ -151,6 +157,7 @@ function Inbound() {
     const [selectedInbound, setSelectedInbound] = useState(null)
     const [inboundDetailsViewOpen, setInboundDetailsViewOpen] = useState(false)
 
+
     const _getInwardProducts = (page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay) => {
         axios.get(getURL('/inward'), { params: { page, search: searchKeyword, warehouse: selectedWarehouse, product: selectedProduct, days: selectedDay } })
             .then(res => {
@@ -160,15 +167,19 @@ function Inbound() {
                 setNumberOfTotalRecords(res.data.count)
             });
     }
+
     const getInwardProducts = useCallback(debounce((page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay) => {
         _getInwardProducts(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay)
     }, DEBOUNCE_TIME), [])
+
     useEffect(() => {
         getRelations()
     }, [])
+
     useEffect(() => {
         getInwardProducts(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay)
     }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
+
     const getRelations = () => {
         axios.get(getURL(`/inward/relations`))
             .then((response) => {
@@ -184,9 +195,23 @@ function Inbound() {
         setSelectedInbound(inbound);
         setInboundDetailsViewOpen(true)
     }
+
     const closeInboundDetailsView = () => {
         setInboundDetailsViewOpen(false)
         setSelectedInbound(null)
+    }
+
+    const exportToExcel = () => {
+        axios.get(getURL('inward/export'), {
+            responseType: 'blob',
+            params: {
+                page, search: searchKeyword
+                ,
+                client_Tz: moment.tz.guess()
+            },
+        }).then(response => {
+            FileDownload(response.data, `ProductInwards ${moment().format('DD-MM-yyyy')}.xlsx`);
+        });
     }
 
     const searchInput = <InputBase
@@ -209,7 +234,6 @@ function Inbound() {
         }
     />;
 
-
     const resetFilters = () => {
         setSelectedWarehouse(null)
         setSelectedProduct(null)
@@ -221,23 +245,40 @@ function Inbound() {
 
     const InboundDetailsView = <InboundDetails open={inboundDetailsViewOpen} handleClose={closeInboundDetailsView} selectedInbound={selectedInbound} />
 
+    const exportButton = <Button
+        key={2}
+        variant="contained"
+        color="primary"
+        size="small"
+        className={classes.exportBtn}
+        onClick={() => exportToExcel()}
+    > EXPORT TO EXCEL</Button >;
+
 
     const headerButtons = [warehouseSelect, productSelect, daysSelect, InboundDetailsView]
 
     return (
         <>
             <Grid container spacing={2} className={classes.gridContainer}>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={classes.externalHeader}>
                     <Typography variant="h3">
                         <Box className={classes.heading}>Inwards</Box>
                         {/* <Button
-                          key={2}
-                          variant="contained"
-                          color="primary"
-                          size="small"
-                          style = {{ float : "right"}}
-                          onClick={() => navigate('/inward/add')}>ADD INWARD</Button> */}
+                            key={2}
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            style={{ float: "right" }}
+                            onClick={() => navigate('/inward/add')}>ADD INWARD</Button> */}
                     </Typography>
+                    <Button
+                        key={2}
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        className={classes.exportBtn}
+                        onClick={() => exportToExcel()}
+                    > EXPORT TO EXCEL</Button >
                 </Grid>
                 <Grid item xs={12}>
                     <TableContainer className={classes.tableContainer}>
