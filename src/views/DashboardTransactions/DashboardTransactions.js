@@ -89,13 +89,13 @@ function DashboardTransactions() {
       className: classes.orderIdStyle,
       format: (value, entity) => (entity.pickupCity ? entity.pickupCity.name : null),
     },
-    {
-      id: "pickupAddress",
-      label: "PICKUP ADDRESS",
-      minWidth: "auto",
-      className: classes.orderIdStyle,
-      format: (value, entity) => entity.pickupAddress,
-    },
+    // {
+    //   id: "pickupAddress",
+    //   label: "PICKUP ADDRESS",
+    //   minWidth: "auto",
+    //   className: classes.orderIdStyle,
+    //   format: (value, entity) => entity.pickupAddress,
+    // },
     {
       id: "dropoffCity.name",
       label: "DROPOFF CITY",
