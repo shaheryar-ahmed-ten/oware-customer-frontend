@@ -368,8 +368,6 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         createData(orderId, dateFormat(date), receiverName, recieverPhone, referenceId),
     ];
 
-    console.log()
-
     return (
         selectedOutboundOrder ?
             <div style={{ display: "inline" }}>
