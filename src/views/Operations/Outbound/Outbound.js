@@ -212,7 +212,7 @@ function Outbound() {
         id: 60,
         name: '60 days'
     }])
-    const [statuses] = useState([{ id: 0, name: 'Pending' }, { id: 1, name: 'Partially fulfilled' }, { id: 2, name: 'Fulfilled' }])
+    const [statuses] = useState([{ id: 0, name: 'Pending' }, { id: 1, name: 'Partially fulfilled' }, { id: 2, name: 'Fulfilled' }, { id: 3, name: 'Cancelled' }])
 
     const [selectedWarehouse, setSelectedWarehouse] = useState(null)
     const [selectedProduct, setSelectedProduct] = useState(null)
