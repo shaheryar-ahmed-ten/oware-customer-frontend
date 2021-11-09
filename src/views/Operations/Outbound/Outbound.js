@@ -276,7 +276,7 @@ function Outbound() {
         variant="outlined"
         value={searchKeyword}
         key={1}
-        placeholder="Warehouse / Product / Reference No."
+        placeholder="Order ID / Warehouse / Reference No."
         onChange={e => {
             setPage(1);
             resetFilters();
@@ -326,7 +326,7 @@ function Outbound() {
             <Grid container spacing={2} className={classes.gridContainer}>
                 <Grid item xs={12} className={classes.externalHeader}>
                     <Typography variant="h3">
-                        <Box className={classes.heading}>Outwards</Box>
+                        <Box className={classes.heading}>Orders</Box>
                     </Typography>
                     <Box>
                         <Button
