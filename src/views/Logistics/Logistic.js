@@ -24,6 +24,8 @@ import { debounce } from "lodash";
 import { DEBOUNCE_TIME } from "../../config";
 import LogisticDetails from "./LogisticDetails";
 import clsx from "clsx";
+import moment from 'moment-timezone';
+import FileDownload from 'js-file-download';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -106,7 +108,12 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: "0",
     margin: "20px",
   },
+  externalHeader: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  }
 }));
+
 function Logistics() {
   const classes = useStyles();
   const columns = [
@@ -206,6 +213,7 @@ function Logistics() {
   useEffect(() => {
     getLogistics(page, searchKeyword, selectedProductForDropdown);
   }, [page, searchKeyword, selectedProductForDropdown]);
+
   const _getLogistics = (page, searchKeyword, selectedProductForDropdown) => {
     axios
       .get(getURL(`/ride`), {
@@ -225,6 +233,7 @@ function Logistics() {
         console.log(err);
       });
   };
+
   const getLogistics = useCallback(
     debounce((page, searchKeyword, selectedProductForDropdown) => {
       _getLogistics(page, searchKeyword, selectedProductForDropdown);
@@ -236,6 +245,7 @@ function Logistics() {
     setSelectedProduct(logistic);
     setLogisticDetailsViewOpen(true);
   };
+
   const closeLogisticDetailsView = () => {
     setLogisticDetailsViewOpen(false);
     setSelectedProduct(null);
@@ -262,9 +272,11 @@ function Logistics() {
       }
     />
   );
+
   const resetFilters = () => {
     setSelectedProductForDropdown(null);
   };
+
   const productDetailsView = (
     <LogisticDetails
       open={logisticDetailsViewOpen}
@@ -273,15 +285,37 @@ function Logistics() {
     />
   );
 
+  const exportToExcel = () => {
+    axios.get(getURL('ride/export'), {
+      responseType: 'blob',
+      params: {
+        page, search: searchKeyword
+        ,
+        client_Tz: moment.tz.guess()
+      },
+    }).then(response => {
+      FileDownload(response.data, `Rides ${moment().format('DD-MM-yyyy')}.xlsx`);
+    });
+  }
+
+
   const headerButtons = [productDetailsView];
 
   return (
     <>
       <Grid container spacing={2} className={classes.gridContainer}>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={classes.externalHeader}>
           <Typography variant="h3">
             <Box className={classes.heading}>Logistics</Box>
           </Typography>
+          <Button
+            key={2}
+            variant="contained"
+            color="primary"
+            size="small"
+            className={classes.exportBtn}
+            onClick={() => exportToExcel()}
+          > EXPORT TO EXCEL</Button >
         </Grid>
         <Grid item xs={12}>
           <TableContainer className={classes.tableContainer}>
