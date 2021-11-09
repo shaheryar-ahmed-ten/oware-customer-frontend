@@ -228,7 +228,7 @@ function DashboardTransactions() {
           </Grid>
         </Grid>
         <Grid item xs={12} className={classes.activityGrid}>
-          <Typography variant="h4">Last 7 days Ride Activity</Typography>
+          <Typography variant="h4">Last 5 Ride Activity</Typography>
         </Grid>
         <Grid container spacing={2} item={12} justify="space-between">
           <TableContainer className={classes.tableContainer}>
