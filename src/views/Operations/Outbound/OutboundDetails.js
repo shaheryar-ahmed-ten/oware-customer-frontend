@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogContent, makeStyles,Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from '@material-ui/core'
 import { Alert, AlertTitle } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -73,6 +73,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         [date, setDate] = useState(""),
         [receiverName, setRecieverName] = useState(""),
         [recieverPhone, setRecieverPhone] = useState("");
+    const [orderMemo,setOrderMemo]= useState("");
     // console.log(date);
 
     const columnsTop = [
@@ -268,6 +269,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                         setRecieverPhone(response.data.data ? response.data.data.map((phone) => { return phone.receiverPhone }) : [])
                         setOrderId(response.data.data ? response.data.data.map((id) => { return id.internalIdForBusiness }) : [])
                         setReferenceId(response.data.data ? response.data.data.map((refid) => { return refid.referenceId }) : [])
+                        setOrderMemo(selectedOutboundOrder.orderMemo || null)
                     }
                 })
                 .catch((err) => {
@@ -408,6 +410,16 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
+                            <Grid item xs={12} style={{marginTop:"12px"}}>
+                                <Grid item xs={12}>
+                                    <Typography style={{ marginLeft: "10px", marginBottom: "10px" }} variant="h4">
+                                        Order Memo
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12} style={{ marginLeft: "15px", marginBottom: "10px" }}>
+                                    {orderMemo || "-"}
+                                </Grid>
+                            </Grid>
 
                             {
                                 productOutwardsLength !== 0 ?

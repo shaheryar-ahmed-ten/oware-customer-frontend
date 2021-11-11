@@ -150,7 +150,7 @@ function Inbound() {
         name: '60 days'
     }])
     const [selectedWarehouse, setSelectedWarehouse] = useState(null)
-    const [selectedProduct, setSelectedProduct] = useState(null)
+    // const [selectedProduct, setSelectedProduct] = useState(null)
     const [selectedDay, setSelectedDay] = useState(null)
     const [numberOfTotalRecords, setNumberOfTotalRecords] = useState(0);
 
@@ -158,8 +158,8 @@ function Inbound() {
     const [inboundDetailsViewOpen, setInboundDetailsViewOpen] = useState(false)
 
 
-    const _getInwardProducts = (page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay) => {
-        axios.get(getURL('/inward'), { params: { page, search: searchKeyword, warehouse: selectedWarehouse, product: selectedProduct, days: selectedDay } })
+    const _getInwardProducts = (page, searchKeyword, selectedWarehouse,  selectedDay) => {
+        axios.get(getURL('/inward'), { params: { page, search: searchKeyword, warehouse: selectedWarehouse, days: selectedDay } })
             .then(res => {
                 setPage(res.data.pages === 1 ? 1 : page)
                 setPageCount(res.data.pages)
@@ -168,8 +168,8 @@ function Inbound() {
             });
     }
 
-    const getInwardProducts = useCallback(debounce((page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay) => {
-        _getInwardProducts(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay)
+    const getInwardProducts = useCallback(debounce((page, searchKeyword, selectedWarehouse,  selectedDay) => {
+        _getInwardProducts(page, searchKeyword, selectedWarehouse,  selectedDay)
     }, DEBOUNCE_TIME), [])
 
     useEffect(() => {
@@ -177,8 +177,8 @@ function Inbound() {
     }, [])
 
     useEffect(() => {
-        getInwardProducts(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay)
-    }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay])
+        getInwardProducts(page, searchKeyword, selectedWarehouse, selectedDay)
+    }, [page, searchKeyword, selectedWarehouse, selectedDay])
 
     const getRelations = () => {
         axios.get(getURL(`/inward/relations`))
@@ -236,16 +236,16 @@ function Inbound() {
 
     const resetFilters = () => {
         setSelectedWarehouse(null)
-        setSelectedProduct(null)
+        // setSelectedProduct(null)
         setSelectedDay(null)
     }
     const warehouseSelect = <SelectDropdown icon={<HomeOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Warehouses" name="Select Warehouse" list={[{ name: 'All', }, ...customerWarehouses]} selectedType={selectedWarehouse} setSelectedType={setSelectedWarehouse} setPage={setPage} />
-    const productSelect = <SelectDropdown icon={<ClassOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All', }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} setPage={setPage} />
+    // const productSelect = <SelectDropdown icon={<ClassOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All', }, ...customerProducts]} selectedType={selectedProduct} setSelectedType={setSelectedProduct} setPage={setPage} />
     const daysSelect = <SelectDropdown icon={<CalendarTodayOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Days" name="Select Days" list={[{ name: 'All', }, ...days]} selectedType={selectedDay} setSelectedType={setSelectedDay} setPage={setPage} />
 
     const InboundDetailsView = <InboundDetails open={inboundDetailsViewOpen} handleClose={closeInboundDetailsView} selectedInbound={selectedInbound} />
 
-    const headerButtons = [warehouseSelect, productSelect, daysSelect, InboundDetailsView]
+    const headerButtons = [warehouseSelect, daysSelect, InboundDetailsView]
 
     return (
         <>
