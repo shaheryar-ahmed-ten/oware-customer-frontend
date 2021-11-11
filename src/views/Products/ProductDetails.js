@@ -56,13 +56,13 @@ const useStyles = makeStyles({
 function ProductDetails({ open, handleClose, selectedProduct }) {
   const classes = useStyles();
   const columnsTop = [
-    {
-      id: "id",
-      label: "PRODUCT ID",
-      minWidth: "auto",
-      className: classes.topTableItem,
-      // format: (value, entity) => entity.Product.id,
-    },
+    // {
+    //   id: "id",
+    //   label: "PRODUCT ID",
+    //   minWidth: "auto",
+    //   className: classes.topTableItem,
+    //   // format: (value, entity) => entity.Product.id,
+    // },
     {
       id: "Product.name",
       label: "PRODUCT NAME",
