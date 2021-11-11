@@ -6,6 +6,7 @@ import PrimaryWidget from '../../components/widgets/PrimaryWidget';
 import SecondaryWidget from '../../components/widgets/SecondaryWidget';
 import ArrowDownwardOutlinedIcon from '@material-ui/icons/ArrowDownwardOutlined';
 import ArrowUpwardOutlinedIcon from '@material-ui/icons/ArrowUpwardOutlined';
+import { useNavigate } from 'react-router';
 import {
   Box,
   Divider,
@@ -55,6 +56,11 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: 30,
       paddingBottom: 30
     },
+  },
+  externalHeader: {
+    marginTop: '37px',
+    display: 'flex',
+    justifyContent: 'space-between'
   }
 }));
 
@@ -152,6 +158,7 @@ function DashboardTransactions() {
   const [logistics, setLogistics] = useState([]);
   const [logisticDetailsViewOpen, setLogisticDetailsViewOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const navigate = useNavigate();
 
   const openViewDetails = (logistic) => {
     setSelectedProduct(logistic);
@@ -183,6 +190,9 @@ function DashboardTransactions() {
     }, DEBOUNCE_TIME),
     []
   );
+  const redirectToRide = () => {
+    navigate("/logistics");
+  }
 
 
   useEffect(() => {
@@ -230,8 +240,16 @@ function DashboardTransactions() {
             <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={(outboundStats && outboundStats.total)? outboundStats.total : 0} type="Transactions" totalQuantity={(outboundStats && outboundStats.weight)? outboundStats.weight : 0} totalVolume={(outboundStats && outboundStats.dimensionsCBM)? outboundStats.dimensionsCBM : 0} />
           </Grid>
         </Grid>
-        <Grid item xs={12} className={classes.activityGrid}>
+        <Grid item xs={12} className={classes.externalHeader}>
           <Typography variant="h4">Last 5 Ride Activity</Typography>
+          <Button
+            key={2}
+            variant="contained"
+            color="primary"
+            size="small"
+            className={classes.exportBtn}
+            onClick={() => redirectToRide()}
+          > VIEW ALL</Button >
         </Grid>
         <Grid container spacing={2} item={12} justify="space-between">
           <TableContainer className={classes.tableContainer}>
