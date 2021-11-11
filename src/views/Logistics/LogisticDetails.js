@@ -16,7 +16,7 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { dateFormat, getURL } from "../../utils/common";
-import owareLogo from "../../assets/logo/owareLogo.png";
+import owareLogo from "../../assets/logo/oware-logo-black.png";
 import PrintOutlinedIcon from "@material-ui/icons/PrintOutlined";
 
 const useStyles = makeStyles({
@@ -258,9 +258,9 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
           </DialogContent>
           <Box display="inline" displayPrint="none">
             <DialogActions style={{ boxSizing: "border-box", padding: "10px 19px" }}>
-                <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
-                  Close
-                </Button>
+              <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
+                Close
+              </Button>
             </DialogActions>
           </Box>
         </Dialog>
