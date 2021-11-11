@@ -203,17 +203,20 @@ function DashboardTransactions() {
           </Typography>
         </Grid>
         <Grid container item={12} spacing={3}>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <PrimaryWidget name="Pending Orders" value={generalStats ? generalStats.pendingOrders : 0} />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <PrimaryWidget name="Products Stored" value={generalStats ? generalStats.products : 0} />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <PrimaryWidget name="Warehouse Used" value={generalStats ? generalStats.warehouses : 0} />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <PrimaryWidget name="Pending Rides" value={generalStats ? generalStats.rides : 0} />
+          </Grid>
+          <Grid item xs={2}>
+            <PrimaryWidget name="Completed Rides" value={generalStats ? generalStats.completedRides : 0} />
           </Grid>
         </Grid>
         <Grid item xs={12} className={classes.activityGrid}>
