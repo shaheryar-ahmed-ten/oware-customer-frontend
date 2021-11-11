@@ -13,19 +13,27 @@ import {
   TableRow,
   Typography,
   Button,
+  DialogTitle,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  ListItemText,
+  TextField,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
-import { dateFormat, getURL } from "../../utils/common";
+import { dateFormat, getURL, dividerDateFormatForFilter } from "../../utils/common";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
+import CalendarTodayOutlinedIcon from "@material-ui/icons/CalendarTodayOutlined";
 import TableHeader from "../../components/TableHeader";
 import { Pagination } from "@material-ui/lab";
 import { debounce } from "lodash";
 import { DEBOUNCE_TIME } from "../../config";
 import LogisticDetails from "./LogisticDetails";
 import clsx from "clsx";
-import moment from 'moment-timezone';
-import FileDownload from 'js-file-download';
+import moment from "moment-timezone";
+import FileDownload from "js-file-download";
+import SelectCustomDropdown from "../../components/SelectCustomDropdown";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -109,9 +117,9 @@ const useStyles = makeStyles((theme) => ({
     margin: "20px",
   },
   externalHeader: {
-    display: 'flex',
-    justifyContent: 'space-between'
-  }
+    display: "flex",
+    justifyContent: "space-between",
+  },
 }));
 
 function Logistics() {
@@ -209,6 +217,124 @@ function Logistics() {
   const [logisticDetailsViewOpen, setLogisticDetailsViewOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedProductForDropdown, setSelectedProductForDropdown] = useState(null);
+  const [days] = useState([
+    {
+      id: 7,
+      name: "7 days",
+    },
+    {
+      id: 14,
+      name: "14 days",
+    },
+    {
+      id: 30,
+      name: "30 days",
+    },
+    {
+      id: 60,
+      name: "60 days",
+    },
+  ]);
+  const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [startDate, setStartDate] = useState(dividerDateFormatForFilter(null));
+  const [endDate, setEndDate] = useState(dividerDateFormatForFilter(null));
+  const [selectedDay, setSelectedDay] = useState(null);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const resetFilters = () => {
+    setSelectedProductForDropdown(null);
+    // setSelectedProduct(null)
+    setSelectedDay(null);
+    setStartDate(null);
+    setEndDate(null);
+  };
+
+  const startDateRange = (
+    <TextField
+      id="date"
+      label="From"
+      type="date"
+      variant="outlined"
+      className={classes.textFieldRange}
+      InputLabelProps={{
+        shrink: true,
+      }}
+      inputProps={{ max: endDate ? endDate : dividerDateFormatForFilter(Date.now()) }}
+      defaultValue={startDate}
+      value={startDate}
+      onChange={(e) => setStartDate(e.target.value)}
+      margin="dense"
+    />
+  );
+  const endDateRange = (
+    <TextField
+      id="date"
+      label="To"
+      type="date"
+      variant="outlined"
+      className={classes.textFieldRange}
+      InputLabelProps={{
+        shrink: true,
+      }}
+      inputProps={{ min: startDate, max: dividerDateFormatForFilter(Date.now()) }}
+      defaultValue={endDate}
+      value={endDate}
+      onChange={(e) => setEndDate(e.target.value)}
+      margin="dense"
+    />
+  );
+
+  const daysSelect = (
+    <SelectCustomDropdown
+      icon={<CalendarTodayOutlinedIcon fontSize="small" />}
+      resetFilters={resetFilters}
+      type="Days"
+      name="Select Days"
+      list={[{ name: "All" }, ...days]}
+      selectedType={selectedDay}
+      open={open}
+      setOpen={setOpen}
+      setSelectedType={setSelectedDay}
+      setPage={setPage}
+      startDate={startDate}
+      endDate={endDate}
+    />
+  );
+
+  const customOption = (
+    <>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Date Range"}</DialogTitle>
+        <DialogContent>
+          <ListItemText>{startDateRange}</ListItemText>
+          <ListItemText>{endDateRange}</ListItemText>
+          {/* {startDateRange}
+          {endDateRange} */}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setMounted(!mounted);
+              handleClose();
+            }}
+            autoFocus
+            className={classes.buttonDate}
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
 
   useEffect(() => {
     getLogistics(page, searchKeyword, selectedProductForDropdown);
@@ -273,10 +399,6 @@ function Logistics() {
     />
   );
 
-  const resetFilters = () => {
-    setSelectedProductForDropdown(null);
-  };
-
   const productDetailsView = (
     <LogisticDetails
       open={logisticDetailsViewOpen}
@@ -286,20 +408,21 @@ function Logistics() {
   );
 
   const exportToExcel = () => {
-    axios.get(getURL('ride/export'), {
-      responseType: 'blob',
-      params: {
-        page, search: searchKeyword
-        ,
-        client_Tz: moment.tz.guess()
-      },
-    }).then(response => {
-      FileDownload(response.data, `Rides ${moment().format('DD-MM-yyyy')}.xlsx`);
-    });
-  }
+    axios
+      .get(getURL("ride/export"), {
+        responseType: "blob",
+        params: {
+          page,
+          search: searchKeyword,
+          client_Tz: moment.tz.guess(),
+        },
+      })
+      .then((response) => {
+        FileDownload(response.data, `Rides ${moment().format("DD-MM-yyyy")}.xlsx`);
+      });
+  };
 
-
-  const headerButtons = [productDetailsView];
+  const headerButtons = [productDetailsView, daysSelect];
 
   return (
     <>
@@ -315,7 +438,10 @@ function Logistics() {
             size="small"
             className={classes.exportBtn}
             onClick={() => exportToExcel()}
-          > EXPORT TO EXCEL</Button >
+          >
+            {" "}
+            EXPORT TO EXCEL
+          </Button>
         </Grid>
         <Grid item xs={12}>
           <TableContainer className={classes.tableContainer}>
@@ -380,6 +506,7 @@ function Logistics() {
           </Grid>
         </Grid>
       </Grid>
+      {customOption}
     </>
   );
 }
