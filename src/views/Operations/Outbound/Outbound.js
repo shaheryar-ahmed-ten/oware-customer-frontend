@@ -332,7 +332,16 @@ function Outbound() {
     </>
   );
 
-  const _getOutwardOrders = (page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus) => {
+  const _getOutwardOrders = (
+    page,
+    searchKeyword,
+    selectedWarehouse,
+    selectedProduct,
+    selectedDay,
+    selectedStatus,
+    startDate,
+    endDate
+  ) => {
     axios
       .get(getURL("/order"), {
         params: {
@@ -342,6 +351,8 @@ function Outbound() {
           product: selectedProduct,
           days: selectedDay,
           status: selectedStatus,
+          start: startDate,
+          end: endDate,
         },
       })
       .then((res) => {
@@ -356,9 +367,21 @@ function Outbound() {
   };
 
   const getOutwardOrders = useCallback(
-    debounce((page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus) => {
-      _getOutwardOrders(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus);
-    }, DEBOUNCE_TIME),
+    debounce(
+      (page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus, startDate, endDate) => {
+        _getOutwardOrders(
+          page,
+          searchKeyword,
+          selectedWarehouse,
+          selectedProduct,
+          selectedDay,
+          selectedStatus,
+          startDate,
+          endDate
+        );
+      },
+      DEBOUNCE_TIME
+    ),
     []
   );
 
@@ -367,8 +390,17 @@ function Outbound() {
   }, []);
 
   useEffect(() => {
-    getOutwardOrders(page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus);
-  }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus]);
+    getOutwardOrders(
+      page,
+      searchKeyword,
+      selectedWarehouse,
+      selectedProduct,
+      selectedDay,
+      selectedStatus,
+      startDate,
+      endDate
+    );
+  }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus, startDate, endDate]);
 
   const getRelations = () => {
     axios

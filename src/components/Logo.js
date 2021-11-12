@@ -1,4 +1,4 @@
-import noImageFound from "../assets/logo/oware-logo-black.png";
+import noImageFound from "../assets/logo/noImageFound.png";
 import axios from "axios";
 import { getURL } from "../utils/common";
 import { useEffect, useState } from "react";
