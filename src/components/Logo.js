@@ -1,4 +1,4 @@
-import noImageFound from "../assets/logo/noImageFound.png";
+import noImageFound from "../assets/logo/oware-logo-black.png";
 import axios from "axios";
 import { getURL } from "../utils/common";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ export default function Logo({ variant }) {
   const getRelations = (e) => {
     // e.preventDefault();
     axios.get(getURL("user/company")).then((res) => {
-      // console.log(res.data);
+      console.log(res.data);
       // res.data.file && res.data.file.id ? setFileLocation(res.data.file.id): setFileLocation('');
       res.data.file && res.data.file.id ? setLogo(getURL("preview", res.data.file.id)) : setLogo(noImageFound);
 
