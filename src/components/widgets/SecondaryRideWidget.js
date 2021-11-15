@@ -72,7 +72,7 @@ function SecondaryRideWidget({ icon, name, value, totalUnassigned, totalAssigned
                 <br />
                 <div className={classes.details}>
                     <Typography className={classes.detailsHead} gutterBottom>
-                        Total Unassigned
+                        Unassigned
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
                         {Math.round(totalUnassigned)} loads
@@ -81,7 +81,7 @@ function SecondaryRideWidget({ icon, name, value, totalUnassigned, totalAssigned
                 <br />
                 <div className={classes.details}>
                     <Typography className={classes.detailsHead} gutterBottom>
-                        Total Assigned
+                        Assigned
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
                         {Math.round(totalAssigned)} loads
@@ -90,7 +90,7 @@ function SecondaryRideWidget({ icon, name, value, totalUnassigned, totalAssigned
                 <br />
                 <div className={classes.details}>
                     <Typography className={classes.detailsHead} gutterBottom>
-                        Total In-Progress
+                        In-Progress
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
                         {Math.round(totalInprogress)} loads
@@ -99,7 +99,7 @@ function SecondaryRideWidget({ icon, name, value, totalUnassigned, totalAssigned
                 <br />
                 <div className={classes.details}>
                     <Typography className={classes.detailsHead} gutterBottom>
-                        Total Completed
+                        Completed
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
                         {Math.round(totalCompleted)} loads
@@ -108,7 +108,7 @@ function SecondaryRideWidget({ icon, name, value, totalUnassigned, totalAssigned
                 <br />
                 <div className={classes.details}>
                     <Typography className={classes.detailsHead} gutterBottom>
-                        Total Cancelled
+                        Cancelled
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
                         {Math.round(totalCancelled)} loads

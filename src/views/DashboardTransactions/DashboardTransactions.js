@@ -50,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
   activityGrid: {
     marginTop: '47px'
   },
+  rideActivityGrid: {
+    marginTop: '0px'
+  },
   gridContainer: {
     boxSizing: 'border-box',
     [theme.breakpoints.up('lg')]: {
@@ -243,15 +246,9 @@ function DashboardTransactions() {
             <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={(outboundStats && outboundStats.total)? outboundStats.total : 0} type="Transactions" totalQuantity={(outboundStats && outboundStats.weight)? outboundStats.weight : 0} totalVolume={(outboundStats && outboundStats.dimensionsCBM)? outboundStats.dimensionsCBM : 0} />
           </Grid>
         </Grid>
-        <Grid container spacing={2} item={12} justify="space-between">
-          <Grid item xs={4}>
-            {/* <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={(outboundStats && outboundStats.total)? outboundStats.total : 0} type="Transactions" totalQuantity={(outboundStats && outboundStats.weight)? outboundStats.weight : 0} totalVolume={(outboundStats && outboundStats.dimensionsCBM)? outboundStats.dimensionsCBM : 0} /> */}
-          </Grid>
-          <Grid item xs={4}>
-            <SecondaryRideWidget  name="Loads" value={(rideStats && rideStats.total)? rideStats.total : 0} type="Loads" totalUnassigned={(rideStats && rideStats.unassigned)? rideStats.unassigned : 0} totalAssigned={(rideStats && rideStats.assigned)? rideStats.assigned : 0} totalInprogress={(rideStats && rideStats.inprogress)? rideStats.inprogress : 0} totalCancelled={(rideStats && rideStats.cancelled)? rideStats.cancelled : 0} totalCompleted={(rideStats && rideStats.completed)? rideStats.completed : 0}/>
-          </Grid>
-          <Grid item xs={4}>
-            {/* <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={(outboundStats && outboundStats.total)? outboundStats.total : 0} type="Transactions" totalQuantity={(outboundStats && outboundStats.weight)? outboundStats.weight : 0} totalVolume={(outboundStats && outboundStats.dimensionsCBM)? outboundStats.dimensionsCBM : 0} /> */}
+        <Grid container spacing={2} item={12} justify="space-between" className={classes.rideActivityGrid}>
+          <Grid item xs={12}>
+            <SecondaryRideWidget  name="Loads" value={(rideStats && rideStats.total)? rideStats.total : 0} type="Loads Created" totalUnassigned={(rideStats && rideStats.unassigned)? rideStats.unassigned : 0} totalAssigned={(rideStats && rideStats.assigned)? rideStats.assigned : 0} totalInprogress={(rideStats && rideStats.inprogress)? rideStats.inprogress : 0} totalCancelled={(rideStats && rideStats.cancelled)? rideStats.cancelled : 0} totalCompleted={(rideStats && rideStats.completed)? rideStats.completed : 0}/>
           </Grid>
         </Grid>
         {/* <Grid item xs={12} className={classes.externalHeader}>
