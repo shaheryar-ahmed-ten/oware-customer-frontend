@@ -23,7 +23,7 @@ export default function Logo({ variant }) {
   // const Logo = filelocation && getURL('preview',filelocation) ? getURL('preview',filelocation) : noImageFound;
   return (
     <a href="/dashboard">
-      <img src={Logo} alt="" />
+      <img src={Logo} alt="" width="70%" />
     </a>
   );
 }
