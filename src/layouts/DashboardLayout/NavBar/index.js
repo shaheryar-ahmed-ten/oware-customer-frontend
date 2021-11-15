@@ -66,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     color: "black",
+    height:"0px"
   },
   userAvatar: {
     display: "inline-flex",
@@ -73,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
   hide: {
     visibility: "hidden",
+    width:"18%"
   },
   drawer: {
     width: drawerWidth,
@@ -112,6 +114,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 3),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
+   
   },
   content: {
     flexGrow: 1,
