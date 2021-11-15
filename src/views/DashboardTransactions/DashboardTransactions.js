@@ -4,6 +4,7 @@
 // import { getURL } from '../../utils/common';
 import PrimaryWidget from '../../components/widgets/PrimaryWidget';
 import SecondaryWidget from '../../components/widgets/SecondaryWidget';
+import SecondaryRideWidget from '../../components/widgets/SecondaryRideWidget';
 import ArrowDownwardOutlinedIcon from '@material-ui/icons/ArrowDownwardOutlined';
 import ArrowUpwardOutlinedIcon from '@material-ui/icons/ArrowUpwardOutlined';
 import { useNavigate } from 'react-router';
@@ -154,6 +155,7 @@ function DashboardTransactions() {
 
   const [inboundStats, setInboundStats] = useState(null);
   const [outboundStats, setOutboundStats] = useState(null);
+  const [rideStats, setRideStats] = useState(null);
   const [generalStats, setGeneralStats] = useState(null);
   const [logistics, setLogistics] = useState([]);
   const [logisticDetailsViewOpen, setLogisticDetailsViewOpen] = useState(false);
@@ -202,6 +204,7 @@ function DashboardTransactions() {
         setInboundStats(response.data.inboundStats);
         setOutboundStats(response.data.outboundStats);
         setGeneralStats(response.data.generalStats);
+        setRideStats(response.data.rideStats);
       })
   }, []);
   return (
@@ -213,19 +216,19 @@ function DashboardTransactions() {
           </Typography>
         </Grid>
         <Grid container item={12} spacing={3}>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             <PrimaryWidget name="Pending Orders" value={generalStats ? generalStats.pendingOrders : 0} />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             <PrimaryWidget name="Products Stored" value={generalStats ? generalStats.products : 0} />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             <PrimaryWidget name="Warehouse Used" value={generalStats ? generalStats.warehouses : 0} />
           </Grid>
-          <Grid item xs={2}>
+          {/* <Grid item xs={2}>
             <PrimaryWidget name="Pending Rides" value={generalStats ? generalStats.rides : 0} />
-          </Grid>
-          <Grid item xs={2}>
+          </Grid> */}
+          <Grid item xs={3}>
             <PrimaryWidget name="Completed Rides" value={generalStats ? generalStats.completedRides : 0} />
           </Grid>
         </Grid>
@@ -240,7 +243,18 @@ function DashboardTransactions() {
             <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={(outboundStats && outboundStats.total)? outboundStats.total : 0} type="Transactions" totalQuantity={(outboundStats && outboundStats.weight)? outboundStats.weight : 0} totalVolume={(outboundStats && outboundStats.dimensionsCBM)? outboundStats.dimensionsCBM : 0} />
           </Grid>
         </Grid>
-        <Grid item xs={12} className={classes.externalHeader}>
+        <Grid container spacing={2} item={12} justify="space-between">
+          <Grid item xs={4}>
+            {/* <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={(outboundStats && outboundStats.total)? outboundStats.total : 0} type="Transactions" totalQuantity={(outboundStats && outboundStats.weight)? outboundStats.weight : 0} totalVolume={(outboundStats && outboundStats.dimensionsCBM)? outboundStats.dimensionsCBM : 0} /> */}
+          </Grid>
+          <Grid item xs={4}>
+            <SecondaryRideWidget  name="Loads" value={(rideStats && rideStats.total)? rideStats.total : 0} type="Loads" totalUnassigned={(rideStats && rideStats.unassigned)? rideStats.unassigned : 0} totalAssigned={(rideStats && rideStats.assigned)? rideStats.assigned : 0} totalInprogress={(rideStats && rideStats.inprogress)? rideStats.inprogress : 0} totalCancelled={(rideStats && rideStats.cancelled)? rideStats.cancelled : 0} totalCompleted={(rideStats && rideStats.completed)? rideStats.completed : 0}/>
+          </Grid>
+          <Grid item xs={4}>
+            {/* <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={(outboundStats && outboundStats.total)? outboundStats.total : 0} type="Transactions" totalQuantity={(outboundStats && outboundStats.weight)? outboundStats.weight : 0} totalVolume={(outboundStats && outboundStats.dimensionsCBM)? outboundStats.dimensionsCBM : 0} /> */}
+          </Grid>
+        </Grid>
+        {/* <Grid item xs={12} className={classes.externalHeader}>
           <Typography variant="h4">Last 5 Ride Activity</Typography>
           <Button
             key={2}
@@ -250,11 +264,11 @@ function DashboardTransactions() {
             className={classes.exportBtn}
             onClick={() => redirectToRide()}
           > VIEW ALL</Button >
-        </Grid>
-        <Grid container spacing={2} item={12} justify="space-between">
+        </Grid> */}
+        {/* <Grid container spacing={2} item={12} justify="space-between">
           <TableContainer className={classes.tableContainer}>
-              {/* <TableHeader searchInput={searchInput} buttons={headerButtons} filterCount={1} /> */}
-              {/* <Divider /> */}
+              <TableHeader searchInput={searchInput} buttons={headerButtons} filterCount={1} />
+              <Divider />
               <Table stickyHeader aria-label="sticky table" style={{backgroundColor:"white"}}>
                 <TableHead>
                   <TableRow>
@@ -298,7 +312,7 @@ function DashboardTransactions() {
                 </TableBody>
               </Table>
             </TableContainer>
-          </Grid>
+          </Grid> */}
       </Grid>
     </>
   )
