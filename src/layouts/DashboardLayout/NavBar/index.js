@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     color: "black",
-    height:"0px"
+    // height:"0px"
   },
   userAvatar: {
     display: "inline-flex",
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
   hide: {
     visibility: "hidden",
-    width:"18%"
+    // width:"18%"
   },
   drawer: {
     width: drawerWidth,
