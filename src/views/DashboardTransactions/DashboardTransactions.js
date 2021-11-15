@@ -251,65 +251,6 @@ function DashboardTransactions() {
             <SecondaryRideWidget  name="Loads" value={(rideStats && rideStats.total)? rideStats.total : 0} type="Loads Created" totalUnassigned={(rideStats && rideStats.unassigned)? rideStats.unassigned : 0} totalAssigned={(rideStats && rideStats.assigned)? rideStats.assigned : 0} totalInprogress={(rideStats && rideStats.inprogress)? rideStats.inprogress : 0} totalCancelled={(rideStats && rideStats.cancelled)? rideStats.cancelled : 0} totalCompleted={(rideStats && rideStats.completed)? rideStats.completed : 0}/>
           </Grid>
         </Grid>
-        {/* <Grid item xs={12} className={classes.externalHeader}>
-          <Typography variant="h4">Last 5 Ride Activity</Typography>
-          <Button
-            key={2}
-            variant="contained"
-            color="primary"
-            size="small"
-            className={classes.exportBtn}
-            onClick={() => redirectToRide()}
-          > VIEW ALL</Button >
-        </Grid> */}
-        {/* <Grid container spacing={2} item={12} justify="space-between">
-          <TableContainer className={classes.tableContainer}>
-              <TableHeader searchInput={searchInput} buttons={headerButtons} filterCount={1} />
-              <Divider />
-              <Table stickyHeader aria-label="sticky table" style={{backgroundColor:"white"}}>
-                <TableHead>
-                  <TableRow>
-                    {columns.map((column, index) => (
-                      <TableCell
-                        key={index}
-                        align={column.align}
-                        style={{ minWidth: column.minWidth }}
-                        className={classes.tableHeaderItem}
-                      >
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {logistics.map((logistic, index) => {
-                    return (
-                      <TableRow key={index} hover role="checkbox" tabIndex={-1} 
-                      // onClick={() => openViewDetails(logistic)}
-                      >
-                        {columns.map((column) => {
-                          const value = logistic[column.id];
-                          return (
-                            <TableCell
-                              key={column.id}
-                              align={column.align}
-                              className={
-                                column.className && typeof column.className === "function"
-                                  ? column.className(value)
-                                  : column.className
-                              }
-                            >
-                              {column.format ? column.format(value, logistic) : value || ""}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Grid> */}
       </Grid>
     </>
   )
