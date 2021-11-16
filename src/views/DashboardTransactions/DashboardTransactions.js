@@ -232,7 +232,7 @@ function DashboardTransactions() {
             <PrimaryWidget name="Pending Rides" value={generalStats ? generalStats.rides : 0} />
           </Grid> */}
           <Grid item xs={3}>
-            <PrimaryWidget name="Completed Rides" value={generalStats ? generalStats.completedRides : 0} />
+            <PrimaryWidget name="Completed Loads" value={generalStats ? generalStats.completedRides : 0} />
           </Grid>
         </Grid>
         <Grid item xs={12} className={classes.activityGrid}>
