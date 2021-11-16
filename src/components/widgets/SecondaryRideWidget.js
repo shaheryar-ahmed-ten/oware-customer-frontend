@@ -3,7 +3,7 @@ import React from 'react'
 
 const useStyles = makeStyles({
     root: {
-        height: 347,
+        height: 370,
         width: "100%",
         display: "flex",
         flexFlow: "column",

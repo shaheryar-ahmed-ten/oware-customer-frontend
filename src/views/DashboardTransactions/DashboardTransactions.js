@@ -7,6 +7,7 @@ import SecondaryWidget from '../../components/widgets/SecondaryWidget';
 import SecondaryRideWidget from '../../components/widgets/SecondaryRideWidget';
 import ArrowDownwardOutlinedIcon from '@material-ui/icons/ArrowDownwardOutlined';
 import ArrowUpwardOutlinedIcon from '@material-ui/icons/ArrowUpwardOutlined';
+import DirectionCar from '@material-ui/icons/DirectionsCar.js';
 import { useNavigate } from 'react-router';
 import {
   Box,
@@ -47,11 +48,14 @@ const useStyles = makeStyles((theme) => ({
   errorIcon: {
     color: 'red',
   },
+  carIcon: {
+    color: '#000000',
+  },
   activityGrid: {
     marginTop: '47px'
   },
   rideActivityGrid: {
-    marginTop: '0px'
+    marginTop: '8px'
   },
   gridContainer: {
     boxSizing: 'border-box',
@@ -248,7 +252,7 @@ function DashboardTransactions() {
         </Grid>
         <Grid container spacing={2} item={12} justify="space-between" className={classes.rideActivityGrid}>
           <Grid item xs={12}>
-            <SecondaryRideWidget  name="Loads" value={(rideStats && rideStats.total)? rideStats.total : 0} type="Loads Created" totalUnassigned={(rideStats && rideStats.unassigned)? rideStats.unassigned : 0} totalAssigned={(rideStats && rideStats.assigned)? rideStats.assigned : 0} totalInprogress={(rideStats && rideStats.inprogress)? rideStats.inprogress : 0} totalCancelled={(rideStats && rideStats.cancelled)? rideStats.cancelled : 0} totalCompleted={(rideStats && rideStats.completed)? rideStats.completed : 0}/>
+            <SecondaryRideWidget  icon={<DirectionCar className={classes.carIcon} />} name="Loads" value={(rideStats && rideStats.total)? rideStats.total : 0} type="Loads Created" totalUnassigned={(rideStats && rideStats.unassigned)? rideStats.unassigned : 0} totalAssigned={(rideStats && rideStats.assigned)? rideStats.assigned : 0} totalInprogress={(rideStats && rideStats.inprogress)? rideStats.inprogress : 0} totalCancelled={(rideStats && rideStats.cancelled)? rideStats.cancelled : 0} totalCompleted={(rideStats && rideStats.completed)? rideStats.completed : 0}/>
           </Grid>
         </Grid>
       </Grid>
