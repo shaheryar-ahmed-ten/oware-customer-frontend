@@ -112,6 +112,13 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
       format: (value, entity) => (entity.pickupCity ? entity.pickupCity.name : "-"),
     },
     {
+      id: "pickupAddress",
+      label: "PICKUP ADDRESS",
+      minWidth: "auto",
+      className: classes.topTableItem,
+      format: (value, entity) => entity.pickupAddress,
+    },
+    {
       id: "pickupDate",
       label: "PICKUP DATE",
       minWidth: "auto",
@@ -124,6 +131,13 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
       minWidth: "auto",
       className: classes.topTableItem,
       format: (value, entity) => (entity.dropoffCity ? entity.dropoffCity.name : "-"),
+    },
+    {
+      id: "dropoffAddress",
+      label: "DROP OFF ADDRESS",
+      minWidth: "auto",
+      className: classes.topTableItem,
+      format: (value, entity) => entity.dropoffAddress,
     },
     {
       id: "dropoffDate",
