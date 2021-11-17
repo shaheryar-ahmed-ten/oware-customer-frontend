@@ -5,7 +5,8 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         minWidth: 160,
         boxSizing: 'border-box',
-        paddingLeft: '8px'
+        paddingLeft: '8px',
+        marginRight: 30
     },
     placeholderText: {
         color: "#CAC9C9",
