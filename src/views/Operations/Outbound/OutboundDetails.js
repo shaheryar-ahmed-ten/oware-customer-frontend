@@ -420,8 +420,8 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
       <form>
         <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
           <DialogContent style={{ padding: 0, minHeight: "80vh" }}>
-            <img style={{ width: "15%", margin: "20px" }} src={owareLogo} />
-            <Typography style={{ marginLeft: "10px", marginBottom: "10px" }} variant="h3">
+            <img style={{ width: "16%", margin: "20px" }} src={owareLogo} />
+            <Typography style={{ marginLeft: "10px", marginBottom: "10px" , marginTop: "10px"}} variant="h3">
               Order Details
               <Box display="inline" displayPrint="none">
                 <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />

@@ -305,6 +305,8 @@ function Logistics() {
     />
   );
 
+  const dummySelect=(<Box/>);
+
   const customOption = (
     <>
       <Dialog
@@ -433,7 +435,7 @@ function Logistics() {
       });
   };
 
-  const headerButtons = [productDetailsView, daysSelect];
+  const headerButtons = [daysSelect, productDetailsView, dummySelect];
 
   return (
     <>

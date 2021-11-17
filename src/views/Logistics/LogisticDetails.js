@@ -203,8 +203,8 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
       <form>
         <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
           <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: "80vh" }}>
-            <img style={{ width: "14%", margin: "20px" }} src={owareLogo} />
-            <Typography style={{ marginLeft: "10px", marginBottom: "10px" }} variant="h3">
+            <img style={{ width: "17%", margin: "20px" }} src={owareLogo} />
+            <Typography style={{ marginLeft: "10px", marginBottom: "10px" , marginTop: "10px"}} variant="h3">
               Delivery Details
               <Box display="inline" displayPrint="none">
                 <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
