@@ -68,7 +68,7 @@ function SecondaryRideWidget({ icon, name, value, totalUnassigned, totalAssigned
                 </Typography>
 
                 <br />
-                <Divider />
+                <Divider style={{backgroundColor: "rgb(224 224 224)"}}/>
                 <br />
                 <div className={classes.details}>
                     <Typography className={classes.detailsHead} gutterBottom>
