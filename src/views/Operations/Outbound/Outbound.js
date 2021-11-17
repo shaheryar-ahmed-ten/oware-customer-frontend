@@ -265,6 +265,12 @@ function Outbound() {
   const handleClose = () => {
     setOpen(false);
   };
+  const resetFilters = () => {
+    setSelectedWarehouse(null);
+    setSelectedProduct(null);
+    setSelectedDay(null);
+    setSelectedStatus(null);
+  };
 
   const startDateRange = (
     <TextField
@@ -425,7 +431,7 @@ function Outbound() {
       searchKeyword,
       selectedWarehouse,
       selectedProduct,
-      selectedDay == "custom" ? "" : selectedDay,
+      selectedDay,
       selectedStatus,
       startDate,
       endDate
@@ -471,13 +477,6 @@ function Outbound() {
       }
     />
   );
-
-  const resetFilters = () => {
-    setSelectedWarehouse(null);
-    setSelectedProduct(null);
-    setSelectedDay(null);
-    setSelectedStatus(null);
-  };
 
   const exportToExcel = () => {
     axios
