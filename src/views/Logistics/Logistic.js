@@ -337,16 +337,25 @@ function Logistics() {
   );
 
   useEffect(() => {
-    getLogistics(page, searchKeyword, selectedProductForDropdown, startDate, endDate);
-  }, [page, searchKeyword, selectedProductForDropdown, startDate, endDate]);
+    getLogistics(page, searchKeyword, selectedProductForDropdown, selectedDay, startDate, endDate);
+  }, [page, searchKeyword, selectedProductForDropdown, selectedDay, startDate, endDate]);
 
-  const _getLogistics = (page, searchKeyword, selectedProductForDropdown) => {
+  const _getLogistics = (
+    page,
+    searchKeyword,
+    selectedProductForDropdown,
+    selectedDay,
+
+    startDate,
+    endDate
+  ) => {
     axios
       .get(getURL(`/ride`), {
         params: {
           page,
           search: searchKeyword,
           product: selectedProductForDropdown,
+          days: selectedDay,
           start: startDate,
           end: endDate,
         },
@@ -363,8 +372,8 @@ function Logistics() {
   };
 
   const getLogistics = useCallback(
-    debounce((page, searchKeyword, selectedProductForDropdown, startDate, endDate) => {
-      _getLogistics(page, searchKeyword, selectedProductForDropdown, startDate, endDate);
+    debounce((page, searchKeyword, selectedProductForDropdown, selectedDay, startDate, endDate) => {
+      _getLogistics(page, searchKeyword, selectedProductForDropdown, selectedDay, startDate, endDate);
     }, DEBOUNCE_TIME),
     []
   );
