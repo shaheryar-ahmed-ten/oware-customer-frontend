@@ -276,6 +276,7 @@ function Outbound() {
       InputLabelProps={{
         shrink: true,
       }}
+      fullWidth
       inputProps={{ max: endDate ? endDate : dividerDateFormatForFilter(Date.now()) }}
       defaultValue={startDate}
       value={startDate}
@@ -293,6 +294,7 @@ function Outbound() {
       InputLabelProps={{
         shrink: true,
       }}
+      fullWidth
       inputProps={{ min: startDate, max: dividerDateFormatForFilter(Date.now()) }}
       defaultValue={endDate}
       value={endDate}
@@ -313,8 +315,6 @@ function Outbound() {
         <DialogContent>
           <ListItemText>{startDateRange}</ListItemText>
           <ListItemText>{endDateRange}</ListItemText>
-          {/* {startDateRange}
-          {endDateRange} */}
         </DialogContent>
         <DialogActions>
           <Button
