@@ -303,6 +303,23 @@ function Outbound() {
     />
   );
 
+  const daysSelect = (
+    <SelectCustomDropdown
+      icon={<CalendarTodayOutlinedIcon fontSize="small" />}
+      resetFilters={resetFilters}
+      type="Days"
+      name="Select Days"
+      list={[{ name: "All" }, ...days]}
+      selectedType={selectedDay}
+      open={open}
+      setOpen={setOpen}
+      setSelectedType={setSelectedDay}
+      setPage={setPage}
+      startDate={startDate}
+      endDate={endDate}
+    />
+  );
+
   const customOption = (
     <>
       <Dialog
@@ -331,6 +348,19 @@ function Outbound() {
       </Dialog>
     </>
   );
+
+  useEffect(() => {
+    _getOutwardOrders(
+      page,
+      searchKeyword,
+      selectedWarehouse,
+      selectedProduct,
+      selectedDay,
+      selectedStatus,
+      startDate,
+      endDate
+    );
+  }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus, startDate, endDate]);
 
   const _getOutwardOrders = (
     page,
@@ -488,22 +518,7 @@ function Outbound() {
       setPage={setPage}
     />
   );
-  const daysSelect = (
-    <SelectCustomDropdown
-      icon={<CalendarTodayOutlinedIcon fontSize="small" />}
-      resetFilters={resetFilters}
-      type="Days"
-      name="Select Days"
-      list={[{ name: "All" }, ...days]}
-      selectedType={selectedDay}
-      open={open}
-      setOpen={setOpen}
-      setSelectedType={setSelectedDay}
-      setPage={setPage}
-      startDate={startDate}
-      endDate={endDate}
-    />
-  );
+
   const statusSelect = (
     <SelectDropdown
       icon={<MoreHorizOutlinedIcon fontSize="small" />}
