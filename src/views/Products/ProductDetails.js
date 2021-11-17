@@ -149,7 +149,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
       <form>
         <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
           <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: "80vh" }}>
-            <img style={{ width: "10%", margin: "20px", marginLeft: "45px" }} src={owareLogo} />
+            <img style={{ width: "13%", margin: "20px", marginLeft: "45px" }} src={owareLogo} />
             <Typography style={{ marginLeft: "40px", marginBottom: "10px", marginTop: "10px" }} variant="h3">
               Product Details
               <Box display="inline" displayPrint="none">
