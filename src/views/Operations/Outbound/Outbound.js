@@ -395,7 +395,7 @@ function Outbound() {
       searchKeyword,
       selectedWarehouse,
       selectedProduct,
-      selectedDay,
+      selectedDay == "custom" ? "" : selectedDay,
       selectedStatus,
       startDate,
       endDate
