@@ -118,13 +118,6 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
   ];
 
   const columnsBottom = [
-    // {
-    //   id: "PickupCity.name",
-    //   label: "PICKUP CITY",
-    //   maxWidth: "150px",
-    //   className: classes.topTableItem,
-    //   format: (value, entity) => (entity.pickupCity ? entity.pickupCity.name : "-"),
-    // },
     {
       id: "pickupAddress",
       label: "PICKUP ADDRESS",
