@@ -431,10 +431,10 @@ function Outbound() {
       searchKeyword,
       selectedWarehouse,
       selectedProduct,
-      selectedDay,
+      selectedDay == "custom" ? "" : selectedDay,
       selectedStatus,
-      startDate,
-      endDate
+      startDate == "-" ? "" : startDate,
+      endDate == "-" ? "" : endDate
     );
   }, [page, searchKeyword, selectedWarehouse, selectedProduct, selectedDay, selectedStatus, startDate, endDate]);
 
