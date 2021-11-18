@@ -46,7 +46,6 @@ function SelectCustomDropdown({
 }) {
   const classes = useStyles();
   const [trackDateFilterOpen, setTrackDateFilterOpen] = useState(false);
-  // console.log(list[4].name)
 
   const handleChange = (event) => {
     // resetFilters()

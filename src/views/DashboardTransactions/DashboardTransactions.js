@@ -2,13 +2,13 @@
 // import { Box, Grid, makeStyles, Typography } from '@material-ui/core';
 // import axios from 'axios';
 // import { getURL } from '../../utils/common';
-import PrimaryWidget from '../../components/widgets/PrimaryWidget';
-import SecondaryWidget from '../../components/widgets/SecondaryWidget';
-import SecondaryRideWidget from '../../components/widgets/SecondaryRideWidget';
-import ArrowDownwardOutlinedIcon from '@material-ui/icons/ArrowDownwardOutlined';
-import ArrowUpwardOutlinedIcon from '@material-ui/icons/ArrowUpwardOutlined';
-import DirectionCar from '@material-ui/icons/DirectionsCar.js';
-import { useNavigate } from 'react-router';
+import PrimaryWidget from "../../components/widgets/PrimaryWidget";
+import SecondaryWidget from "../../components/widgets/SecondaryWidget";
+import SecondaryRideWidget from "../../components/widgets/SecondaryRideWidget";
+import ArrowDownwardOutlinedIcon from "@material-ui/icons/ArrowDownwardOutlined";
+import ArrowUpwardOutlinedIcon from "@material-ui/icons/ArrowUpwardOutlined";
+import DirectionCar from "@material-ui/icons/DirectionsCar.js";
+import { useNavigate } from "react-router";
 import {
   Box,
   Divider,
@@ -37,39 +37,39 @@ import { DEBOUNCE_TIME } from "../../config";
 import clsx from "clsx";
 const useStyles = makeStyles((theme) => ({
   heading: {
-    fontWeight: "600"
+    fontWeight: "600",
   },
   pos: {
     marginBottom: 12,
   },
   successIcon: {
-    color: '#85C830',
+    color: "#85C830",
   },
   errorIcon: {
-    color: 'red',
+    color: "red",
   },
   carIcon: {
-    color: '#000000',
+    color: "#000000",
   },
   activityGrid: {
-    marginTop: '47px'
+    marginTop: "47px",
   },
   rideActivityGrid: {
-    marginTop: '8px'
+    marginTop: "8px",
   },
   gridContainer: {
-    boxSizing: 'border-box',
-    [theme.breakpoints.up('lg')]: {
+    boxSizing: "border-box",
+    [theme.breakpoints.up("lg")]: {
       paddingRight: 30,
       paddingTop: 30,
-      paddingBottom: 30
+      paddingBottom: 30,
     },
   },
   externalHeader: {
-    marginTop: '37px',
-    display: 'flex',
-    justifyContent: 'space-between'
-  }
+    marginTop: "37px",
+    display: "flex",
+    justifyContent: "space-between",
+  },
 }));
 
 function DashboardTransactions() {
@@ -183,8 +183,7 @@ function DashboardTransactions() {
   const _getLogistics = () => {
     axios
       .get(getURL(`/dashboard/ride`), {
-        params: {
-        },
+        params: {},
       })
       .then((res) => {
         setLogistics(res.data.data);
@@ -201,18 +200,15 @@ function DashboardTransactions() {
   );
   const redirectToRide = () => {
     navigate("/logistics");
-  }
-
+  };
 
   useEffect(() => {
-    axios.get(getURL(`/dashboard`))
-      .then((response) => {
-        console.log(response.data)
-        setInboundStats(response.data.inboundStats);
-        setOutboundStats(response.data.outboundStats);
-        setGeneralStats(response.data.generalStats);
-        setRideStats(response.data.rideStats);
-      })
+    axios.get(getURL(`/dashboard`)).then((response) => {
+      setInboundStats(response.data.inboundStats);
+      setOutboundStats(response.data.outboundStats);
+      setGeneralStats(response.data.generalStats);
+      setRideStats(response.data.rideStats);
+    });
   }, []);
   return (
     <>
@@ -244,20 +240,44 @@ function DashboardTransactions() {
         </Grid>
         <Grid container spacing={2} item={12} justify="space-between">
           <Grid item xs={6}>
-            <SecondaryWidget icon={<ArrowDownwardOutlinedIcon className={classes.successIcon} />} name="Inwards" value={(inboundStats && inboundStats.total)? inboundStats.total : 0} type="Transactions" totalQuantity={(inboundStats && inboundStats.weight)? inboundStats.weight : 0} totalVolume={(inboundStats && inboundStats.dimensionsCBM)? inboundStats.dimensionsCBM : 0} />
+            <SecondaryWidget
+              icon={<ArrowDownwardOutlinedIcon className={classes.successIcon} />}
+              name="Inwards"
+              value={inboundStats && inboundStats.total ? inboundStats.total : 0}
+              type="Transactions"
+              totalQuantity={inboundStats && inboundStats.weight ? inboundStats.weight : 0}
+              totalVolume={inboundStats && inboundStats.dimensionsCBM ? inboundStats.dimensionsCBM : 0}
+            />
           </Grid>
           <Grid item xs={6}>
-            <SecondaryWidget icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />} name="Outwards" value={(outboundStats && outboundStats.total)? outboundStats.total : 0} type="Transactions" totalQuantity={(outboundStats && outboundStats.weight)? outboundStats.weight : 0} totalVolume={(outboundStats && outboundStats.dimensionsCBM)? outboundStats.dimensionsCBM : 0} />
+            <SecondaryWidget
+              icon={<ArrowUpwardOutlinedIcon className={classes.errorIcon} />}
+              name="Outwards"
+              value={outboundStats && outboundStats.total ? outboundStats.total : 0}
+              type="Transactions"
+              totalQuantity={outboundStats && outboundStats.weight ? outboundStats.weight : 0}
+              totalVolume={outboundStats && outboundStats.dimensionsCBM ? outboundStats.dimensionsCBM : 0}
+            />
           </Grid>
         </Grid>
         <Grid container spacing={2} item={12} justify="space-between" className={classes.rideActivityGrid}>
           <Grid item xs={12}>
-            <SecondaryRideWidget  icon={<DirectionCar className={classes.carIcon} />} name="Loads" value={(rideStats && rideStats.total)? rideStats.total : 0} type="Loads Created" totalUnassigned={(rideStats && rideStats.unassigned)? rideStats.unassigned : 0} totalAssigned={(rideStats && rideStats.assigned)? rideStats.assigned : 0} totalInprogress={(rideStats && rideStats.inprogress)? rideStats.inprogress : 0} totalCancelled={(rideStats && rideStats.cancelled)? rideStats.cancelled : 0} totalCompleted={(rideStats && rideStats.completed)? rideStats.completed : 0}/>
+            <SecondaryRideWidget
+              icon={<DirectionCar className={classes.carIcon} />}
+              name="Loads"
+              value={rideStats && rideStats.total ? rideStats.total : 0}
+              type="Loads Created"
+              totalUnassigned={rideStats && rideStats.unassigned ? rideStats.unassigned : 0}
+              totalAssigned={rideStats && rideStats.assigned ? rideStats.assigned : 0}
+              totalInprogress={rideStats && rideStats.inprogress ? rideStats.inprogress : 0}
+              totalCancelled={rideStats && rideStats.cancelled ? rideStats.cancelled : 0}
+              totalCompleted={rideStats && rideStats.completed ? rideStats.completed : 0}
+            />
           </Grid>
         </Grid>
       </Grid>
     </>
-  )
+  );
 }
 
-export default DashboardTransactions
+export default DashboardTransactions;

@@ -137,7 +137,6 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
       axios
         .get(getURL(`/product/${selectedProduct.id}`))
         .then((response) => {
-          // console.log(response.data.data)
           setSelectedProductDetails(response.data.data);
         })
         .catch((err) => {
@@ -170,7 +169,6 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                   <TableRow role="checkbox" tabIndex={-1} key={selectedProduct.id}>
                     {columnsTop.map((column) => {
                       const value = selectedProduct[column.id];
-                      // console.log("value",selectedProduct)
                       return (
                         <TableCell
                           key={column.id}

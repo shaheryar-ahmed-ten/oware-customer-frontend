@@ -13,11 +13,8 @@ export default function Logo({ variant }) {
   const getRelations = (e) => {
     // e.preventDefault();
     axios.get(getURL("user/company")).then((res) => {
-      console.log(res.data);
       // res.data.file && res.data.file.id ? setFileLocation(res.data.file.id): setFileLocation('');
       res.data.file && res.data.file.id ? setLogo(getURL("preview", res.data.file.id)) : setLogo(noImageFound);
-
-      // console.log(getURL('/preview',filelocation))
     });
   };
   // const Logo = filelocation && getURL('preview',filelocation) ? getURL('preview',filelocation) : noImageFound;

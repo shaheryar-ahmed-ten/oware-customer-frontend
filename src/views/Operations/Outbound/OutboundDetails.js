@@ -88,7 +88,6 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
     [receiverName, setRecieverName] = useState(""),
     [recieverPhone, setRecieverPhone] = useState("");
   const [orderMemo, setOrderMemo] = useState("");
-  // console.log(date);
 
   const columnsTop = [
     {
@@ -280,7 +279,6 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         .get(getURL(`/order/${selectedOutboundOrder.id}`))
         .then((response) => {
           if (response.data.success) {
-            // console.log(response.data.data)
             setSelectedProductOutwardDetails(response.data.data);
             setProductOutwardsLength(response.data.data[0].ProductOutwards.length);
             setDate(moment(response?.data?.data[0]?.updatedAt));
@@ -421,7 +419,7 @@ function OutboundDetails({ open, handleClose, selectedOutboundOrder }) {
         <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
           <DialogContent style={{ padding: 0, minHeight: "80vh" }}>
             <img style={{ width: "16%", margin: "20px" }} src={owareLogo} />
-            <Typography style={{ marginLeft: "10px", marginBottom: "10px" , marginTop: "10px"}} variant="h3">
+            <Typography style={{ marginLeft: "10px", marginBottom: "10px", marginTop: "10px" }} variant="h3">
               Order Details
               <Box display="inline" displayPrint="none">
                 <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
