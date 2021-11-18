@@ -6,10 +6,12 @@
 .mask-text{
     font: inherit;
     color: currentColor;
-    width: 97%;
+    width: 98%;
     border: 0;
     height: 1.1876em;
-    margin: 0;
+    /* margin: 0; */
+    margin-top: 10px;
+    margin-bottom: -10px;
     display: block;
     padding: 6px 0 7px;
     min-width: 0;

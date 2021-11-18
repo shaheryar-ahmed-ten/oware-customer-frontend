@@ -1,78 +1,75 @@
-import {
-  Grid,
-  makeStyles,
-  Paper,
-  TextField,
-  Button,
-  Box,
-  Typography
-} from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
-import React, { useContext, useState } from 'react'
-import axios from 'axios';
-import { getURL, SharedContext } from '../../utils/common';
-import owareLogo from '../../assets/logo/owareLogo.png';
-import { useNavigate } from 'react-router-dom';
-import { setUser, setUserToken } from '../../utils/auth';
+import { Grid, makeStyles, Paper, TextField, Button, Box, Typography } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
+import React, { useContext, useState } from "react";
+import axios from "axios";
+import { getURL, SharedContext } from "../../utils/common";
+import owareLogo from "../../assets/logo/oware-logo-black.png";
+import { useNavigate } from "react-router-dom";
+import { setUser, setUserToken } from "../../utils/auth";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paperStyle: {
-    marginBottom: '20px',
+    marginBottom: "20px",
     padding: 5,
     height: "55vh",
     maxWidth: "350px",
     minWidth: "auto",
-    margin: "10% auto"
+    margin: "10% auto",
   },
   children: {
     margin: "5px auto",
   },
   fopBtn: {
-    cursor: 'pointer'
-  }
-}))
+    cursor: "pointer",
+  },
+}));
 
 export default function LoginView() {
   const [formErrors, setFormErrors] = useState(null);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const { setAuthToken, setCurrentUser } = useContext(SharedContext);
   const navigate = useNavigate();
   const classes = useStyles();
 
-  const setToken = token => {
+  const setToken = (token) => {
     setUserToken(token);
     return setAuthToken(token);
-  }
+  };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(null);
-    axios.post(getURL('/user/auth/login'), {
-      username,
-      password
-    })
-      .then(res => setToken(res.data.token))
-      .then(() => axios.get(getURL('/user/me')))
-      .then(res => {
+    axios
+      .post(getURL("/user/auth/login"), {
+        username,
+        password,
+      })
+      .then((res) => setToken(res.data.token))
+      .then(() => axios.get(getURL("/user/me")))
+      .then((res) => {
         setUser(res.data.data);
         return setCurrentUser(res.data.data);
       })
       .then(() => {
-        navigate('/dashboard')
+        navigate("/dashboard");
       })
-      .catch(err => {
+      .catch((err) => {
         let errorMsg;
         errorMsg = err.response.data.message;
-        setFormErrors(<Alert elevation={6} variant="filled" severity="error" onClose={() => setFormErrors('')}>{errorMsg}</Alert>);
-      })
-  }
+        setFormErrors(
+          <Alert elevation={6} variant="filled" severity="error" onClose={() => setFormErrors("")}>
+            {errorMsg}
+          </Alert>
+        );
+      });
+  };
   return (
     <form onSubmit={handleSubmit}>
       <Grid>
         <Paper elevation={0} className={classes.paperStyle}>
           <Grid align="center">
-          <img src={owareLogo} />
+            <img src={owareLogo} width="75%" height="75%" />
           </Grid>
           {formErrors}
           <Box mt={4}>
@@ -83,7 +80,7 @@ export default function LoginView() {
               fullWidth
               required
               value={username}
-              onChange={(e => setUsername(e.target.value))}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </Box>
           <Box mt={3}>
@@ -95,17 +92,28 @@ export default function LoginView() {
               required
               type="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </Box>
           <Box mt={2}>
-            <Button type="submit" color="primary" variant="contained" fullWidth>Login</Button>
+            <Button type="submit" color="primary" variant="contained" fullWidth>
+              Login
+            </Button>
           </Box>
           <Box mt={2}>
-            <Typography className={classes.fopBtn} variant="body1" color="primary" onClick={() => { navigate('/forgot-password') }}>Forgot Your Password ?</Typography>
+            <Typography
+              className={classes.fopBtn}
+              variant="body1"
+              color="primary"
+              onClick={() => {
+                navigate("/forgot-password");
+              }}
+            >
+              Forgot Your Password ?
+            </Typography>
           </Box>
         </Paper>
       </Grid>
-    </form >
-  )
+    </form>
+  );
 }

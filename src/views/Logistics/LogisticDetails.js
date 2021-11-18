@@ -16,7 +16,7 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { dateFormat, getURL } from "../../utils/common";
-import owareLogo from "../../assets/logo/owareLogo.png";
+import owareLogo from "../../assets/logo/oware-logo-black.png";
 import PrintOutlinedIcon from "@material-ui/icons/PrintOutlined";
 
 const useStyles = makeStyles({
@@ -46,9 +46,13 @@ const useStyles = makeStyles({
     backgroundColor: "#F8F8F8",
     borderBottom: "none",
     padding: "10px",
+    tableLayout: "fixed",
+    width: "150px"
   },
   topTableItem: {
     fontWeight: "600",
+    width: "150px",
+    tableLayout: "fixed"
   },
   icon: {
     position: "relative",
@@ -65,28 +69,28 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
     {
       id: "rideId",
       label: "RIDEID",
-      minWidth: "auto",
+      maxWidth: "150px",
       className: classes.topTableItem,
       format: (value, entity) => entity.id,
     },
     {
       id: "status",
       label: "STATUS",
-      minWidth: "auto",
+      maxWidth: "150px",
       className: classes.topTableItem,
       format: (value, entity) => entity.status,
     },
     {
       id: "price",
       label: "PRICE",
-      minWidth: "auto",
+      maxWidth: "150px",
       className: classes.topTableItem,
       format: (value, entity) => `RS. ${entity.price ? entity.price : "-"}`,
     },
     {
       id: "Vehicle.Driver.name",
       label: "DRIVER",
-      minWidth: "auto",
+      maxWidth: "150px",
       className: classes.topTableItem,
       format: (value, entity) => (entity.Vehicle.Driver ? entity.Vehicle.Driver.name : "-"),
     },
@@ -100,37 +104,62 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
     {
       id: "Vehicle.registrationNumber",
       label: "VEHICLE",
-      minWidth: "auto",
+      maxWidth: "150px",
       className: classes.topTableItem,
       format: (value, entity) => (entity.Vehicle ? entity.Vehicle.registrationNumber : "-"),
     },
     {
       id: "PickupCity.name",
       label: "PICKUP CITY",
-      minWidth: "auto",
+      maxWidth: "150px",
       className: classes.topTableItem,
       format: (value, entity) => (entity.pickupCity ? entity.pickupCity.name : "-"),
+    }
+  ];
+
+  const columnsBottom = [
+    {
+      id: "pickupAddress",
+      label: "PICKUP ADDRESS",
+      maxWidth: "150px",
+      className: classes.topTableItem,
+      format: (value, entity) => entity.pickupAddress,
     },
     {
       id: "pickupDate",
       label: "PICKUP DATE",
-      minWidth: "auto",
+      maxWidth: "150px",
       className: classes.topTableItem,
       format: dateFormat,
     },
     {
       id: "dropoffCity.name",
       label: "DROP OFF CITY",
-      minWidth: "auto",
+      maxWidth: "150px",
       className: classes.topTableItem,
       format: (value, entity) => (entity.dropoffCity ? entity.dropoffCity.name : "-"),
     },
     {
+      id: "dropoffAddress",
+      label: "DROP OFF ADDRESS",
+      maxWidth: "150px",
+      className: classes.topTableItem,
+      format: (value, entity) => entity.dropoffAddress,
+    },
+    {
       id: "dropoffDate",
       label: "DROP OFF DATE",
-      minWidth: "auto",
+      maxWidth: "150px",
       className: classes.topTableItem,
       format: dateFormat,
+    },
+    // Dummy data
+    {
+      id: "PickupCityy.name",
+      label: " ",
+      maxWidth: "150px",
+      className: classes.topTableItem,
+      format: (value, entity) => (entity.pickupCityy ? entity.pickupCityy.name : " "),
     },
   ];
   const columns = [
@@ -174,8 +203,8 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
       <form>
         <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
           <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: "80vh" }}>
-            <img style={{ width: "10%", margin: "20px" }} src={owareLogo} />
-            <Typography style={{ marginLeft: "10px", marginBottom: "10px" }} variant="h3">
+            <img style={{ width: "17%", margin: "20px" }} src={owareLogo} />
+            <Typography style={{ marginLeft: "10px", marginBottom: "10px" , marginTop: "10px"}} variant="h3">
               Delivery Details
               <Box display="inline" displayPrint="none">
                 <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
@@ -183,7 +212,7 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
             </Typography>
 
             <TableContainer className={classes.tableContainerTop}>
-              <Table stickyHeader aria-label="sticky table">
+              <Table aria-label="sticky table">
                 <TableHead>
                   {columnsTop.map((column, index) => (
                     <TableCell key={index} align={column.align} className={classes.tableHeaderItem}>
@@ -194,6 +223,39 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
                 <TableBody>
                   <TableRow role="checkbox" tabIndex={-1} key={selectedProduct.id}>
                     {columnsTop.map((column) => {
+                      const value = selectedProduct[column.id];
+                      return (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={{ paddingTop: "0" }}
+                          className={
+                            column.className && typeof column.className === "function"
+                              ? column.className(value)
+                              : column.className
+                          }
+                        >
+                          {column.format ? column.format(value, selectedProduct) : value || ""}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            <TableContainer className={classes.tableContainerTop}>
+              <Table aria-label="sticky table">
+                <TableHead>
+                  {columnsBottom.map((column, index) => (
+                    <TableCell key={index} align={column.align} className={classes.tableHeaderItem}>
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableHead>
+                <TableBody>
+                  <TableRow role="checkbox" tabIndex={-1} key={selectedProduct.id}>
+                    {columnsBottom.map((column) => {
                       const value = selectedProduct[column.id];
                       return (
                         <TableCell
@@ -258,9 +320,9 @@ function LogisticDetails({ open, handleClose, selectedProduct }) {
           </DialogContent>
           <Box display="inline" displayPrint="none">
             <DialogActions style={{ boxSizing: "border-box", padding: "10px 19px" }}>
-                <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
-                  Close
-                </Button>
+              <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
+                Close
+              </Button>
             </DialogActions>
           </Box>
         </Dialog>
