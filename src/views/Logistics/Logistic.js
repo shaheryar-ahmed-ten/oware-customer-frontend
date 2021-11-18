@@ -305,7 +305,7 @@ function Logistics() {
     />
   );
 
-  const dummySelect=(<Box/>);
+  const dummySelect = <Box />;
 
   const customOption = (
     <>
@@ -342,24 +342,16 @@ function Logistics() {
     getLogistics(page, searchKeyword, selectedProductForDropdown, selectedDay, startDate, endDate);
   }, [page, searchKeyword, selectedProductForDropdown, selectedDay, startDate, endDate]);
 
-  const _getLogistics = (
-    page,
-    searchKeyword,
-    selectedProductForDropdown,
-    selectedDay,
-
-    startDate,
-    endDate
-  ) => {
+  const _getLogistics = (page, searchKeyword, selectedProductForDropdown, selectedDay, startDate, endDate) => {
     axios
       .get(getURL(`/ride`), {
         params: {
           page,
           search: searchKeyword,
           product: selectedProductForDropdown,
-          days: selectedDay,
-          start: startDate,
-          end: endDate,
+          days: selectedDay == "custom" ? "" : selectedDay,
+          start: startDate == "-" ? "" : startDate,
+          end: endDate == "-" ? "" : endDate,
         },
       })
       .then((res) => {
