@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   carIcon: {
     color: "#000000",
+    paddingRight:4
   },
   activityGrid: {
     marginTop: "47px",
@@ -263,7 +264,8 @@ function DashboardTransactions() {
         <Grid container spacing={2} item={12} justify="space-between" className={classes.rideActivityGrid}>
           <Grid item xs={12}>
             <SecondaryRideWidget
-              icon={<DirectionCar className={classes.carIcon} />}
+              // icon={<DirectionCar className={classes.carIcon} />}
+              icon={<img src="https://img.icons8.com/material/24/000000/container-truck.png" className={classes.carIcon}/>}
               name="Loads"
               value={rideStats && rideStats.total ? rideStats.total : 0}
               type="Loads Created"
