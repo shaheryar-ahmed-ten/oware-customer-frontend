@@ -94,13 +94,13 @@ const useStyles = makeStyles((theme) => ({
 function Products() {
     const classes = useStyles()
     const columns = [
-        {
-            id: 'id',
-            label: 'PRODUCT ID',
-            minWidth: 'auto',
-            className: classes.productNameStyle,
-            format: (value, entity) => entity.id,
-        },
+        // {
+        //     id: 'id',
+        //     label: 'PRODUCT ID',
+        //     minWidth: 'auto',
+        //     className: classes.productNameStyle,
+        //     format: (value, entity) => entity.id,
+        // },
         {
             id: 'Product.name',
             label: 'PRODUCT NAME',
@@ -115,13 +115,13 @@ function Products() {
             className: classes.orderIdStyle,
             format: (value, entity) => entity.Product.Category.name,
         },
-        // {
-        //     id: 'warehouse',
-        //     label: 'WAREHOUSE',
-        //     minWidth: 'auto',
-        //     className: classes.orderIdStyle,
-        //     format: (value, entity) => entity.Warehouse.name,
-        // },
+        {
+            id: 'warehouse',
+            label: 'WAREHOUSE',
+            minWidth: 'auto',
+            className: classes.orderIdStyle,
+            format: (value, entity) => entity.Warehouse.name,
+        },
         {
             id: 'brand',
             label: 'BRAND',
