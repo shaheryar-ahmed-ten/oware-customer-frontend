@@ -34,6 +34,7 @@ import clsx from "clsx";
 import moment from "moment-timezone";
 import FileDownload from "js-file-download";
 import SelectCustomDropdown from "../../components/SelectCustomDropdown";
+import { RIDE_STATUS } from "../../utils/enums/ride";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -127,7 +128,7 @@ function Logistics() {
   const columns = [
     {
       id: "id",
-      label: "RIDE ID",
+      label: "LOAD ID",
       minWidth: "auto",
       className: classes.productNameStyle,
       format: (value, entity) => entity.id,
@@ -137,7 +138,7 @@ function Logistics() {
       label: "PRICE",
       minWidth: "auto",
       className: classes.orderIdStyle,
-      format: (value, entity) => `RS. ${entity.price ? entity.price : "-"}`,
+      format: (value, entity) => (entity.price ? `RS.${entity.price}` : "-"),
     },
     {
       id: "pickupDate",
@@ -153,26 +154,12 @@ function Logistics() {
       className: classes.orderIdStyle,
       format: (value, entity) => (entity.pickupCity ? entity.pickupCity.name : null),
     },
-    // {
-    //   id: "pickupAddress",
-    //   label: "PICKUP ADDRESS",
-    //   minWidth: "auto",
-    //   className: classes.orderIdStyle,
-    //   format: (value, entity) => entity.pickupAddress,
-    // },
     {
-      id: "dropoffCity.name",
-      label: "DROPOFF CITY",
+      id: "vehicle",
+      label: "VEHCILE",
       minWidth: "auto",
       className: classes.orderIdStyle,
-      format: (value, entity) => (entity.dropoffCity ? entity.dropoffCity.name : null),
-    },
-    {
-      id: "dropoffDate",
-      label: "DROPOFF DATE/TIME",
-      minWidth: "auto",
-      className: classes.orderIdStyle,
-      format: dateFormat,
+      format: (value, entity) => (entity.Vehicle ? entity.Vehicle.registrationNumber : null),
     },
     {
       id: "status",
@@ -180,29 +167,49 @@ function Logistics() {
       minWidth: "auto",
       className: classes.orderIdStyle,
       format: (value, entity) =>
-        entity.status === "ASSIGNED" ? (
+        entity.status === RIDE_STATUS.SCHEDULED ? (
           <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
-            ASSIGNED
+            {RIDE_STATUS.SCHEDULED}
           </Button>
-        ) : entity.status === "PENDING" ? (
-          <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
-            PENDING
-          </Button>
-        ) : entity.status === "UNASSIGNED" ? (
+        ) : entity.status === RIDE_STATUS.NOT_ASSIGNED ? (
           <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
-            UNASSIGNED
+            {RIDE_STATUS.NOT_ASSIGNED}
           </Button>
-        ) : entity.status === "INPROGRESS" ? (
+        ) : entity.status === RIDE_STATUS.ON_THE_WAY ? (
           <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
-            IN-PROGRESS
+            {RIDE_STATUS.ON_THE_WAY}
           </Button>
-        ) : entity.status === "COMPLETED" ? (
-          <Button color="primary" className={clsx(classes.statusButtons, classes.completedStatusButtonStyling)}>
-            COMPLETED
-          </Button>
-        ) : entity.status === "CANCELLED" ? (
+        ) : entity.status === RIDE_STATUS.ARRIVED ? (
           <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
-            CANCELLED
+            {RIDE_STATUS.ARRIVED}
+          </Button>
+        ) : entity.status === RIDE_STATUS.LOADING_IN_PROGRESS ? (
+          <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+            {RIDE_STATUS.LOADING_IN_PROGRESS}
+          </Button>
+        ) : entity.status === RIDE_STATUS.LOADING_COMPLETE ? (
+          <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+            {RIDE_STATUS.LOADING_COMPLETE}
+          </Button>
+        ) : entity.status === RIDE_STATUS.LOAD_IN_TRANSIT ? (
+          <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+            {RIDE_STATUS.LOAD_IN_TRANSIT}
+          </Button>
+        ) : entity.status === RIDE_STATUS.REACHED ? (
+          <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+            {RIDE_STATUS.REACHED}
+          </Button>
+        ) : entity.status === RIDE_STATUS.OFFLOADING_IN_PROGRESS ? (
+          <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+            {RIDE_STATUS.OFFLOADING_IN_PROGRESS}
+          </Button>
+        ) : entity.status === RIDE_STATUS.LOAD_DELIVERED ? (
+          <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
+            {RIDE_STATUS.LOAD_DELIVERED}
+          </Button>
+        ) : entity.status === RIDE_STATUS.CANCELLED ? (
+          <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
+            {RIDE_STATUS.CANCELLED}
           </Button>
         ) : (
           ""
@@ -419,11 +426,15 @@ function Logistics() {
         params: {
           page,
           search: searchKeyword,
+          product: selectedProductForDropdown,
+          days: selectedDay == "custom" ? "" : selectedDay,
+          start: startDate == "-" ? "" : startDate,
+          end: endDate == "-" ? "" : endDate,
           client_Tz: moment.tz.guess(),
         },
       })
       .then((response) => {
-        FileDownload(response.data, `Rides ${moment().format("DD-MM-yyyy")}.xlsx`);
+        FileDownload(response.data, `Loads ${moment().format("DD-MM-yyyy")}.xlsx`);
       });
   };
 

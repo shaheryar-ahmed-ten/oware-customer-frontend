@@ -327,6 +327,10 @@ function Inbound() {
         params: {
           page,
           search: searchKeyword,
+          warehouse: selectedWarehouse,
+          days: selectedDay == "custom" ? "" : selectedDay,
+          start: startDate == "-" ? "" : startDate,
+          end: endDate == "-" ? "" : endDate,
           client_Tz: moment.tz.guess(),
         },
       })
@@ -358,7 +362,7 @@ function Inbound() {
   );
 
   const resetFilters = () => {
-    setSelectedWarehouse(null);
+    // setSelectedWarehouse(null);
     // setSelectedProduct(null)
     setSelectedDay(null);
     setStartDate(null);

@@ -12,6 +12,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Grid,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -99,7 +100,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
     },
     {
       id: "committedQuantity",
-      label: "QUANTITY COMMITED",
+      label: "QUANTITY COMMITTED",
       minWidth: "auto",
       className: classes.topTableItem,
     },
@@ -143,51 +144,112 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
           console.log(err);
         });
   }, [selectedProduct]);
+
+  // if(selectedProduct){console.log(selectedProduct)}
   return selectedProduct ? (
     <div style={{ display: "inline" }}>
       <form>
         <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
           <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: "80vh" }}>
-            <img style={{ width: "15%", margin: "20px", marginLeft: "45px" }} src={owareLogo} />
-            <Typography style={{ marginLeft: "40px", marginBottom: "10px", marginTop: "10px" }} variant="h3">
+          {/* For Print View */}
+          <Box display="none" displayPrint="block">
+          <Box style={{ padding: "0mm 0mm" }}>
+            <img style={{ width: "20%", margin: "20px 0px" }} src={owareLogo} />
+            <Typography style={{ marginBottom: "10px", marginTop: "10px" }} variant="h3">
               Product Details
-              <Box display="inline" displayPrint="none">
-                <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
-              </Box>
             </Typography>
-
-            <TableContainer className={classes.tableContainerTop}>
-              <Table stickyHeader aria-label="sticky table">
-                <TableHead>
-                  {columnsTop.map((column, index) => (
-                    <TableCell key={index} align={column.align} className={classes.tableHeaderItem}>
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableHead>
-                <TableBody>
-                  <TableRow role="checkbox" tabIndex={-1} key={selectedProduct.id}>
-                    {columnsTop.map((column) => {
-                      const value = selectedProduct[column.id];
-                      return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          style={{ paddingTop: "0" }}
-                          className={
-                            column.className && typeof column.className === "function"
-                              ? column.className(value)
-                              : column.className
-                          }
-                        >
-                          {column.format ? column.format(value, selectedProduct) : value || ""}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
+    
+            {/* <Box display="none" displayPrint="block"> */}
+                  <Grid container item xs={12} style={{ marginTop: 20 }} justifyContent="space-between">
+                    <Grid container spacing={2}>
+                      <Grid style={{ fontWeight: 500 }} item xs={6}>
+                        Product Name :
+                      </Grid>
+                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
+                        {selectedProduct.Product.name || "-"}
+                      </Grid>
+                      <Grid style={{ fontWeight: 500 }} item xs={6}>
+                        Category :
+                      </Grid>
+                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
+                        {selectedProduct.Product.Category.name || "-"}
+                      </Grid>
+                      <Grid style={{ fontWeight: 500 }} item xs={6}>
+                        Warehouse:
+                      </Grid>
+                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
+                        {selectedProduct.Warehouse.name || "-"}
+                      </Grid>
+                      <Grid style={{ fontWeight: 500 }} item xs={6}>
+                        Brand :
+                      </Grid>
+                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
+                        {selectedProduct.Product.Brand.name || "-"}
+                      </Grid>
+                      <Grid style={{ fontWeight: 500 }} item xs={6}>
+                        Quantity Available :
+                      </Grid>
+                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
+                        {selectedProduct.availableQuantity || "-"}
+                      </Grid>
+                      <Grid style={{ fontWeight: 500 }} item xs={6}>
+                        Quantity Committed :
+                      </Grid>
+                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
+                        {selectedProduct.committedQuantity || "-"}
+                      </Grid>
+                      <Grid style={{ fontWeight: 500 }} item xs={6}>
+                        Quantity Dispatched :
+                      </Grid>
+                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
+                        {selectedProduct.dispatchedQuantity || "-"}
+                      </Grid>
+                    
+                    </Grid>
+                </Grid>
+              </Box>
+            </Box>
+            <Box display="block" displayPrint="none">
+              <img style={{ width: "15%", margin: "20px", marginLeft: "25px" }} src={owareLogo} />
+              <Typography style={{ marginLeft: "40px", marginBottom: "10px", marginTop: "10px" }} variant="h3">
+                Product Details
+                <Box display="inline" displayPrint="none">
+                  <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
+                </Box>
+              </Typography>
+              <TableContainer className={classes.tableContainerTop}>
+                <Table stickyHeader aria-label="sticky table">
+                  <TableHead>
+                    {columnsTop.map((column, index) => (
+                      <TableCell key={index} align={column.align} className={classes.tableHeaderItem}>
+                        {column.label}
+                      </TableCell>
+                    ))}
+                  </TableHead>
+                  <TableBody>
+                    <TableRow role="checkbox" tabIndex={-1} key={selectedProduct.id}>
+                      {columnsTop.map((column) => {
+                        const value = selectedProduct[column.id];
+                        return (
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            style={{ paddingTop: "0" }}
+                            className={
+                              column.className && typeof column.className === "function"
+                                ? column.className(value)
+                                : column.className
+                            }
+                          >
+                            {column.format ? column.format(value, selectedProduct) : value || ""}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+          </Box>
           </DialogContent>
           <Box display="block" displayPrint="none">
             <DialogActions style={{ boxSizing: "border-box", padding: "10px 19px" }}>

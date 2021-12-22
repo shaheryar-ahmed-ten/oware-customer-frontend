@@ -3,7 +3,7 @@ import React from 'react'
 
 const useStyles = makeStyles({
     root: {
-        height: 370,
+        // height: 640,
         width: "100%",
         display: "flex",
         flexFlow: "column",
@@ -51,7 +51,7 @@ const useStyles = makeStyles({
         paddingLeft: "10px"
     }
 })
-function SecondaryRideWidget({ icon, name, value, totalUnassigned, totalAssigned, totalCompleted, totalInprogress, totalCancelled, type }) {
+function SecondaryRideWidget({ icon, name, value, totalNotAssigned, totalOnTheWay, totalLoadingComplete, totalScheduled, totalArrived, totalLoadingInProgress, totalCancelled, totalCompleted, totalJourneyInProgress, type }) {
     const classes = useStyles()
     return (
         <>
@@ -68,32 +68,68 @@ function SecondaryRideWidget({ icon, name, value, totalUnassigned, totalAssigned
                 </Typography>
 
                 <br />
-                <Divider style={{backgroundColor: "rgb(224 224 224)"}}/>
+                <Divider style={{ backgroundColor: "rgb(224 224 224)" }} />
                 <br />
                 <div className={classes.details}>
                     <Typography className={classes.detailsHead} gutterBottom>
-                        Unassigned
+                        Not Assigned
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
-                        {Math.round(totalUnassigned)} loads
+                        {Math.round(totalNotAssigned)} loads
                     </Typography>
                 </div>
                 <br />
                 <div className={classes.details}>
                     <Typography className={classes.detailsHead} gutterBottom>
-                        Assigned
+                        Scheduled
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
-                        {Math.round(totalAssigned)} loads
+                        {Math.round(totalScheduled)} loads
                     </Typography>
                 </div>
                 <br />
                 <div className={classes.details}>
                     <Typography className={classes.detailsHead} gutterBottom>
-                        In-Progress
+                        On The Way
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
-                        {Math.round(totalInprogress)} loads
+                        {Math.round(totalOnTheWay)} loads
+                    </Typography>
+                </div>
+                <br />
+                <div className={classes.details}>
+                    <Typography className={classes.detailsHead} gutterBottom>
+                        Arrived
+                    </Typography>
+                    <Typography className={classes.detailsValue} gutterBottom>
+                        {Math.round(totalArrived)} loads
+                    </Typography>
+                </div>
+                <br />
+                <div className={classes.details}>
+                    <Typography className={classes.detailsHead} gutterBottom>
+                        Loading In Progress
+                    </Typography>
+                    <Typography className={classes.detailsValue} gutterBottom>
+                        {Math.round(totalLoadingInProgress)} loads
+                    </Typography>
+                </div>
+                <br />
+                <div className={classes.details}>
+                    <Typography className={classes.detailsHead} gutterBottom>
+                        Loading Complete
+                    </Typography>
+                    <Typography className={classes.detailsValue} gutterBottom>
+                        {Math.round(totalLoadingComplete)} loads
+                    </Typography>
+                </div>
+                <br />
+                <div className={classes.details}>
+                    <Typography className={classes.detailsHead} gutterBottom>
+                        Journey In Progress
+                    </Typography>
+                    <Typography className={classes.detailsValue} gutterBottom>
+                        {Math.round(totalJourneyInProgress)} loads
                     </Typography>
                 </div>
                 <br />
