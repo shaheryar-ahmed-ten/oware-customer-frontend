@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   carIcon: {
     color: "#000000",
-    paddingRight:4
+    paddingRight: 4
   },
   activityGrid: {
     marginTop: "47px",
@@ -75,136 +75,18 @@ const useStyles = makeStyles((theme) => ({
 
 function DashboardTransactions() {
   const classes = useStyles();
-  const columns = [
-    {
-      id: "id",
-      label: "RIDE ID",
-      minWidth: "auto",
-      className: classes.productNameStyle,
-      format: (value, entity) => entity.id,
-    },
-    {
-      id: "price",
-      label: "PRICE",
-      minWidth: "auto",
-      className: classes.orderIdStyle,
-      format: (value, entity) => `RS. ${entity.price ? entity.price : "-"}`,
-    },
-    {
-      id: "pickupDate",
-      label: "PICKUP DATE/TIME",
-      minWidth: "auto",
-      className: classes.orderIdStyle,
-      format: dateFormat,
-    },
-    {
-      id: "pickupCity.name",
-      label: "PICKUP CITY",
-      minWidth: "auto",
-      className: classes.orderIdStyle,
-      format: (value, entity) => (entity.pickupCity ? entity.pickupCity.name : null),
-    },
-    // {
-    //   id: "pickupAddress",
-    //   label: "PICKUP ADDRESS",
-    //   minWidth: "auto",
-    //   className: classes.orderIdStyle,
-    //   format: (value, entity) => entity.pickupAddress,
-    // },
-    {
-      id: "dropoffCity.name",
-      label: "DROPOFF CITY",
-      minWidth: "auto",
-      className: classes.orderIdStyle,
-      format: (value, entity) => (entity.dropoffCity ? entity.dropoffCity.name : null),
-    },
-    {
-      id: "dropoffDate",
-      label: "DROPOFF DATE/TIME",
-      minWidth: "auto",
-      className: classes.orderIdStyle,
-      format: dateFormat,
-    },
-    {
-      id: "status",
-      label: "STATUS",
-      minWidth: "auto",
-      className: classes.orderIdStyle,
-      format: (value, entity) =>
-        entity.status === "ASSIGNED" ? (
-          <Button color="primary" className={clsx(classes.statusButtons, classes.fullfilledStatusButtonStyling)}>
-            ASSIGNED
-          </Button>
-        ) : entity.status === "PENDING" ? (
-          <Button color="primary" className={clsx(classes.statusButtons, classes.pendingStatusButtonStyling)}>
-            PENDING
-          </Button>
-        ) : entity.status === "UNASSIGNED" ? (
-          <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
-            UNASSIGNED
-          </Button>
-        ) : entity.status === "INPROGRESS" ? (
-          <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
-            IN-PROGRESS
-          </Button>
-        ) : entity.status === "COMPLETED" ? (
-          <Button color="primary" className={clsx(classes.statusButtons, classes.completedStatusButtonStyling)}>
-            COMPLETED
-          </Button>
-        ) : entity.status === "CANCELLED" ? (
-          <Button color="primary" className={clsx(classes.statusButtons, classes.partialStatusButtonStyling)}>
-            CANCELLED
-          </Button>
-        ) : (
-          ""
-        ),
-    },
-  ];
 
   const [inboundStats, setInboundStats] = useState(null);
   const [outboundStats, setOutboundStats] = useState(null);
   const [rideStats, setRideStats] = useState(null);
   const [generalStats, setGeneralStats] = useState(null);
-  const [logistics, setLogistics] = useState([]);
-  const [logisticDetailsViewOpen, setLogisticDetailsViewOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const openViewDetails = (logistic) => {
-    setSelectedProduct(logistic);
-    setLogisticDetailsViewOpen(true);
-  };
-  const closeLogisticDetailsView = () => {
-    setLogisticDetailsViewOpen(false);
-    setSelectedProduct(null);
-  };
-  useEffect(() => {
-    getLogistics();
-  }, []);
-  const _getLogistics = () => {
-    axios
-      .get(getURL(`/dashboard/ride`), {
-        params: {},
-      })
-      .then((res) => {
-        setLogistics(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const getLogistics = useCallback(
-    debounce(() => {
-      _getLogistics();
-    }, DEBOUNCE_TIME),
-    []
-  );
-  const redirectToRide = () => {
-    navigate("/logistics");
-  };
+
 
   useEffect(() => {
     axios.get(getURL(`/dashboard`)).then((response) => {
+      console.log(response.data.rideStats)
       setInboundStats(response.data.inboundStats);
       setOutboundStats(response.data.outboundStats);
       setGeneralStats(response.data.generalStats);
@@ -229,9 +111,6 @@ function DashboardTransactions() {
           <Grid item xs={3}>
             <PrimaryWidget name="Warehouse Used" value={generalStats ? generalStats.warehouses : 0} />
           </Grid>
-          {/* <Grid item xs={2}>
-            <PrimaryWidget name="Pending Rides" value={generalStats ? generalStats.rides : 0} />
-          </Grid> */}
           <Grid item xs={3}>
             <PrimaryWidget name="Completed Loads" value={generalStats ? generalStats.completedRides : 0} />
           </Grid>
@@ -264,16 +143,19 @@ function DashboardTransactions() {
         <Grid container spacing={2} item={12} justify="space-between" className={classes.rideActivityGrid}>
           <Grid item xs={12}>
             <SecondaryRideWidget
-              // icon={<DirectionCar className={classes.carIcon} />}
-              icon={<img src="https://img.icons8.com/material/24/000000/container-truck.png" className={classes.carIcon}/>}
+              icon={<img src="https://img.icons8.com/material/24/000000/container-truck.png" className={classes.carIcon} />}
               name="Loads"
               value={rideStats && rideStats.total ? rideStats.total : 0}
               type="Loads Created"
-              totalUnassigned={rideStats && rideStats.unassigned ? rideStats.unassigned : 0}
-              totalAssigned={rideStats && rideStats.assigned ? rideStats.assigned : 0}
-              totalInprogress={rideStats && rideStats.inprogress ? rideStats.inprogress : 0}
+              totalNotAssigned={rideStats && rideStats.notAssigned ? rideStats.notAssigned : 0}
+              totalOnTheWay={rideStats && rideStats.onTheWay ? rideStats.onTheWay : 0}
+              totalLoadingComplete={rideStats && rideStats.loadingComplete ? rideStats.loadingComplete : 0}
+              totalScheduled={rideStats && rideStats.scheduled ? rideStats.scheduled : 0}
+              totalArrived={rideStats && rideStats.arrived ? rideStats.arrived : 0}
+              totalLoadingInProgress={rideStats && rideStats.loadingInProgress ? rideStats.loadingInProgress : 0}
               totalCancelled={rideStats && rideStats.cancelled ? rideStats.cancelled : 0}
               totalCompleted={rideStats && rideStats.completed ? rideStats.completed : 0}
+              totalJourneyInProgress={rideStats && rideStats.journeyInProgress ? rideStats.journeyInProgress : 0}
             />
           </Grid>
         </Grid>

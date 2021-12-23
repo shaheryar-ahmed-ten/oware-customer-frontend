@@ -266,7 +266,7 @@ function Outbound() {
     setOpen(false);
   };
   const resetFilters = () => {
-    setSelectedWarehouse(null);
+    // setSelectedWarehouse(null);
     setSelectedProduct(null);
     setSelectedDay(null);
     setSelectedStatus(null);
@@ -485,6 +485,12 @@ function Outbound() {
         params: {
           page,
           search: searchKeyword,
+          warehouse: selectedWarehouse,
+          product: selectedProduct,
+          status: selectedStatus,
+          days: selectedDay == "custom" ? "" : selectedDay,
+          start: startDate == "-" ? "" : startDate,
+          end: endDate == "-" ? "" : endDate,
           client_Tz: moment.tz.guess(),
         },
       })

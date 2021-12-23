@@ -175,8 +175,8 @@ function Navbar(props) {
       title: "Orders",
       icon: <EventNoteOutlinedIcon fontSize="small" />,
       route: "/operation-transactions/orders",
-      color: currentLocation.includes("orders") ? "#01D5FF" : "#383838",
-      bgColor: currentLocation.includes("orders") ? "rgba(48, 220, 255, 0.05)" : "#FFFFFF",
+      color: ["/operation-transactions/orders","/outward/add"].includes(currentLocation) ? "#01D5FF" : "#383838",
+      bgColor: ["/operation-transactions/orders","/outward/add"].includes(currentLocation) ? "rgba(48, 220, 255, 0.05)" : "#FFFFFF",
       canActivate: checkPermission(currentUser, CP_ORDER_FULL),
     },
     {
