@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,  Button,DialogTitle,Dialog,DialogActions,DialogContent,ListItemText,TextField, } from '@material-ui/core';
+import { Box, Divider, Grid, InputAdornment, InputBase, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Button, DialogTitle, Dialog, DialogActions, DialogContent, ListItemText, TextField, } from '@material-ui/core';
 import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
 import { dateFormat, getURL, dividerDateFormatForFilter } from "../../utils/common"
@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
     externalHeader: {
         display: "flex",
         justifyContent: "space-between",
-      },
+    },
 }));
 function Products() {
     const classes = useStyles()
@@ -175,27 +175,27 @@ function Products() {
 
     const [days] = useState([
         {
-          id: 7,
-          name: "7 days",
+            id: 7,
+            name: "7 days",
         },
         {
-          id: 14,
-          name: "14 days",
+            id: 14,
+            name: "14 days",
         },
         {
-          id: 30,
-          name: "30 days",
+            id: 30,
+            name: "30 days",
         },
         {
-          id: 60,
-          name: "60 days",
+            id: 60,
+            name: "60 days",
         },
-      ]);
-      const [open, setOpen] = useState(false);
-      const [mounted, setMounted] = useState(false);
-      const [startDate, setStartDate] = useState(dividerDateFormatForFilter(null));
-      const [endDate, setEndDate] = useState(dividerDateFormatForFilter(null));
-      const [selectedDay, setSelectedDay] = useState(null);
+    ]);
+    const [open, setOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    const [startDate, setStartDate] = useState(dividerDateFormatForFilter(null));
+    const [endDate, setEndDate] = useState(dividerDateFormatForFilter(null));
+    const [selectedDay, setSelectedDay] = useState(null);
 
 
     const handleClose = () => {
@@ -207,101 +207,103 @@ function Products() {
         setSelectedDay(null);
         setStartDate(null);
         setEndDate(null);
-      };
+    };
 
-      const startDateRange = (
+    const startDateRange = (
         <TextField
-          id="date"
-          label="From"
-          type="date"
-          variant="outlined"
-          className={classes.textFieldRange}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{ max: endDate ? endDate : dividerDateFormatForFilter(Date.now()) }}
-          defaultValue={startDate}
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          margin="dense"
+            id="date"
+            label="From"
+            type="date"
+            variant="outlined"
+            className={classes.textFieldRange}
+            InputLabelProps={{
+                shrink: true,
+            }}
+            inputProps={{ max: endDate ? endDate : dividerDateFormatForFilter(Date.now()) }}
+            defaultValue={startDate}
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            margin="dense"
         />
-      );
-      const endDateRange = (
+    );
+    const endDateRange = (
         <TextField
-          id="date"
-          label="To"
-          type="date"
-          variant="outlined"
-          className={classes.textFieldRange}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{ min: startDate, max: dividerDateFormatForFilter(Date.now()) }}
-          defaultValue={endDate}
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          margin="dense"
+            id="date"
+            label="To"
+            type="date"
+            variant="outlined"
+            className={classes.textFieldRange}
+            InputLabelProps={{
+                shrink: true,
+            }}
+            inputProps={{ min: startDate, max: dividerDateFormatForFilter(Date.now()) }}
+            defaultValue={endDate}
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            margin="dense"
         />
-      );
-    
-      const daysSelect = (
+    );
+
+    const daysSelect = (
         <SelectCustomDropdown
-          icon={<CalendarTodayOutlinedIcon fontSize="small" />}
-          resetFilters={resetFilters}
-          type="Days"
-          name="Select Days"
-          list={[{ name: "All" }, ...days]}
-          selectedType={selectedDay}
-          open={open}
-          setOpen={setOpen}
-          setSelectedType={setSelectedDay}
-          setPage={setPage}
-          startDate={startDate}
-          endDate={endDate}
-        />
-      );
-    
-      const dummySelect = <Box />;
-    
-      const customOption = (
-        <>
-          <Dialog
+            icon={<CalendarTodayOutlinedIcon fontSize="small" />}
+            resetFilters={resetFilters}
+            type="Days"
+            name="Select Days"
+            list={[{ name: "All" }, ...days]}
+            selectedType={selectedDay}
             open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">{"Date Range"}</DialogTitle>
-            <DialogContent>
-              <ListItemText>{startDateRange}</ListItemText>
-              <ListItemText>{endDateRange}</ListItemText>
-              {/* {startDateRange}
+            setOpen={setOpen}
+            setSelectedType={setSelectedDay}
+            setPage={setPage}
+            startDate={startDate}
+            endDate={endDate}
+        />
+    );
+
+    const dummySelect = <Box />;
+
+    const customOption = (
+        <>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Date Range"}</DialogTitle>
+                <DialogContent>
+                    <ListItemText>{startDateRange}</ListItemText>
+                    <ListItemText>{endDateRange}</ListItemText>
+                    {/* {startDateRange}
               {endDateRange} */}
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={() => {
-                  setMounted(!mounted);
-                  handleClose();
-                }}
-                autoFocus
-                className={classes.buttonDate}
-              >
-                OK
-              </Button>
-            </DialogActions>
-          </Dialog>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setMounted(!mounted);
+                            handleClose();
+                        }}
+                        autoFocus
+                        className={classes.buttonDate}
+                    >
+                        OK
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
-      );
-    
+    );
+
 
     useEffect(() => {
-        getProducts(page, searchKeyword,selectedDay, startDate, endDate)
+        getProducts(page, searchKeyword, selectedDay, startDate, endDate)
     }, [page, searchKeyword, selectedDay, startDate, endDate])
+
     useEffect(() => {
         getRealtions()
     }, [])
-    const _getProducts = (page, searchKeyword, selectedDay, startDate, endDate ) => {
+
+    const _getProducts = (page, searchKeyword, selectedDay, startDate, endDate) => {
         axios.get(getURL(`/product`), {
             params: {
                 page,
@@ -322,8 +324,9 @@ function Products() {
                 console.log(err)
             })
     }
-    const getProducts = useCallback(debounce((page, searchKeyword, selectedDay, startDate, endDate ) => {
-        _getProducts(page, searchKeyword, selectedDay, startDate, endDate )
+
+    const getProducts = useCallback(debounce((page, searchKeyword, selectedDay, startDate, endDate) => {
+        _getProducts(page, searchKeyword, selectedDay, startDate, endDate)
     }, DEBOUNCE_TIME), [])
 
     const getRealtions = () => {
@@ -340,6 +343,7 @@ function Products() {
         setSelectedProduct(product);
         setProductDetailsViewOpen(true)
     }
+
     const closeOutboundDetailsView = () => {
         setProductDetailsViewOpen(false)
         setSelectedProduct(null)
@@ -364,27 +368,25 @@ function Products() {
             </InputAdornment>
         }
     />
-    // const resetFilters = () => {
-    //     setSelectedProductForDropdown(null);
-    // }
+
     const exportToExcel = () => {
         axios
-          .get(getURL("product/export"), {
-            responseType: "blob",
-            params: {
-              page,
-              search: searchKeyword,
-            //   product: selectedProductForDropdown,
-              days: selectedDay == "custom" ? "" : selectedDay,
-              start: startDate == "-" ? "" : startDate,
-              end: endDate == "-" ? "" : endDate,
-              client_Tz: moment.tz.guess(),
-            },
-          })
-          .then((response) => {
-            FileDownload(response.data, `Products ${moment().format("DD-MM-yyyy")}.xlsx`);
-          });
-      };
+            .get(getURL("product/export"), {
+                responseType: "blob",
+                params: {
+                    page,
+                    search: searchKeyword,
+                    days: selectedDay == "custom" ? "" : selectedDay,
+                    start: startDate == "-" ? "" : startDate,
+                    end: endDate == "-" ? "" : endDate,
+                    client_Tz: moment.tz.guess(),
+                },
+            })
+            .then((response) => {
+                FileDownload(response.data, `Products ${moment().format("DD-MM-yyyy")}.xlsx`);
+            });
+    };
+
     const productSelect = <SelectDropdown icon={<ClassOutlinedIcon fontSize="small" />} resetFilters={resetFilters} type="Products" name="Select Product" list={[{ name: 'All' }, ...customerProducts]} selectedType={selectedProductForDropdown} setSelectedType={setSelectedProductForDropdown} />
 
     const productDetailsView = <ProductDetails open={productDetailsViewOpen} handleClose={closeOutboundDetailsView} selectedProduct={selectedProduct} />
@@ -412,7 +414,7 @@ function Products() {
                     >
                         {" "}
                         EXPORT TO EXCEL
-                </Button>
+                    </Button>
                 </Grid>
                 <Grid item xs={12}>
                     <TableContainer className={classes.tableContainer}>

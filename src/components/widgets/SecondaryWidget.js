@@ -75,7 +75,7 @@ function SecondaryWidget({ icon, name, value, totalQuantity, totalVolume, type }
                         Total Weight
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
-                        {Math.round(totalQuantity)} kgs
+                        {Math.round(totalQuantity).toLocaleString()} kgs
                     </Typography>
                 </div>
                 <br />
@@ -84,7 +84,7 @@ function SecondaryWidget({ icon, name, value, totalQuantity, totalVolume, type }
                         Total Volume
                     </Typography>
                     <Typography className={classes.detailsValue} gutterBottom>
-                        {Math.round(totalVolume)} cm3
+                        {Math.round(totalVolume).toLocaleString()} cm3
                     </Typography>
                 </div>
 

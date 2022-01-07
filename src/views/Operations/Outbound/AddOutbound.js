@@ -87,7 +87,7 @@ export default function AddDispatchOrderView() {
     [inventories, setInventories] = useState([]),
     [showMessage, setShowMessage] = useState(null),
     [messageType, setMessageType] = useState(null);
-    const [orderMemo, setOrderMemo] = useState('');
+  const [orderMemo, setOrderMemo] = useState('');
 
   useEffect(() => {
     if (!!selectedDispatchOrder) {
@@ -222,13 +222,15 @@ export default function AddDispatchOrderView() {
   };
 
   const updateDispatchOrdersTable = () => {
-    if (isRequired(customerId) &&
+    if (
+      isRequired(customerId) &&
       isRequired(warehouseId) &&
-      isRequired(receiverName) &&
-      isRequired(receiverPhone) &&
+      // isRequired(receiverName) &&
+      // isRequired(receiverPhone) &&
       isRequired(productId) &&
-      isRequired(quantity) &&
-      isPhone(receiverPhone.replace(/-/g, ''))) {
+      isRequired(quantity)
+      // && isPhone(receiverPhone.replace(/-/g, ''))
+    ) {
       // checking if particular product is already added once
       // if yes
       if (checkForMatchInArray(inventories, "id", inventoryId)) {
@@ -249,8 +251,8 @@ export default function AddDispatchOrderView() {
       setValidation({
         customerId: true,
         warehouseId: true,
-        receiverName: true,
-        receiverPhone: true,
+        // receiverName: true,
+        // receiverPhone: true,
         productId: true,
         quantity: true
       });
@@ -261,7 +263,7 @@ export default function AddDispatchOrderView() {
   const handleSubmit = e => {
     setMessageType('green')
     let strRecieverPhone = receiverPhone
-    let strRecPhone = strRecieverPhone.replace(/-/g, '');
+    let strRecPhone = strRecieverPhone ? strRecieverPhone.replace(/-/g, '') : '';
     const newDispatchOrder = {
       quantity,
       inventories,
@@ -286,6 +288,8 @@ export default function AddDispatchOrderView() {
       receiverPhone: true
     });
     if (
+      isRequired(customerId) &&
+      isRequired(warehouseId) &&
       isRequired(shipmentDate) &&
       isRequired(receiverName) &&
       isRequired(receiverPhone)) {
@@ -366,12 +370,12 @@ export default function AddDispatchOrderView() {
                 onChange={e => {
                   setReceiverPhone(e.target.value)
                 }}
-              // onBlur={e => setValidation({ ...validation, receiverPhone: true })}
+                onBlur={e => setValidation({ ...validation, receiverPhone: true })}
               />
-              {(validation.receiverPhone && isRequired(receiverPhone) && !isPhone(receiverPhone.replace(/-/g, ''))) ? 
-              (validation.receiverPhone && isRequired(receiverPhone) && !isPhone(receiverPhone.replace(/-/g, '')) ? <Typography color="error" style={{marginTop:12}}>Receiver's correct phone number is required!</Typography> : '') 
-              :
-              (validation.receiverPhone && !isRequired(receiverPhone) ? <Typography color="error" style={{marginTop:12}}>Receiver phone is required!</Typography> : <Typography color="error" style={{ visibility: 'hidden' }}>Dummy</Typography>)
+              {(validation.receiverPhone && isRequired(receiverPhone) && !isPhone(receiverPhone.replace(/-/g, ''))) ?
+                (validation.receiverPhone && isRequired(receiverPhone) && !isPhone(receiverPhone.replace(/-/g, '')) ? <Typography color="error" style={{ marginTop: 12 }}>Receiver's correct phone number is required!</Typography> : '')
+                :
+                (validation.receiverPhone && !isRequired(receiverPhone) ? <Typography color="error" style={{ marginTop: 12 }}>Receiver phone is required!</Typography> : <Typography color="error" style={{ visibility: 'hidden' }}>Dummy</Typography>)
               }
             </Grid>
             <Grid item sm={12}>
@@ -420,9 +424,9 @@ export default function AddDispatchOrderView() {
                 value={orderMemo}
                 onChange={(e) => setOrderMemo(e.target.value)}
               />
-             <Typography style={{ color: "#1d1d1d", fontSize: 12 }}>Max Length (1000 characters)</Typography>
+              <Typography style={{ color: "#1d1d1d", fontSize: 12 }}>Max Length (1000 characters)</Typography>
 
-        </Grid>
+            </Grid>
 
             <Grid item xs={12}>
               <Typography style={{ marginTop: "20px" }} variant="h4" className={classes.heading}>Product Details</Typography>
@@ -440,7 +444,7 @@ export default function AddDispatchOrderView() {
                     }}
                     renderInput={(params) => <TextField {...params} label="Product" variant="outlined" />}
                     onBlur={e => setValidation({ ...validation, productId: true })}
-                    style={{marginTop:3}}
+                    style={{ marginTop: 3 }}
                   />
                   {/* {validation.productId && !isRequired(productId) ? <Typography color="error">Product is required!</Typography> : ''} */}
                 </FormControl>
@@ -492,10 +496,10 @@ export default function AddDispatchOrderView() {
             </Grid>
             <Grid container item xs={12} alignItems="center" spacing={1}>
               <Grid item sm={4}>
-              {validation.productId && !isRequired(productId) ? <Typography color="error">Product is required!</Typography> : ''}
+                {validation.productId && !isRequired(productId) ? <Typography color="error">Product is required!</Typography> : ''}
               </Grid>
               <Grid item sm={2}>
-              {validation.productId && !isRequired(productId) ? <Typography color="error">Product is required!</Typography> : ''}
+                {validation.productId && !isRequired(productId) ? <Typography color="error">Product is required!</Typography> : ''}
               </Grid>
             </Grid>
 
@@ -512,10 +516,10 @@ export default function AddDispatchOrderView() {
                       style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
                       Requested Quantity
                     </TableCell>
-                    <TableCell
+                    {/* <TableCell
                       style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
                       Available Quantity
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell
                       style={{ background: 'transparent', fontWeight: 'bolder', fontSize: '12px' }}>
                       UOM
@@ -536,9 +540,9 @@ export default function AddDispatchOrderView() {
                         <TableCell>
                           {dispatchGroup.quantity}
                         </TableCell>
-                        <TableCell>
+                        {/* <TableCell>
                           {availableQuantity}
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell>
                           {dispatchGroup.product.UOM.name}
                         </TableCell>

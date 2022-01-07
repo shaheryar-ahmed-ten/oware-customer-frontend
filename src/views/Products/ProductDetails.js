@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getURL } from "../../utils/common";
+import { dateFormatWithoutTime, getURL } from "../../utils/common";
 import owareLogo from "../../assets/logo/oware-logo-black.png";
 import PrintOutlinedIcon from "@material-ui/icons/PrintOutlined";
 
@@ -93,6 +93,13 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
       format: (value, entity) => entity.Product.Brand.name,
     },
     {
+      id: "uom",
+      label: "UOM",
+      minWidth: "auto",
+      className: classes.topTableItem,
+      format: (value, entity) => entity.Product.UOM.name,
+    },
+    {
       id: "availableQuantity",
       label: "QUANTITY AVAILABLE",
       minWidth: "auto",
@@ -110,124 +117,293 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
       minWidth: "auto",
       className: classes.topTableItem,
     },
+
+    // {
+    //   id: "manuDate",
+    //   label: "MANUFACTURING DATE",
+    //   minWidth: "auto",
+    //   className: classes.topTableItem,
+    //   format: (value, format) => '-'
+    // },
+    // {
+    //   id: "expDate",
+    //   label: "EXPIRY DATE",
+    //   minWidth: "auto",
+    //   className: classes.topTableItem,
+    //   format: (value, format) => '-'
+    // },
+    // {
+    //   id: "batchNumber",
+    //   label: "BATCH NUMBER",
+    //   minWidth: "auto",
+    //   className: classes.topTableItem,
+    //   format: (value, format) => '-'
+    // },
+    // {
+    //   id: "batchName",
+    //   label: "BATCH NAME",
+    //   minWidth: "auto",
+    //   className: classes.topTableItem,
+    //   format: (value, format) => '-'
+    // },
   ];
-  // const columns = [
-  //     {
-  //         id: 'Warehouse.name',
-  //         label: 'WAREHOUSE',
-  //         minWidth: 'auto',
-  //         className: '',
-  //         format: (value, entity) => entity.Warehouse.name,
-  //     },
-  //     {
-  //         id: 'availableQuantity',
-  //         label: 'QUANTITY AVAILABLE',
-  //         minWidth: 'auto',
-  //         className: '',
-  //     },
-  //     {
-  //         id: 'committedQuantity',
-  //         label: 'QUANTITY COMMITED',
-  //         minWidth: 'auto',
-  //         className: '',
-  //     },
-  // ]
-  const [selectedProductDetails, setSelectedProductDetails] = useState([]);
+
+  const columns = [
+    {
+      id: "batchNumber",
+      label: "BATCH NUMBER",
+      minWidth: "auto",
+      className: "",
+      format: (value, entity) => entity.batchNumber,
+    },
+    {
+      id: "batchName",
+      label: "BATCH NAME",
+      minWidth: "auto",
+      className: "",
+      format: (value, entity) => entity.batchName,
+    },
+    {
+      id: "availableQuantity",
+      label: "AVAILABLE QUANTITY",
+      minWidth: "auto",
+      className: "",
+    },
+    {
+      id: "outwardQuantity",
+      label: "DISPATCHED QUANTITY",
+      minWidth: "auto",
+      className: "",
+      format: (value, entity) => entity.outwardQuantity,
+    },
+    {
+      id: "manuDate",
+      label: "MANUFACTURING DATE",
+      minWidth: "auto",
+      className: "",
+      format: (value, entity) => {
+        return dateFormatWithoutTime(entity.manufacturingDate);
+      },
+    },
+    {
+      id: "expDate",
+      label: "EXPIRY DATE",
+      minWidth: "auto",
+      className: "",
+      format: (value, entity) => {
+        return dateFormatWithoutTime(entity.expiryDate);
+      },
+    },
+  ];
+
+  const [selectedProductDetails, setSelectedProductDetails] = useState([]); // inv details
+
   useEffect(() => {
     if (selectedProduct)
       axios
-        .get(getURL(`/product/${selectedProduct.id}`))
+        .get(getURL(`/product/batches/${selectedProduct.id}`))
         .then((response) => {
-          setSelectedProductDetails(response.data.data);
+          setSelectedProductDetails(response.data.batches);
         })
         .catch((err) => {
           console.log(err);
         });
   }, [selectedProduct]);
 
-  // if(selectedProduct){console.log(selectedProduct)}
   return selectedProduct ? (
     <div style={{ display: "inline" }}>
       <form>
-        <Dialog open={open} onClose={handleClose} maxWidth="lg" aria-labelledby="form-dialog-title">
-          <DialogContent className={classes.dialogContent} style={{ padding: 0, minHeight: "80vh" }}>
-          {/* For Print View */}
-          <Box display="none" displayPrint="block">
-          <Box style={{ padding: "0mm 0mm" }}>
-            <img style={{ width: "20%", margin: "20px 0px" }} src={owareLogo} />
-            <Typography style={{ marginBottom: "10px", marginTop: "10px" }} variant="h3">
-              Product Details
-            </Typography>
-    
-            {/* <Box display="none" displayPrint="block"> */}
-                  <Grid container item xs={12} style={{ marginTop: 20 }} justifyContent="space-between">
-                    <Grid container spacing={2}>
-                      <Grid style={{ fontWeight: 500 }} item xs={6}>
-                        Product Name :
-                      </Grid>
-                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
-                        {selectedProduct.Product.name || "-"}
-                      </Grid>
-                      <Grid style={{ fontWeight: 500 }} item xs={6}>
-                        Category :
-                      </Grid>
-                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
-                        {selectedProduct.Product.Category.name || "-"}
-                      </Grid>
-                      <Grid style={{ fontWeight: 500 }} item xs={6}>
-                        Warehouse:
-                      </Grid>
-                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
-                        {selectedProduct.Warehouse.name || "-"}
-                      </Grid>
-                      <Grid style={{ fontWeight: 500 }} item xs={6}>
-                        Brand :
-                      </Grid>
-                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
-                        {selectedProduct.Product.Brand.name || "-"}
-                      </Grid>
-                      <Grid style={{ fontWeight: 500 }} item xs={6}>
-                        Quantity Available :
-                      </Grid>
-                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
-                        {selectedProduct.availableQuantity || "-"}
-                      </Grid>
-                      <Grid style={{ fontWeight: 500 }} item xs={6}>
-                        Quantity Committed :
-                      </Grid>
-                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
-                        {selectedProduct.committedQuantity || "-"}
-                      </Grid>
-                      <Grid style={{ fontWeight: 500 }} item xs={6}>
-                        Quantity Dispatched :
-                      </Grid>
-                      <Grid item xs={6} style={{ fontStyle: "italic" }}>
-                        {selectedProduct.dispatchedQuantity || "-"}
-                      </Grid>
-                    
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          maxWidth="lg"
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogContent
+            className={classes.dialogContent}
+            style={{ padding: 0, minHeight: "80vh" }}
+          >
+            {/* For Print View */}
+            <Box display="none" displayPrint="block">
+              <Box style={{ padding: "0mm 0mm" }}>
+                <img
+                  style={{ width: "20%", margin: "20px 0px" }}
+                  src={owareLogo}
+                />
+                <Typography
+                  style={{ marginBottom: "10px", marginTop: "10px" }}
+                  variant="h3"
+                >
+                  Product Details
+                </Typography>
+
+                {/* <Box display="none" displayPrint="block"> */}
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  style={{ marginTop: 20 }}
+                  justifyContent="space-between"
+                >
+                  <Grid container spacing={2}>
+                    <Grid style={{ fontWeight: 500 }} item xs={3}>
+                      Product Name :
                     </Grid>
+                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                      {selectedProduct.Product.name || "-"}
+                    </Grid>
+                    <Grid style={{ fontWeight: 500 }} item xs={3}>
+                      Category :
+                    </Grid>
+                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                      {selectedProduct.Product.Category.name || "-"}
+                    </Grid>
+                    <Grid style={{ fontWeight: 500 }} item xs={3}>
+                      Warehouse:
+                    </Grid>
+                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                      {selectedProduct.Warehouse.name || "-"}
+                    </Grid>
+                    <Grid style={{ fontWeight: 500 }} item xs={3}>
+                      Brand :
+                    </Grid>
+                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                      {selectedProduct.Product.Brand.name || "-"}
+                    </Grid>
+                    <Grid style={{ fontWeight: 500 }} item xs={3}>
+                      UOM :
+                    </Grid>
+                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                      {selectedProduct.Product.UOM.name || "-"}
+                    </Grid>
+                    <Grid style={{ fontWeight: 500 }} item xs={3}>
+                      Quantity Available :
+                    </Grid>
+                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                      {selectedProduct.availableQuantity || "-"}
+                    </Grid>
+                    <Grid style={{ fontWeight: 500 }} item xs={3}>
+                      Quantity Committed :
+                    </Grid>
+                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                      {selectedProduct.committedQuantity || "-"}
+                    </Grid>
+                    <Grid style={{ fontWeight: 500 }} item xs={3}>
+                      Quantity Dispatched :
+                    </Grid>
+                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                      {selectedProduct.dispatchedQuantity || "-"}
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+                <Typography
+                  style={{ marginBottom: "10px", marginTop: "20px" }}
+                  variant="h3"
+                >
+                  Batch Details
+                </Typography>
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  style={{ marginTop: 20 }}
+                  justifyContent="space-between"
+                >
+                  <Grid container spacing={2}>
+                    {selectedProductDetails.map((prodDetail) => {
+                      return (
+                        <>
+                          <Grid style={{ fontWeight: 500 }} item xs={3}>
+                            Batch Number :
+                          </Grid>
+                          <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                            {prodDetail.batchNumber || "-"}
+                          </Grid>
+                          <Grid style={{ fontWeight: 500 }} item xs={3}>
+                            Batch Name :
+                          </Grid>
+                          <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                            {prodDetail.batchName || "-"}
+                          </Grid>
+                          <Grid style={{ fontWeight: 500 }} item xs={3}>
+                            Available Quantity :
+                          </Grid>
+                          <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                            {prodDetail.availableQuantity || "-"}
+                          </Grid>
+                          <Grid style={{ fontWeight: 500 }} item xs={3}>
+                            Dispatched Quantity :
+                          </Grid>
+                          <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                            {prodDetail.dispatchedQuantity || "-"}
+                          </Grid>
+                          <Grid style={{ fontWeight: 500 }} item xs={3}>
+                            Manufacturing Date :
+                          </Grid>
+                          <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                            {prodDetail.manufacturingDate
+                              ? dateFormatWithoutTime(
+                                  prodDetail.manufacturingDate
+                                )
+                              : "-"}
+                          </Grid>
+                          <Grid style={{ fontWeight: 500 }} item xs={3}>
+                            Expiry Date :
+                          </Grid>
+                          <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                            {prodDetail.expiryDate
+                              ? dateFormatWithoutTime(prodDetail.expiryDate)
+                              : "-"}
+                          </Grid>
+                        </>
+                      );
+                    })}
+                  </Grid>
                 </Grid>
               </Box>
             </Box>
+
             <Box display="block" displayPrint="none">
-              <img style={{ width: "15%", margin: "20px", marginLeft: "25px" }} src={owareLogo} />
-              <Typography style={{ marginLeft: "40px", marginBottom: "10px", marginTop: "10px" }} variant="h3">
+              <img
+                style={{ width: "15%", margin: "20px", marginLeft: "25px" }}
+                src={owareLogo}
+              />
+              <Typography
+                style={{
+                  marginLeft: "40px",
+                  marginBottom: "10px",
+                  marginTop: "10px",
+                }}
+                variant="h3"
+              >
                 Product Details
                 <Box display="inline" displayPrint="none">
-                  <PrintOutlinedIcon className={classes.icon} onClick={() => window.print()} />
+                  <PrintOutlinedIcon
+                    className={classes.icon}
+                    onClick={() => window.print()}
+                  />
                 </Box>
               </Typography>
               <TableContainer className={classes.tableContainerTop}>
                 <Table stickyHeader aria-label="sticky table">
                   <TableHead>
                     {columnsTop.map((column, index) => (
-                      <TableCell key={index} align={column.align} className={classes.tableHeaderItem}>
+                      <TableCell
+                        key={index}
+                        align={column.align}
+                        className={classes.tableHeaderItem}
+                      >
                         {column.label}
                       </TableCell>
                     ))}
                   </TableHead>
                   <TableBody>
-                    <TableRow role="checkbox" tabIndex={-1} key={selectedProduct.id}>
+                    <TableRow
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={selectedProduct.id}
+                    >
                       {columnsTop.map((column) => {
                         const value = selectedProduct[column.id];
                         return (
@@ -236,12 +412,15 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                             align={column.align}
                             style={{ paddingTop: "0" }}
                             className={
-                              column.className && typeof column.className === "function"
+                              column.className &&
+                              typeof column.className === "function"
                                 ? column.className(value)
                                 : column.className
                             }
                           >
-                            {column.format ? column.format(value, selectedProduct) : value || ""}
+                            {column.format
+                              ? column.format(value, selectedProduct)
+                              : value || ""}
                           </TableCell>
                         );
                       })}
@@ -249,11 +428,72 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                   </TableBody>
                 </Table>
               </TableContainer>
-          </Box>
+            </Box>
+            {selectedProductDetails && selectedProductDetails.length > 0 ? (
+              <Box display="block" displayPrint="none">
+                <TableContainer style={{ marginTop: "20px" }}>
+                  <Table aria-label="collapsible table">
+                    <TableHead>
+                      {columns.map((column, index) => (
+                        <TableCell
+                          key={index}
+                          align={column.align}
+                          className={classes.tableHeaderItem}
+                        >
+                          {column.label}
+                        </TableCell>
+                      ))}
+                    </TableHead>
+                    <TableBody role="checkbox" tabIndex={-1} key={"key"}>
+                      {selectedProductDetails.map((prodDetail) => {
+                        return (
+                          <TableRow
+                            hover
+                            role="checkbox"
+                            tabIndex={-1}
+                            key={prodDetail.id}
+                          >
+                            {columns.map((column) => {
+                              const value = prodDetail[column.id];
+                              return (
+                                <TableCell
+                                  key={column.id}
+                                  align={column.align}
+                                  className={
+                                    column.className &&
+                                    typeof column.className === "function"
+                                      ? column.className(value)
+                                      : column.className
+                                  }
+                                >
+                                  {column.format
+                                    ? column.format(value, prodDetail)
+                                    : value || ""}
+                                </TableCell>
+                              );
+                            })}
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            ) : (
+              ""
+            )}
           </DialogContent>
+
           <Box display="block" displayPrint="none">
-            <DialogActions style={{ boxSizing: "border-box", padding: "10px 19px" }}>
-              <Button variant="contained" className={classes.closeButton} onClick={handleClose} color="primary">
+            <DialogActions
+              style={{ boxSizing: "border-box", padding: "10px 19px" }}
+            >
+              <Button
+                variant="contained"
+                className={classes.closeButton}
+                onClick={handleClose}
+                color="primary"
+              >
                 Close
               </Button>
             </DialogActions>
