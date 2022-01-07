@@ -6,9 +6,7 @@ export const apiBaseURL =
   (process.env.NODE_ENV === "development" ? "http://localhost:8000" : "") +
   "/api/v1";
 
-// export const getURL = uri => {
-//   return `${apiBaseURL}${uri}`;
-// }
+
 export const getURL = (...args) => {
   return [apiBaseURL, ...Array.from(args)].join("/");
 };

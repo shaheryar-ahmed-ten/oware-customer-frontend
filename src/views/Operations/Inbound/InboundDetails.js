@@ -155,9 +155,9 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
               invGrp.InwardGroupBatch.inventoryDetailId == invDetail.id
           )
           ? invDetail.InwardGroup.find(
-              (invGrp) =>
-                invGrp.InwardGroupBatch.inventoryDetailId == invDetail.id
-            ).InwardGroupBatch.quantity
+            (invGrp) =>
+              invGrp.InwardGroupBatch.inventoryDetailId == invDetail.id
+          ).InwardGroupBatch.quantity
           : "-";
       },
     },
@@ -249,59 +249,59 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                   style={{ marginTop: 20 }}
                   justifyContent="space-between"
                 >
-                  <Grid container spacing={2}>
+                  <Grid container spacing={1}>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       Inward ID :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
                       {selectedInbound.internalIdForBusiness || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       Warehouse :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
                       {selectedInbound.Warehouse.name || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       VehicleType :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
                       {selectedInbound.vehicleType || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       VehicleName :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
                       {selectedInbound.vehicleName || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       VehicleNumber :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
                       {selectedInbound.vehicleName || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       DriverName :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
                       {selectedInbound.driverName || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       Date of Inward :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
                       {dateFormat(selectedInbound.createdAt) || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       Reference Number :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
                       {selectedInbound.referenceId || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       Memo:
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic" }}>
+                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
                       {selectedInbound.memo || "-"}
                     </Grid>
                   </Grid>
@@ -319,7 +319,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                   style={{ marginTop: 20 }}
                   justifyContent="space-between"
                 >
-                  <Grid container spacing={1}>
+                  <Grid container spacing={0} style={{ gridRowGap: '5px' }}>
                     {selectedInbound.Products.map((product) => {
                       return product.InwardGroup.InventoryDetail.map(
                         (batch, index) => {
@@ -327,7 +327,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                           // console.log(":-batch.batchName", batch.batchName);
                           return (
                             <>
-                              <Grid container item xs={6}>
+                              <Grid container item xs={12}>
                                 <Grid style={{ fontWeight: 500 }} item xs={6}>
                                   Product ID :
                                 </Grid>
@@ -335,7 +335,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                                   item
                                   xs={6}
                                   style={{
-                                    fontStyle: "italic",
+                                    fontStyle: "italic", textAlign: 'center',
                                     textAlign: "center",
                                   }}
                                 >
@@ -348,7 +348,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                                   item
                                   xs={6}
                                   style={{
-                                    fontStyle: "italic",
+                                    fontStyle: "italic", textAlign: 'center',
                                     textAlign: "center",
                                   }}
                                 >
@@ -361,7 +361,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                                   item
                                   xs={6}
                                   style={{
-                                    fontStyle: "italic",
+                                    fontStyle: "italic", textAlign: 'center',
                                     textAlign: "center",
                                   }}
                                 >
@@ -374,7 +374,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                                   item
                                   xs={6}
                                   style={{
-                                    fontStyle: "italic",
+                                    fontStyle: "italic", textAlign: 'center',
                                     textAlign: "center",
                                   }}
                                 >
@@ -387,7 +387,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                                   item
                                   xs={6}
                                   style={{
-                                    fontStyle: "italic",
+                                    fontStyle: "italic", textAlign: 'center',
                                     textAlign: "center",
                                   }}
                                 >
@@ -401,7 +401,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                                   item
                                   xs={6}
                                   style={{
-                                    fontStyle: "italic",
+                                    fontStyle: "italic", textAlign: 'center',
                                     textAlign: "center",
                                   }}
                                 >
@@ -415,7 +415,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                                   item
                                   xs={6}
                                   style={{
-                                    fontStyle: "italic",
+                                    fontStyle: "italic", textAlign: 'center',
                                     textAlign: "center",
                                   }}
                                 >
@@ -428,7 +428,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                                   item
                                   xs={6}
                                   style={{
-                                    fontStyle: "italic",
+                                    fontStyle: "italic", textAlign: 'center',
                                     textAlign: "center",
                                   }}
                                 >
@@ -441,7 +441,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                                   item
                                   xs={6}
                                   style={{
-                                    fontStyle: "italic",
+                                    fontStyle: "italic", textAlign:'center',
                                     textAlign: "center",
                                   }}
                                 >
@@ -508,7 +508,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                             style={{ paddingTop: "0" }}
                             className={
                               column.className &&
-                              typeof column.className === "function"
+                                typeof column.className === "function"
                                 ? column.className(value)
                                 : column.className
                             }
@@ -575,7 +575,7 @@ function InboundDetails({ selectedInbound, open, handleClose }) {
                                     align={column.align}
                                     className={
                                       column.className &&
-                                      typeof column.className === "function"
+                                        typeof column.className === "function"
                                         ? column.className(value)
                                         : column.className
                                     }
