@@ -154,15 +154,15 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
       label: "BATCH NUMBER",
       minWidth: "auto",
       className: "",
-      format: (value, entity) => entity.batchNumber,
+      format: (value, entity) => (entity ? entity.batchNumber : "-"),
     },
-    {
-      id: "batchName",
-      label: "BATCH NAME",
-      minWidth: "auto",
-      className: "",
-      format: (value, entity) => entity.batchName,
-    },
+    // {
+    //   id: "batchName",
+    //   label: "BATCH NAME",
+    //   minWidth: "auto",
+    //   className: "",
+    //   format: (value, entity) => entity.batchName,
+    // },
     {
       id: "availableQuantity",
       label: "AVAILABLE QUANTITY",
@@ -245,53 +245,85 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                   style={{ marginTop: 20 }}
                   justifyContent="space-between"
                 >
-                  <Grid container spacing={0} style={{ gridRowGap: '5px' }}>
+                  <Grid container spacing={0} style={{ gridRowGap: "5px" }}>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       Product Name :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                    <Grid
+                      item
+                      xs={3}
+                      style={{ fontStyle: "italic", textAlign: "center" }}
+                    >
                       {selectedProduct.Product.name || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       Category :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                    <Grid
+                      item
+                      xs={3}
+                      style={{ fontStyle: "italic", textAlign: "center" }}
+                    >
                       {selectedProduct.Product.Category.name || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       Warehouse:
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                    <Grid
+                      item
+                      xs={3}
+                      style={{ fontStyle: "italic", textAlign: "center" }}
+                    >
                       {selectedProduct.Warehouse.name || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       Brand :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                    <Grid
+                      item
+                      xs={3}
+                      style={{ fontStyle: "italic", textAlign: "center" }}
+                    >
                       {selectedProduct.Product.Brand.name || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       UOM :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                    <Grid
+                      item
+                      xs={3}
+                      style={{ fontStyle: "italic", textAlign: "center" }}
+                    >
                       {selectedProduct.Product.UOM.name || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       Quantity Available :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                    <Grid
+                      item
+                      xs={3}
+                      style={{ fontStyle: "italic", textAlign: "center" }}
+                    >
                       {selectedProduct.availableQuantity || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       Quantity Committed :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                    <Grid
+                      item
+                      xs={3}
+                      style={{ fontStyle: "italic", textAlign: "center" }}
+                    >
                       {selectedProduct.committedQuantity || "-"}
                     </Grid>
                     <Grid style={{ fontWeight: 500 }} item xs={3}>
                       Quantity Dispatched :
                     </Grid>
-                    <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                    <Grid
+                      item
+                      xs={3}
+                      style={{ fontStyle: "italic", textAlign: "center" }}
+                    >
                       {selectedProduct.dispatchedQuantity || "-"}
                     </Grid>
                   </Grid>
@@ -310,52 +342,78 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                   style={{ marginTop: 20 }}
                   justifyContent="space-between"
                 >
-                  <Grid container spacing={0} style={{ gridRowGap: '5px' }}>
+                  <Grid
+                    container
+                    spacing={0}
+                    style={{ gridRowGap: "5px", marginTop: 25 }}
+                  >
                     {selectedProductDetails.map((prodDetail) => {
                       return (
                         <>
                           <Grid style={{ fontWeight: 500 }} item xs={3}>
                             Batch Number :
                           </Grid>
-                          <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                          <Grid
+                            item
+                            xs={3}
+                            style={{ fontStyle: "italic", textAlign: "center" }}
+                          >
                             {prodDetail.batchNumber || "-"}
                           </Grid>
-                          <Grid style={{ fontWeight: 500 }} item xs={3}>
+                          {/* <Grid style={{ fontWeight: 500 }} item xs={3}>
                             Batch Name :
                           </Grid>
                           <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
                             {prodDetail.batchName || "-"}
-                          </Grid>
+                          </Grid> */}
                           <Grid style={{ fontWeight: 500 }} item xs={3}>
                             Available Quantity :
                           </Grid>
-                          <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                          <Grid
+                            item
+                            xs={3}
+                            style={{ fontStyle: "italic", textAlign: "center" }}
+                          >
                             {prodDetail.availableQuantity || "-"}
                           </Grid>
                           <Grid style={{ fontWeight: 500 }} item xs={3}>
                             Dispatched Quantity :
                           </Grid>
-                          <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                          <Grid
+                            item
+                            xs={3}
+                            style={{ fontStyle: "italic", textAlign: "center" }}
+                          >
                             {prodDetail.dispatchedQuantity || "-"}
                           </Grid>
                           <Grid style={{ fontWeight: 500 }} item xs={3}>
                             Manufacturing Date :
                           </Grid>
-                          <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                          <Grid
+                            item
+                            xs={3}
+                            style={{ fontStyle: "italic", textAlign: "center" }}
+                          >
                             {prodDetail.manufacturingDate
                               ? dateFormatWithoutTime(
-                                prodDetail.manufacturingDate
-                              )
+                                  prodDetail.manufacturingDate
+                                )
                               : "-"}
                           </Grid>
                           <Grid style={{ fontWeight: 500 }} item xs={3}>
                             Expiry Date :
                           </Grid>
-                          <Grid item xs={3} style={{ fontStyle: "italic", textAlign: 'center' }}>
+                          <Grid
+                            item
+                            xs={3}
+                            style={{ fontStyle: "italic", textAlign: "center" }}
+                          >
                             {prodDetail.expiryDate
                               ? dateFormatWithoutTime(prodDetail.expiryDate)
                               : "-"}
                           </Grid>
+                          <Grid item xs={3}></Grid>
+                          <Grid item xs={3}></Grid>
                         </>
                       );
                     })}
@@ -413,7 +471,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                             style={{ paddingTop: "0" }}
                             className={
                               column.className &&
-                                typeof column.className === "function"
+                              typeof column.className === "function"
                                 ? column.className(value)
                                 : column.className
                             }
@@ -461,7 +519,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                   align={column.align}
                                   className={
                                     column.className &&
-                                      typeof column.className === "function"
+                                    typeof column.className === "function"
                                       ? column.className(value)
                                       : column.className
                                   }
