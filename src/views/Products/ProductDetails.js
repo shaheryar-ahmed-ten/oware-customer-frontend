@@ -154,7 +154,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
       label: "BATCH NUMBER",
       minWidth: "auto",
       className: "",
-      format: (value, entity) => (entity ? entity.batchNumber : "-"),
+      format: (value, entity) => (entity ? entity.batchNumber || '-' : "-"),
     },
     // {
     //   id: "batchName",
@@ -396,8 +396,8 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                           >
                             {prodDetail.manufacturingDate
                               ? dateFormatWithoutTime(
-                                  prodDetail.manufacturingDate
-                                )
+                                prodDetail.manufacturingDate
+                              )
                               : "-"}
                           </Grid>
                           <Grid style={{ fontWeight: 500 }} item xs={3}>
@@ -471,7 +471,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                             style={{ paddingTop: "0" }}
                             className={
                               column.className &&
-                              typeof column.className === "function"
+                                typeof column.className === "function"
                                 ? column.className(value)
                                 : column.className
                             }
@@ -519,7 +519,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                   align={column.align}
                                   className={
                                     column.className &&
-                                    typeof column.className === "function"
+                                      typeof column.className === "function"
                                       ? column.className(value)
                                       : column.className
                                   }
