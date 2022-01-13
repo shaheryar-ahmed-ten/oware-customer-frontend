@@ -478,7 +478,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                           >
                             {column.format
                               ? column.format(value, selectedProduct)
-                              : value || ""}
+                              : value || "-"}
                           </TableCell>
                         );
                       })}
@@ -526,7 +526,7 @@ function ProductDetails({ open, handleClose, selectedProduct }) {
                                 >
                                   {column.format
                                     ? column.format(value, prodDetail)
-                                    : value || ""}
+                                    : value || "-"}
                                 </TableCell>
                               );
                             })}
