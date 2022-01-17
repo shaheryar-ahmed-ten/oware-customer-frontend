@@ -13,7 +13,7 @@ import {
   Box
 } from '@material-ui/core'
 import { isRequired, isPhone, isChar } from '../../../utils/validators';
-import { checkForMatchInArray, dateFormat, dateTimeLocal, dateToPickerFormat, getURL } from '../../../utils/common';
+import { checkForMatchInArray, dateFormat, dateTimeLocal, dateToPickerFormat,dateToPickerFormatYear, getURL } from '../../../utils/common';
 import { Alert, Autocomplete } from '@material-ui/lab';
 import axios from 'axios';
 import { TableContainer } from '@material-ui/core';
@@ -92,7 +92,7 @@ export default function AddDispatchOrderView() {
   useEffect(() => {
     if (!!selectedDispatchOrder) {
       setQuantity(0);
-      setShipmentDate(dateToPickerFormat(selectedDispatchOrder.shipmentDate) || '');
+      setShipmentDate(dateToPickerFormatYear(selectedDispatchOrder.shipmentDate) || '');
       setReceiverName(selectedDispatchOrder.receiverName || '');
       setReceiverPhone(selectedDispatchOrder.receiverPhone || '');
       setInventoryId(selectedDispatchOrder.inventoryId || '');
@@ -392,7 +392,7 @@ export default function AddDispatchOrderView() {
                 type="datetime-local"
                 variant="outlined"
                 value={shipmentDate}
-                onChange={e => setShipmentDate(dateToPickerFormat(e.target.value))}
+                onChange={e => setShipmentDate(dateToPickerFormatYear(e.target.value))}
                 onBlur={e => setValidation({ ...validation, shipmentDate: true })}
               />
               {validation.shipmentDate && !isRequired(shipmentDate) ? <Typography color="error">Shipment date is required!</Typography> : ''}

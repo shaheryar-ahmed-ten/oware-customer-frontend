@@ -6,7 +6,6 @@ export const apiBaseURL =
   (process.env.NODE_ENV === "development" ? "http://localhost:8000" : "") +
   "/api/v1";
 
-
 export const getURL = (...args) => {
   return [apiBaseURL, ...Array.from(args)].join("/");
 };
@@ -17,6 +16,8 @@ export const digitize = (value, places) => {
 };
 
 // export const dateFormat = value => value ?  moment(value).utcOffset(value).format('DD-MM-yyyy hh:mm A') : "-";
+export const dateToPickerFormatYear = (value) =>
+  value ? moment(value).format("yyyy-MM-DDTHH:mm") : "";
 export const dateFormat = (value) =>
   value ? moment(value).format("DD-MM-yyyy hh:mm A") : "-";
 

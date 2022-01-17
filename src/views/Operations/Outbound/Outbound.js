@@ -178,7 +178,7 @@ function Outbound() {
     //     format: (value, entity) => {
     //         let totalDispatched = 0
     //         entity.ProductOutwards.forEach(po => {
-    //             po.OutwardGroups.forEach(outGroup => {
+    //             po.OutwardGroup.forEach(outGroup => {
     //                 totalDispatched += outGroup.quantity
     //             });
     //         });
@@ -193,7 +193,7 @@ function Outbound() {
       format: (value, entity) => {
         let totalDispatched = 0;
         entity.ProductOutwards.forEach((po) => {
-          po.OutwardGroups.forEach((outGroup) => {
+          po.OutwardGroup.forEach((outGroup) => {
             totalDispatched += outGroup.quantity;
           });
         });
